@@ -139,9 +139,14 @@ export const orderColumns = [
     field: "updatedAt",
     headerName: "Ngày cập nhật",
     width: 200,
-  },
+  }
 ];
-
+export const listOrderStatus = [
+  { id: 1, name: "Chờ xác nhận" }, 
+  { id: 2, name: "Đã xác nhận" }, 
+  { id: 3, name: "Đang giao hàng" }, 
+  { id: 4, name: "Đã giao hàng" }, 
+  { id: 5, name: "Hoàn thành" }]
 export const categoryColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {

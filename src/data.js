@@ -3,7 +3,7 @@ import slider_2 from "./assets/slider_2.jpg";
 import slider_3 from "./assets/slider_3.jpg";
 import slider_4 from "./assets/slider_4.jpg";
 
-export const endpoint = "http://localhost:3003";
+export const endpoint = "http://localhost:8080";
 // export const endpoint = "https://4fe8-113-185-78-108.ngrok-free.app";
 
 export const colors = {
