@@ -121,6 +121,19 @@ const AddProduct = () => {
             />
           </InfoItem>
           <InfoItem>
+            <InfoItemLabel>Số lượng</InfoItemLabel>
+            <FormInput
+              placeholder={"1"}
+              value={data.quantity}
+              onChange={(e) =>
+                setData((prevData) => ({
+                  ...prevData,
+                  quantity: e.target.value,
+                }))
+              }
+            />
+          </InfoItem>
+          <InfoItem>
             <InfoItemLabel>Giá tiền</InfoItemLabel>
             <FormInput
               placeholder="VNĐ"

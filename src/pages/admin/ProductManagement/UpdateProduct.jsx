@@ -68,7 +68,7 @@ const UpdateProduct = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => { }, [errorMessage]);
+  useEffect(() => {}, [errorMessage]);
 
   useEffect(() => {
     fetch(`${endpoint}/admin/books/${id}`)
@@ -80,9 +80,9 @@ const UpdateProduct = () => {
   }, [id]);
 
   const dateObj = new Date(data.publication_date);
-  const publication_date = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1)
-    .padStart(2, "0")}-${String(dateObj.getDate())
-      .padStart(2, "0")}`;
+  const publication_date = `${dateObj.getFullYear()}-${String(
+    dateObj.getMonth() + 1
+  ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`;
 
   const handleUpdateBook = () => {
     fetch(`${endpoint}/admin/books/id/${id}`, {
@@ -118,9 +118,7 @@ const UpdateProduct = () => {
     <div className="list">
       <Sidebar />
 
-      <Right
-        style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
-      >
+      <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Chỉnh Sửa Thông Tin Sản Phẩm</Title>
         <Form>
           <InfoItem>
@@ -158,6 +156,19 @@ const UpdateProduct = () => {
                 setData((prevData) => ({
                   ...prevData,
                   author: e.target.value,
+                }))
+              }
+            />
+          </InfoItem>
+          <InfoItem>
+            <InfoItemLabel>Số lượng</InfoItemLabel>
+            <FormInput
+              placeholder={"10"}
+              value={data.quantity}
+              onChange={(e) =>
+                setData((prevData) => ({
+                  ...prevData,
+                  quantity: e.target.value,
                 }))
               }
             />
@@ -203,26 +214,22 @@ const UpdateProduct = () => {
           </InfoItem>
           <InfoItem>
             <InfoItemLabel>Thể loại</InfoItemLabel>
-            <CategoriesInfo>{data.categories && data.categories.length > 0 ? data.categories.map((item) => <p>- {item.name} </p>) : ""}</CategoriesInfo>
+            <CategoriesInfo>
+              {data.categories && data.categories.length > 0
+                ? data.categories.map((item) => <p>- {item.name} </p>)
+                : ""}
+            </CategoriesInfo>
             <CategoriesButtonWrapper>
-              <CategoriesButton
-                onClick={handleNavigateAddCate}
-              >
+              <CategoriesButton onClick={handleNavigateAddCate}>
                 Thêm thể loại
               </CategoriesButton>
-              <CategoriesButton
-                onClick={handleNavigateDeleteCate}
-              >
+              <CategoriesButton onClick={handleNavigateDeleteCate}>
                 Xóa thể loại
               </CategoriesButton>
             </CategoriesButtonWrapper>
           </InfoItem>
           <ButtonWrapper>
-            <Button
-              onClick={handleUpdateBook}
-            >
-              Cập nhật thông tin
-            </Button>
+            <Button onClick={handleUpdateBook}>Cập nhật thông tin</Button>
           </ButtonWrapper>
         </Form>
       </Right>

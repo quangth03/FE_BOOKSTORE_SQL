@@ -37,6 +37,12 @@ const Author = styled.p`
   padding: 10px 0px;
 `;
 
+const Quantity = styled.p`
+  font-size: 20px;
+  padding: 10px 0px;
+  color: #cd4949;
+`;
+
 const Price = styled.p`
   font-weight: 200;
   font-size: 30px;
@@ -152,6 +158,7 @@ const ProductDetail = () => {
           <InfoContainer>
             <Title>{book.title}</Title>
             <Author>{book.author}</Author>
+            <Quantity>Số lượng: {book.quantity}</Quantity>
             <HR />
             <Price>{Number(book.price).toLocaleString()} VND</Price>
             <HR />

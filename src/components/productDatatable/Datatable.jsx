@@ -49,7 +49,7 @@ const Datatable = () => {
   useEffect(() => {
     handleGetBooks();
     // eslint-disable-next-line
-  }, [page]); 
+  }, [page]);
 
   const actionColumn = [
     {
@@ -101,7 +101,7 @@ const Datatable = () => {
       />
       <PageNavigation
         current={Number(page)}
-        total={999}
+        total={42}
         urlPattern="/admin/books"
       />
     </div>

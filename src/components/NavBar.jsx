@@ -9,6 +9,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import { mobile } from "../responsive";
 import icon from "../assets/icon.png";
 import CustomNavLink from "./CustomNavLink";
+import { Badge } from "@mui/material";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}

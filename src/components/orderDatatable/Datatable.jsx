@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { endpoint } from "../../data";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
@@ -18,17 +18,17 @@ const Datatable = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
         setData(data);
       })
       .catch((error) => console.error(error));
   }, []);
   const handleChange = (event, id) => {
-    const tempData = data.map(item => {
+    const tempData = data.map((item) => {
       if (item.id === id) {
         return { ...item, status: event.target.value };
       }
-      return item; 
+      return item;
     });
     fetch(`${endpoint}/admin/order/update`, {
       method: "POST",
@@ -38,13 +38,13 @@ const Datatable = () => {
       },
       body: JSON.stringify({
         id: id,
-        status: event.target.value
+        status: event.target.value,
       }),
     })
       .then((response) => response.json())
       .then((data) => {})
       .catch((error) => console.error(error));
-    setData(tempData);  
+    setData(tempData);
   };
 
   const actionColumn = [
@@ -71,18 +71,18 @@ const Datatable = () => {
     {
       field: "status",
       headerName: "Trạng thái",
-      width: 150,
+      width: 180,
       renderCell: (params) => {
         return (
           <div className="cellAction">
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              style={{Width: 190}}
+              style={{ width: 180 }}
               value={params.row.status}
               onChange={(event) => handleChange(event, params.row.id)}
             >
-              {listOrderStatus.map(item => (
+              {listOrderStatus.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
                   {item.name}
                 </MenuItem>
