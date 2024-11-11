@@ -78,6 +78,7 @@ const Datatable = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
+              style={{Width: 190}}
               value={params.row.status}
               onChange={(event) => handleChange(event, params.row.id)}
             >

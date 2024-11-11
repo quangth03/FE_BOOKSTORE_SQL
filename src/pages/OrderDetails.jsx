@@ -5,6 +5,7 @@ import { colors, endpoint } from "../data";
 import OrderDetailsItem from "../components/OrderDetailsItem";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
+import { listOrderStatus } from "../datatablesource";
 
 const Title = styled.div`
   width: 100%;
@@ -96,6 +97,12 @@ const OrderDetails = ({ orderId }) => {
           <Info>
             <InfoLabel>Tổng số sản phẩm:</InfoLabel>
             <InfoContent>{order.total_quantity}</InfoContent>
+          </Info>
+          <Info>
+            <InfoLabel>Trạng thái đơn hàng:</InfoLabel>
+            <InfoContent>{
+              listOrderStatus.find(item => item.id == order.status)?.name
+            }</InfoContent>
           </Info>
           <Info>
             <InfoLabel>Tổng số tiền thanh toán:</InfoLabel>

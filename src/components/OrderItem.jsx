@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { colors } from "../data";
 import { useNavigate } from "react-router-dom";
+import { listOrderStatus } from "../datatablesource";
 
 const Container = styled.div`
   width: 100%;
@@ -86,6 +87,10 @@ const OrderItem = ({ data }) => {
           <InfoItem>
             <InfoItemLabel>Tổng số lượng sản phẩm</InfoItemLabel>
             <InfoItemContent>{data.total_quantity}</InfoItemContent>
+          </InfoItem>
+          <InfoItem>
+            <InfoItemLabel>Trạng thái đơn hàng</InfoItemLabel>
+            <InfoItemContent>{listOrderStatus.find(item => item.id == data.status)?.name}</InfoItemContent>
           </InfoItem>
           <InfoItem>
             <InfoItemLabel>Ngày đặt hàng</InfoItemLabel>
