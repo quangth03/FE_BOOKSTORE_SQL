@@ -9,7 +9,6 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import { mobile } from "../responsive";
 import icon from "../assets/icon.png";
 import CustomNavLink from "./CustomNavLink";
-import { Badge } from "@mui/material";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
@@ -57,6 +56,7 @@ const Brand = styled.h1`
   color: black;
   ${mobile({ fontSize: "24px" })}
 `;
+
 const Right = styled.div`
   flex: 2;
   display: flex;
@@ -98,6 +98,7 @@ const SearchButton = styled.div`
 
 const Navbar = () => {
   const isLoggedIn = Cookies.get("authToken") || false;
+  const isAdmin = Cookies.get("isAdmin");
 
   const MenuButton = styled.div`
     width: 150px;
@@ -121,50 +122,65 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <NavLink to={"/"} style={{ height: "100%" }}>
-            <img src={icon} alt="" height="100%" />
-          </NavLink>
-          <NavLink to={"/"} style={{ textDecoration: "none" }}>
+          {!isAdmin ? (
+            <NavLink to={"/"} style={{ height: "100%" }}>
+              <img src={icon} alt="logo" height="100%" />
+            </NavLink>
+          ) : (
+            <img src={icon} alt="logo" height="100%" />
+          )}
+          {!isAdmin ? (
+            <NavLink to={"/"} style={{ textDecoration: "none" }}>
+              <Brand>Book Store</Brand>
+            </NavLink>
+          ) : (
             <Brand>Book Store</Brand>
-          </NavLink>
-          <SearchContainer>
-            <Input
-              placeholder="Search"
-              type="text"
-              value={query}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  document.getElementById("btn-search").click();
-                }
-              }}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <SearchButton
-              onClick={() => navigate(`/search/${query}`, { replace: true })}
-              id="btn-search"
-            >
-              <Search style={{ color: "gray", fontSize: 16, flex: 1 }} />
-            </SearchButton>
-          </SearchContainer>
+          )}
+
+          {!isAdmin && (
+            <SearchContainer>
+              <Input
+                placeholder="Search"
+                type="text"
+                value={query}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    document.getElementById("btn-search").click();
+                  }
+                }}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <SearchButton
+                onClick={() => navigate(`/search/${query}`, { replace: true })}
+                id="btn-search"
+              >
+                <Search style={{ color: "gray", fontSize: 16, flex: 1 }} />
+              </SearchButton>
+            </SearchContainer>
+          )}
         </Left>
+
         <Right>
-          <CustomNavLink>
-            <MenuItem>
-              {/* <Badge badgeContent={4} color="error"> */}
-              <NotificationsOutlinedIcon color="action" />
-              {/* </Badge> */}
-              <span>Thông báo</span>
-            </MenuItem>
-          </CustomNavLink>
-          <CustomNavLink to={"/cart"}>
-            <MenuItem>
-              {/* <Badge badgeContent={4} color="primary"> */}
-              <ShoppingCartCheckoutOutlined color="action" />
-              {/* </Badge> */}
-              <span>Giỏ hàng</span>
-            </MenuItem>
-          </CustomNavLink>
+          {/* Ẩn thông báo và giỏ hàng nếu là admin */}
+          {!isAdmin && (
+            <>
+              <CustomNavLink>
+                <MenuItem>
+                  <NotificationsOutlinedIcon color="action" />
+                  <span>Thông báo</span>
+                </MenuItem>
+              </CustomNavLink>
+
+              <CustomNavLink to={"/cart"}>
+                <MenuItem>
+                  <ShoppingCartCheckoutOutlined color="action" />
+                  <span>Giỏ hàng</span>
+                </MenuItem>
+              </CustomNavLink>
+            </>
+          )}
+
           {isLoggedIn ? (
             <CustomNavLink to={"/profile"}>
               <MenuItem>
@@ -173,24 +189,22 @@ const Navbar = () => {
               </MenuItem>
             </CustomNavLink>
           ) : (
-            <>
-              <MenuItem>
-                <PersonOutlineOutlinedIcon />
-                <span>Tài khoản</span>
-                <MenuPopup>
-                  <CustomNavLink to={"/login"}>
-                    <MenuButton style={{ backgroundColor: "#153f4f" }}>
-                      Đăng nhập
-                    </MenuButton>
-                  </CustomNavLink>
-                  <CustomNavLink to={"/register"}>
-                    <MenuButton style={{ backgroundColor: "#e67926" }}>
-                      Đăng ký
-                    </MenuButton>
-                  </CustomNavLink>
-                </MenuPopup>
-              </MenuItem>
-            </>
+            <MenuItem>
+              <PersonOutlineOutlinedIcon />
+              <span>Tài khoản</span>
+              <MenuPopup>
+                <CustomNavLink to={"/login"}>
+                  <MenuButton style={{ backgroundColor: "#153f4f" }}>
+                    Đăng nhập
+                  </MenuButton>
+                </CustomNavLink>
+                <CustomNavLink to={"/register"}>
+                  <MenuButton style={{ backgroundColor: "#e67926" }}>
+                    Đăng ký
+                  </MenuButton>
+                </CustomNavLink>
+              </MenuPopup>
+            </MenuItem>
           )}
         </Right>
       </Wrapper>

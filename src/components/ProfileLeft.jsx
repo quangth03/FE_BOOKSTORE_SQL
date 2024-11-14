@@ -25,7 +25,7 @@ const MenuItem = styled.div`
 `;
 
 const ProfileLeft = ({ index }) => {
-  const menuItem = [
+  let menuItem = [
     {
       text: "Thông tin cá nhân",
       link: "/profile",
@@ -48,11 +48,15 @@ const ProfileLeft = ({ index }) => {
     },
   ];
 
-  if (Cookies.get("isAdmin"))
+  if (Cookies.get("isAdmin")) {
     menuItem.splice(4, 0, {
       text: "Trang quản trị",
       link: "/admin/users",
     });
+
+    menuItem = menuItem.filter((item) => item.text !== "Đơn hàng của bạn");
+  }
+
   return (
     <div>
       <Left>

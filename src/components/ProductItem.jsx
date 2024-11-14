@@ -129,7 +129,11 @@ const ProductItem = ({ item }) => {
           </del>
         )}
       </div>
-      <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
+      {Cookies.get("isAdmin") ? (
+        ""
+      ) : (
+        <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
+      )}
     </Container>
   );
 };
