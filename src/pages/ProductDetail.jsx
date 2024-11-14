@@ -121,6 +121,8 @@ const ProductDetail = () => {
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
+        console.log("data", data);
+        console.log("book", book);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -173,7 +175,11 @@ const ProductDetail = () => {
                     -
                   </AmountButton>
                   <Amount>{amount}</Amount>
-                  <AmountButton onClick={() => setAmount(amount + 1)}>
+                  <AmountButton
+                    onClick={() =>
+                      setAmount(amount < book.quantity ? amount + 1 : amount)
+                    }
+                  >
                     +
                   </AmountButton>
                 </AmountContainer>
