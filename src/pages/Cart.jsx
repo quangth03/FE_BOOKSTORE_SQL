@@ -100,8 +100,8 @@ const Cart = () => {
       .then((data) => {
         setCartItems(data.books);
         setNumberOfBooks(data.books.length);
-        console.log(cartItems);
-
+        console.log("data", data);
+        console.log("cartItems", cartItems);
         setTotalAmount(data.total);
       })
       .catch((error) => console.error(error));

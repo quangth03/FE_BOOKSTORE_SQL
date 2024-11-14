@@ -121,6 +121,8 @@ const ProductDetail = () => {
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
+        console.log("data", data);
+        console.log("book", book);
       })
       .catch((error) => console.error(error));
   }, [id]);

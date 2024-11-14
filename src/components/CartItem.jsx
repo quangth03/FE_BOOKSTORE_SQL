@@ -123,7 +123,7 @@ const CartItem = ({ cartItem, updateCart }) => {
     book_id: cartItem.id,
     quantity: 1,
   };
-
+  console.log("amount: ", amount);
   const handleRequest = (method, data) => {
     fetch(`${endpoint}/user/cart`, {
       method: method,
@@ -172,9 +172,10 @@ const CartItem = ({ cartItem, updateCart }) => {
   };
 
   const handleIncrease = () => {
-    data.quantity = 1;
+    // data.quantity = 1;
     handleRequest("POST", data);
-    setAmount((prev) => prev + 1);
+
+    setAmount(cartItem.quantity > amount ? amount + 1 : amount);
   };
 
   const calculatePrice = (price, discount) => {
