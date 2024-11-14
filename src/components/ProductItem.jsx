@@ -3,6 +3,7 @@ import { colors, endpoint } from "../data";
 import iconCategory from "../assets/icon_category.png";
 import CustomNavLink from "./CustomNavLink";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   margin: 15px;
@@ -91,7 +92,15 @@ const ProductItem = ({ item }) => {
     quantity: 1,
   };
 
+  // const navigate = useNavigate();
   const handleAddToCart = () => {
+    // const navigate = useNavigate();
+
+    // if (Cookies.get("authToken") === undefined) {
+    //   // If no authToken, redirect to the login page
+    //   navigate("/login");
+    // } else {
+    // Otherwise, proceed to add item to cart
     fetch(`${endpoint}/user/cart`, {
       method: "POST",
       headers: {
@@ -101,9 +110,12 @@ const ProductItem = ({ item }) => {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {})
+      .then((data) => {
+        // Handle success or update cart state as needed
+      })
       .catch((error) => console.error(error));
   };
+  // };
 
   const calculatePrice = (price, discount) => {
     return Math.round(price * (1 - discount / 100));
