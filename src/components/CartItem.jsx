@@ -14,49 +14,58 @@ const Product = styled.div`
   display: flex;
   align-items: center;
   flex: 2;
+  justify-content: space-between;
 `;
 
 const ProductDetail = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
   width: 100%;
-`;
-
-const DeleteButton = styled.button`
-  height: 40px;
-  width: 40px;
-  background-color: white;
-  cursor: pointer;
-  margin-right: 40px;
-  border: none;
-  border-radius: 30%;
-  &:hover {
-    background-color: ${colors.color2};
-    color: white;
-  }
+  flex-wrap: wrap;
+  padding: 10px;
+  gap: 20px;
 `;
 
 const Image = styled.img`
-  width: 100px;
+  width: 150px;
+  height: 215px;
   flex: 1;
   border-radius: 30px;
 `;
 
 const ProductName = styled.span`
   font-size: 20px;
-  width: 200px;
-  flex: 4;
+  max-width: 500px;
+  flex: 3;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 5px;
+`;
+
+const PriceContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+  flex: 2;
 `;
 
 const Price = styled.p`
   font-size: 20px;
-  flex: 2;
+  margin: 0;
+  flex: none;
   display: flex;
   justify-content: center;
+`;
+
+const DiscountPrice = styled(Price)`
+  color: #999;
+  text-decoration: line-through;
+`;
+
+const FinalPrice = styled(Price)`
+  color: #000;
 `;
 
 const AmountContainer = styled.div`
@@ -66,6 +75,7 @@ const AmountContainer = styled.div`
   margin-bottom: 10px;
   flex: 1;
   justify-content: center;
+  gap: 10px;
 `;
 
 const AmountButton = styled.button`
@@ -90,6 +100,20 @@ const Amount = styled.span`
   align-items: center;
   justify-content: center;
   margin: 0px 5px;
+`;
+
+const DeleteButton = styled.button`
+  height: 40px;
+  width: 40px;
+  background-color: white;
+  cursor: pointer;
+  margin-right: 20px;
+  border: none;
+  border-radius: 30%;
+  &:hover {
+    background-color: ${colors.color2};
+    color: white;
+  }
 `;
 
 const CartItem = ({ cartItem, updateCart }) => {
@@ -151,8 +175,12 @@ const CartItem = ({ cartItem, updateCart }) => {
     data.quantity = 1;
     handleRequest("POST", data);
     setAmount((prev) => prev + 1);
-    console.log(1);
   };
+
+  const calculatePrice = (price, discount) => {
+    return Math.round(price * (1 - discount / 100));
+  };
+  const sellPrice = calculatePrice(cartItem.price, cartItem.discount);
 
   return (
     <div>
@@ -169,6 +197,14 @@ const CartItem = ({ cartItem, updateCart }) => {
             <Amount>{amount}</Amount>
             <AmountButton onClick={handleIncrease}>+</AmountButton>
           </AmountContainer>
+          <PriceContainer>
+            <FinalPrice>{Number(sellPrice).toLocaleString()} VND</FinalPrice>
+            {cartItem.discount > 0 && (
+              <DiscountPrice>
+                {Number(cartItem.price).toLocaleString()} VND
+              </DiscountPrice>
+            )}
+          </PriceContainer>
           <Price>
             {Number(cartItem.cart_details.total).toLocaleString()} VND
           </Price>

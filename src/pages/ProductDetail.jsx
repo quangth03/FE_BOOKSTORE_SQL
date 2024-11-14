@@ -143,6 +143,12 @@ const ProductDetail = () => {
       .then((data) => {})
       .catch((error) => console.error(error));
   };
+
+  const calculatePrice = (price, discount) => {
+    return Math.round(price * (1 - discount / 100));
+  };
+  const sellPrice = calculatePrice(book.price, book.discount);
+
   return (
     <div>
       <Container>
@@ -160,7 +166,17 @@ const ProductDetail = () => {
             <Author>{book.author}</Author>
             <Quantity>Số lượng: {book.quantity}</Quantity>
             <HR />
-            <Price>{Number(book.price).toLocaleString()} VND</Price>
+            <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
+              <Price>
+                {Number(sellPrice).toLocaleString()}
+                VND
+              </Price>
+              {book.discount > 0 && (
+                <del style={{ fontSize: "22px" }}>
+                  {Number(book.price).toLocaleString()} VND
+                </del>
+              )}
+            </div>
             <HR />
             {Cookies.get("isAdmin") ? (
               ""
@@ -173,7 +189,11 @@ const ProductDetail = () => {
                     -
                   </AmountButton>
                   <Amount>{amount}</Amount>
-                  <AmountButton onClick={() => setAmount(amount + 1)}>
+                  <AmountButton
+                    onClick={() =>
+                      setAmount(amount < book.quantity ? amount + 1 : amount)
+                    }
+                  >
                     +
                   </AmountButton>
                 </AmountContainer>

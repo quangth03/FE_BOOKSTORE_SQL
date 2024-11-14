@@ -28,8 +28,8 @@ const ImageWrapper = styled.div`
 const Image = styled.img`
   height: 100%;
   border-radius: 20px;
-
   z-index: 2;
+  margin-bottom: 10px;
 `;
 
 const ProductName = styled.div`
@@ -38,9 +38,15 @@ const ProductName = styled.div`
   font-size: 15pt;
   text-align: center;
   color: ${colors.color2};
-  margin: 7px 0px;
+  margin: 5px 0px;
   max-height: 25px;
   overflow: hidden;
+`;
+const Price = styled.p`
+  font-weight: 200;
+  font-size: 20px;
+  padding: 0px;
+  color: red;
 `;
 
 export const CartButton = styled.div`
@@ -99,6 +105,11 @@ const ProductItem = ({ item }) => {
       .catch((error) => console.error(error));
   };
 
+  const calculatePrice = (price, discount) => {
+    return Math.round(price * (1 - discount / 100));
+  };
+  const sellPrice = calculatePrice(item.price, item.discount);
+
   return (
     <Container>
       <CustomNavLink to={`/books/${item.id}`} width={"100%"} height={"60%"}>
@@ -106,9 +117,18 @@ const ProductItem = ({ item }) => {
           <Image src={item.image} />
         </ImageWrapper>
       </CustomNavLink>
+
       <CustomNavLink to={`/books/${item.id}`}>
         <ProductName>{item.title}</ProductName>
       </CustomNavLink>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <Price>{Number(sellPrice).toLocaleString()} VND</Price>
+        {item.discount > 0 && (
+          <del style={{ fontSize: "18px" }}>
+            {Number(item.price).toLocaleString()} VND
+          </del>
+        )}
+      </div>
       <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
     </Container>
   );
