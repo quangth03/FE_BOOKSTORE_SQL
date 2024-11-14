@@ -46,6 +46,25 @@ const Datatable = () => {
       });
   };
 
+  const handleRestore = (id) => {
+    fetch(`${endpoint}/admin/books/restore/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: Cookies.get("authToken"),
+      },
+      body: JSON.stringify({ isDelete: 0 }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          handleGetBooks();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     handleGetBooks();
     // eslint-disable-next-line
@@ -57,7 +76,7 @@ const Datatable = () => {
       headerName: "Lựa chọn",
       width: 200,
       renderCell: (params) => {
-        return (
+        return !params.row.isDelete ? (
           <div className="cellAction">
             <CustomNavLink
               to={`/books/${params.row.id}`}
@@ -78,6 +97,15 @@ const Datatable = () => {
               onClick={() => handleDelete(params.row.id)}
             >
               Xóa
+            </div>
+          </div>
+        ) : (
+          <div className="cellAction">
+            <div
+              className="restoreButton"
+              onClick={() => handleRestore(params.row.id)}
+            >
+              Khôi phục
             </div>
           </div>
         );

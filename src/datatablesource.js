@@ -67,7 +67,7 @@ export const userColumns = [
 ];
 
 export const productColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "id", headerName: "ID", width: 50 },
   {
     field: "image",
     headerName: "Ảnh bìa",
@@ -100,6 +100,14 @@ export const productColumns = [
     headerName: "Giá tiền",
     width: 100,
   },
+  {
+    field: "discount",
+    headerName: "Khuyến mãi",
+    width: 100,
+    renderCell: (params) => {
+      return params.row.discount + " %";
+    },
+  },
 
   {
     field: "publication_date",
@@ -115,6 +123,18 @@ export const productColumns = [
     field: "updatedAt",
     headerName: "Ngày cập nhật",
     width: 150,
+  },
+  {
+    field: "isDelete",
+    headerName: "Trạng thái",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div style={{ color: "red" }}>
+          {params.row.isDelete ? "Đã xóa" : ""}
+        </div>
+      );
+    },
   },
 ];
 
@@ -194,7 +214,9 @@ export const categoryColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-        <div className="cellWithImg">{params.row.isDelete ? "Đã xóa" : ""}</div>
+        <div style={{ color: "red" }}>
+          {params.row.isDelete ? "Đã xóa" : ""}
+        </div>
       );
     },
   },

@@ -147,6 +147,19 @@ const AddProduct = () => {
             />
           </InfoItem>
           <InfoItem>
+            <InfoItemLabel>Khuyến mãi</InfoItemLabel>
+            <FormInput
+              placeholder="%"
+              value={data.discount}
+              onChange={(e) =>
+                setData((prevData) => ({
+                  ...prevData,
+                  discount: e.target.value,
+                }))
+              }
+            />
+          </InfoItem>
+          <InfoItem>
             <InfoItemLabel>Mô tả</InfoItemLabel>
             <FormInput
               placeholder="Cuốn sách hay"
