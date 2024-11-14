@@ -7,6 +7,7 @@ import dogBackground from "../assets/dog_background.jpg";
 import { endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -89,10 +90,13 @@ const Message = styled.div`
 `;
 
 const Register = () => {
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
+  const [phone_number, setPhone_number] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -103,6 +107,8 @@ const Register = () => {
     if (userName.trim() === "") setErrorMessage("Vui lòng nhập username");
     else if (fullName.trim() === "") setErrorMessage("Vui lòng nhập họ tên");
     else if (email.trim() === "") setErrorMessage("Vui lòng nhập email");
+    else if (phone_number.trim() === "")
+      setErrorMessage("Vui lòng nhập số điện thoại");
     else if (address.trim() === "") setErrorMessage("Vui lòng nhập địa chỉ");
     else if (password.trim() === "") setErrorMessage("Vui lòng nhập mật khẩu");
     else if (confirmPassword.trim() === "")
@@ -117,6 +123,7 @@ const Register = () => {
         password: password,
         full_name: fullName,
         address: address,
+        phone_number: phone_number,
       };
 
       fetch(`${endpoint}/auth/signup`, {
@@ -127,6 +134,10 @@ const Register = () => {
         .then((response) => {
           if (response.status === 200) {
             setErrorMessage("Đăng ký thành công");
+            setIsSuccess(true);
+            setTimeout(() => {
+              navigate("/login");
+            }, 3000);
             return response.json();
           } else if (response.status === 400) {
             response.json().then((error) => {
@@ -184,6 +195,12 @@ const Register = () => {
             value={email}
             type="email"
             onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            placeholder="Phone Number"
+            value={phone_number}
+            type="phone_number"
+            onChange={(e) => setPhone_number(e.target.value)}
           />
           <Input
             placeholder="Địa chỉ"

@@ -127,14 +127,18 @@ const Navbar = () => {
               <img src={icon} alt="logo" height="100%" />
             </NavLink>
           ) : (
-            <img src={icon} alt="logo" height="100%" />
+            <NavLink to={"/admin/users"} style={{ height: "100%" }}>
+              <img src={icon} alt="logo" height="100%" />
+            </NavLink>
           )}
           {!isAdmin ? (
             <NavLink to={"/"} style={{ textDecoration: "none" }}>
               <Brand>Book Store</Brand>
             </NavLink>
           ) : (
-            <Brand>Book Store</Brand>
+            <NavLink to={"/admin/users"} style={{ textDecoration: "none" }}>
+              <Brand>Book Store</Brand>
+            </NavLink>
           )}
 
           {!isAdmin && (
