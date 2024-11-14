@@ -50,7 +50,7 @@ const Datatable = () => {
       headerName: "Lựa chọn",
       width: 150,
       renderCell: (params) => {
-        return (
+        return !params.row.isDelete ? (
           <div className="cellAction">
             <Link
               to={`/admin/category/update/${params.row.id}`}
@@ -65,6 +65,11 @@ const Datatable = () => {
             >
               Xóa
             </div>
+          </div>
+        ) : (
+          <div className="cellAction">
+            <button disabled>Chỉnh sửa</button>
+            <button disabled>Xóa</button>
           </div>
         );
       },

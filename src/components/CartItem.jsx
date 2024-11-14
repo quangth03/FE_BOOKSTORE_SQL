@@ -36,7 +36,7 @@ const Image = styled.img`
 
 const ProductName = styled.span`
   font-size: 20px;
-  max-width: 500px;
+  max-width: 200px;
   flex: 3;
   display: flex;
   justify-content: flex-start;
