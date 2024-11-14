@@ -1,8 +1,8 @@
 .datatable {
   height: 600px;
   padding: 20px;
-  
-  .datatableTitle{
+
+  .datatableTitle {
     width: 100%;
     font-size: 24px;
     color: gray;
@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: space-between;
 
-    .link{
+    .link {
       text-decoration: none;
       color: green;
       font-size: 16px;
@@ -66,20 +66,28 @@
       border: 1px dotted rgba(0, 0, 139, 0.596);
       cursor: pointer;
     }
-    
+
     .updateButton {
       padding: 2px 5px;
       border-radius: 5px;
-      color: rgb(220, 232, 0);
-      border: 1px dotted rgb(160, 169, 0);
+      color: rgb(182, 192, 1);
+      border: 1px dotted rgb(182, 192, 1);
       cursor: pointer;
     }
 
     .deleteButton {
       padding: 2px 5px;
       border-radius: 5px;
-      color: crimson;
+      color: rgb(193, 7, 44);
       border: 1px dotted rgba(220, 20, 60, 0.6);
+      cursor: pointer;
+    }
+
+    .restoreButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: rgb(45, 159, 7);
+      border: 1px dotted rgb(45, 159, 7);
       cursor: pointer;
     }
   }

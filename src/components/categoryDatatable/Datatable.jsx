@@ -26,6 +26,25 @@ const Datatable = () => {
     handleGetCategories();
   }, []);
 
+  const handleRestore = (id) => {
+    fetch(`${endpoint}/admin/categories/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: Cookies.get("authToken"),
+      },
+      body: JSON.stringify({ isDelete: 0 }),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          handleGetCategories();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleDelete = (id) => {
     fetch(`${endpoint}/admin/categories/${id}`, {
       method: "DELETE",
@@ -68,8 +87,12 @@ const Datatable = () => {
           </div>
         ) : (
           <div className="cellAction">
-            <button disabled>Chỉnh sửa</button>
-            <button disabled>Xóa</button>
+            <div
+              className="restoreButton"
+              onClick={() => handleRestore(params.row.id)}
+            >
+              Khôi phục
+            </div>
           </div>
         );
       },
