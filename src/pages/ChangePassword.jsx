@@ -37,18 +37,25 @@ const ChangePassword = () => {
   const handleChangePassword = () => {
     if (
       oldPassword.trim() === "" ||
-      newPassword.trim === "" ||
-      confirmPassword === ""
-    )
+      newPassword.trim() === "" ||
+      confirmPassword.trim() === ""
+    ) {
       setErrorMessage("Vui lòng nhập đầy đủ thông tin");
-    else if (newPassword.trim() !== confirmPassword.trim())
+    } else if (newPassword.trim().length < 8) {
+      setErrorMessage("Mật khẩu mới phải có ít nhất 8 ký tự");
+    } else if (newPassword.trim() !== confirmPassword.trim()) {
       setErrorMessage("Mật khẩu không khớp");
-    else {
+    } else if (
+      oldPassword.trim() === confirmPassword.trim() ||
+      oldPassword.trim() === newPassword.trim()
+    ) {
+      setErrorMessage("Mật khẩu mới trùng với mật khẩu cũ");
+    } else {
       setErrorMessage("");
 
       const data = {
-        oldPassword: oldPassword,
-        newPassword: newPassword,
+        oldPassword: oldPassword.trim(),
+        newPassword: newPassword.trim(),
       };
 
       fetch(`${endpoint}/auth/changepassword`, {
@@ -62,9 +69,12 @@ const ChangePassword = () => {
         .then((response) => {
           if (response.status === 200) {
             setErrorMessage("Đổi mật khẩu thành công");
+            setOldPassword(""); // Đặt lại các giá trị sau khi đổi thành công
+            setNewPassword("");
+            setConfirmPassword("");
             return response.json();
           } else {
-            setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
+            setErrorMessage("Mật khẩu cũ không đúng");
           }
         })
         .catch((error) => {

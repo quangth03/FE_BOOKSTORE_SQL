@@ -86,15 +86,20 @@ const AmountButton = styled.button`
   }
 `;
 
-const Amount = styled.span`
+const Amount = styled.input.attrs({ type: "number" })`
   width: 30px;
   height: 30px;
-
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  font-size: 16px;
   margin: 0px 5px;
+  appearance: textfield; /* Hide default styling for all browsers */
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none; /* Hide spin buttons for WebKit browsers */
+    margin: 0;
+  }
 `;
 
 const AddButton = styled.button`
@@ -146,6 +151,22 @@ const ProductDetail = () => {
       .catch((error) => console.error(error));
   };
 
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    const min = 1;
+    const max = 100;
+
+    if (newValue === "") {
+      setAmount("");
+    } else if (parseInt(newValue) < min) {
+      setAmount(min);
+    } else if (parseInt(newValue) > max) {
+      setAmount(max);
+    } else {
+      setAmount(newValue);
+    }
+  };
+
   const calculatePrice = (price, discount) => {
     return Math.round(price * (1 - discount / 100));
   };
@@ -187,7 +208,8 @@ const ProductDetail = () => {
                   >
                     -
                   </AmountButton>
-                  <Amount>{amount}</Amount>
+                  <Amount value={amount} onChange={handleChange}></Amount>
+
                   <AmountButton
                     onClick={() =>
                       setAmount(amount < book.quantity ? amount + 1 : amount)

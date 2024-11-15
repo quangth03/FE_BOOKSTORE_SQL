@@ -92,14 +92,20 @@ const AmountButton = styled.button`
   }
 `;
 
-const Amount = styled.span`
+const Amount = styled.input.attrs({ type: "number" })`
   width: 30px;
   height: 30px;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  font-size: 16px;
   margin: 0px 5px;
+  appearance: textfield; /* Hide default styling for all browsers */
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none; /* Hide spin buttons for WebKit browsers */
+    margin: 0;
+  }
 `;
 
 const DeleteButton = styled.button`
@@ -172,10 +178,27 @@ const CartItem = ({ cartItem, updateCart }) => {
   };
 
   const handleIncrease = () => {
-    // data.quantity = 1;
-    handleRequest("POST", data);
+    data.quantity = 1;
+    if (cartItem.quantity > amount) {
+      handleRequest("POST", data);
+      setAmount((prev) => prev + 1);
+    }
+  };
 
-    setAmount(cartItem.quantity > amount ? amount + 1 : amount);
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    const min = 1;
+    const max = 100;
+
+    if (newValue === "") {
+      setAmount("");
+    } else if (parseInt(newValue) < min) {
+      setAmount(min);
+    } else if (parseInt(newValue) > max) {
+      setAmount(max);
+    } else {
+      setAmount(newValue);
+    }
   };
 
   const calculatePrice = (price, discount) => {
@@ -195,7 +218,7 @@ const CartItem = ({ cartItem, updateCart }) => {
           </ProductName>
           <AmountContainer>
             <AmountButton onClick={handleDescrease}>-</AmountButton>
-            <Amount>{amount}</Amount>
+            <Amount value={amount} onChange={handleChange}></Amount>
             <AmountButton onClick={handleIncrease}>+</AmountButton>
           </AmountContainer>
           <PriceContainer>
