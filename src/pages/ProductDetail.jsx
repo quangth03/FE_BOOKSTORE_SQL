@@ -169,10 +169,7 @@ const ProductDetail = () => {
             <Quantity>Số lượng: {book.quantity}</Quantity>
             <HR />
             <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-              <Price>
-                {Number(sellPrice).toLocaleString()}
-                VND
-              </Price>
+              <Price>{Number(sellPrice).toLocaleString()} VND</Price>
               {book.discount > 0 && (
                 <del style={{ fontSize: "22px" }}>
                   {Number(book.price).toLocaleString()} VND

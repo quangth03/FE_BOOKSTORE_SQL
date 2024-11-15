@@ -135,9 +135,7 @@ const Register = () => {
           if (response.status === 200) {
             setErrorMessage("Đăng ký thành công");
             setIsSuccess(true);
-            setTimeout(() => {
-              navigate("/login");
-            }, 3000);
+            navigate("/login");
             return response.json();
           } else if (response.status === 400) {
             response.json().then((error) => {
@@ -197,7 +195,7 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
-            placeholder="Phone Number"
+            placeholder="Số điện thoại"
             value={phone_number}
             type="phone_number"
             onChange={(e) => setPhone_number(e.target.value)}

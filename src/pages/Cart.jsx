@@ -112,7 +112,19 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    if (cartItems && cartItems.length > 0) {
+    let isValid = true;
+
+    for (let cartItem of cartItems) {
+      if (cartItem.cart_details.quantity > cartItem.quantity) {
+        isValid = false;
+        alert(
+          `Số lượng của sản phẩm "${cartItem.title}" không đủ để thanh toán.`
+        );
+        break;
+      }
+    }
+
+    if (isValid && cartItems.length > 0) {
       fetch(`${endpoint}/user/order`, {
         method: "POST",
         headers: {
