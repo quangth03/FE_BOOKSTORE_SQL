@@ -208,16 +208,16 @@ export const categoryColumns = [
     headerName: "Ngày cập nhật",
     width: 200,
   },
-  {
-    field: "isDelete",
-    headerName: "Trạng thái",
-    width: 100,
-    renderCell: (params) => {
-      return (
-        <div style={{ color: "red" }}>
-          {params.row.isDelete ? "Đã xóa" : ""}
-        </div>
-      );
-    },
-  },
+  // {
+  //   field: "isDelete",
+  //   headerName: "Trạng thái",
+  //   width: 100,
+  //   renderCell: (params) => {
+  //     return (
+  //       <div style={{ color: "red" }}>
+  //         {params.row.isDelete ? "Đã xóa" : ""}
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

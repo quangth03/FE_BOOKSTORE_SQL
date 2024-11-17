@@ -2,6 +2,7 @@ import "./sidebar.scss";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
+import InsertChartIcon from "@mui/icons-material/InsertChart";
 import { Link } from "react-router-dom";
 import { CategoryOutlined } from "@mui/icons-material";
 
@@ -11,6 +12,12 @@ const Sidebar = () => {
       <div className="center">
         <ul>
           <p className="title">DANH SÁCH</p>
+          <Link to="/admin/dashboard" style={{ textDecoration: "none" }}>
+            <li>
+              <InsertChartIcon className="icon" />
+              <span>Thống kê</span>
+            </li>
+          </Link>
           <Link to="/admin/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />

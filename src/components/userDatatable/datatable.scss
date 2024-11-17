@@ -1,8 +1,8 @@
 .datatable {
   height: 600px;
   padding: 20px;
-  
-  .datatableTitle{
+
+  .datatableTitle {
     width: 100%;
     font-size: 24px;
     color: gray;
@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: space-between;
 
-    .link{
+    .link {
       text-decoration: none;
       color: green;
       font-size: 16px;
@@ -66,7 +66,7 @@
       border: 1px dotted rgba(0, 0, 139, 0.596);
       cursor: pointer;
     }
-    
+
     .deleteButton {
       padding: 2px 5px;
       border-radius: 5px;
@@ -75,4 +75,12 @@
       cursor: pointer;
     }
   }
+}
+
+.chart-container {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

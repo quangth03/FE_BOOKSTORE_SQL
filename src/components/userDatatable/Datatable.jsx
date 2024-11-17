@@ -23,9 +23,7 @@ const Datatable = () => {
 
   return (
     <div className="datatable">
-      <div className="datatableTitle">
-        Danh Sách Người Dùng
-      </div>
+      <div className="datatableTitle">Danh Sách Người Dùng</div>
       <DataGrid
         className="datagrid"
         rows={data}

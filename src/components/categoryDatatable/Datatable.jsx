@@ -78,12 +78,12 @@ const Datatable = () => {
             >
               Chỉnh sửa
             </Link>
-            <div
+            {/* <div
               className="deleteButton"
               onClick={() => handleDelete(params.row.id)}
             >
               Xóa
-            </div>
+            </div> */}
           </div>
         ) : (
           <div className="cellAction">

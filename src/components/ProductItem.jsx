@@ -92,15 +92,13 @@ const ProductItem = ({ item }) => {
     quantity: 1,
   };
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleAddToCart = () => {
-    // const navigate = useNavigate();
-
-    // if (Cookies.get("authToken") === undefined) {
-    //   // If no authToken, redirect to the login page
-    //   navigate("/login");
-    // } else {
-    // Otherwise, proceed to add item to cart
+    if (Cookies.get("authToken") === undefined) {
+      // If no authToken, redirect to the login page
+      navigate("/login");
+    }
+    //Otherwise, proceed to add item to cart
     fetch(`${endpoint}/user/cart`, {
       method: "POST",
       headers: {

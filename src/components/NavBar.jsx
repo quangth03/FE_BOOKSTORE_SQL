@@ -30,14 +30,34 @@ const Left = styled.div`
 `;
 
 const SearchContainer = styled.form`
-  border: 0.5px solid lightgray;
+  border: 1px solid #ddd;
   display: flex;
   flex: 1;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 30px; /* Bo tròn mềm mại */
   margin-left: 25px;
-  padding: 5px;
-  height: 50%;
+  padding: 10px 15px; /* Tăng padding để có khoảng cách hợp lý */
+  height: 40px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
+  transition: box-shadow 0.3s ease-in-out; /* Hiệu ứng chuyển động */
+
+  &:focus-within {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Tăng bóng đổ khi focus */
+  }
+`;
+
+const SearchButton = styled.button`
+  flex: 0;
+  border: none;
+  padding: 10px 20px; /* Kích thước vừa vặn cho nút */
+  border-radius: 30px; /* Bo tròn cho nút */
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Hiệu ứng hover */
+
+  &:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Bóng đổ khi hover */
+  }
 `;
 
 const Input = styled.input`
@@ -55,6 +75,7 @@ const Brand = styled.h1`
   font-weight: bold;
   color: black;
   ${mobile({ fontSize: "24px" })}
+  margin-right: 100px;
 `;
 
 const Right = styled.div`
@@ -92,10 +113,6 @@ const MenuItem = styled.div`
   }
 `;
 
-const SearchButton = styled.div`
-  flex: 1;
-`;
-
 const Navbar = () => {
   const isLoggedIn = Cookies.get("authToken") || false;
   const isAdmin = Cookies.get("isAdmin");
@@ -127,7 +144,7 @@ const Navbar = () => {
               <img src={icon} alt="logo" height="100%" />
             </NavLink>
           ) : (
-            <NavLink to={"/admin/users"} style={{ height: "100%" }}>
+            <NavLink to={"/admin/dashboard"} style={{ height: "100%" }}>
               <img src={icon} alt="logo" height="100%" />
             </NavLink>
           )}
@@ -136,7 +153,7 @@ const Navbar = () => {
               <Brand>Book Store</Brand>
             </NavLink>
           ) : (
-            <NavLink to={"/admin/users"} style={{ textDecoration: "none" }}>
+            <NavLink to={"/admin/dashboard"} style={{ textDecoration: "none" }}>
               <Brand>Book Store</Brand>
             </NavLink>
           )}
@@ -144,16 +161,18 @@ const Navbar = () => {
           {!isAdmin && (
             <SearchContainer>
               <Input
-                placeholder="Search"
+                placeholder="Tìm kiếm sản phẩm..."
                 type="text"
                 value={query}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    document.getElementById("btn-search").click();
+                onChange={(e) => {
+                  const newQuery = e.target.value;
+                  setQuery(newQuery);
+                  if (newQuery.trim()) {
+                    navigate(`/search/${newQuery}`, { replace: true });
+                  } else {
+                    navigate(`/`, { replace: true }); // Điều hướng về trang chủ nếu chuỗi rỗng
                   }
                 }}
-                onChange={(e) => setQuery(e.target.value)}
               />
               <SearchButton
                 onClick={() => navigate(`/search/${query}`, { replace: true })}
@@ -169,12 +188,12 @@ const Navbar = () => {
           {/* Ẩn thông báo và giỏ hàng nếu là admin */}
           {!isAdmin && (
             <>
-              <CustomNavLink>
+              {/* <CustomNavLink>
                 <MenuItem>
                   <NotificationsOutlinedIcon color="action" />
                   <span>Thông báo</span>
                 </MenuItem>
-              </CustomNavLink>
+              </CustomNavLink> */}
 
               <CustomNavLink to={"/cart"}>
                 <MenuItem>

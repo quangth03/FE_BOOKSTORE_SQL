@@ -30,6 +30,7 @@ import AdminUpdateCategory from "./pages/admin/CategoryManagement/UpdateCategory
 import AdminUpdateProduct from "./pages/admin/ProductManagement/UpdateProduct";
 import AddCategoryBook from "./pages/admin/ProductManagement/AddCategoriesToProduct";
 import DeleteCategoryBook from "./pages/admin/ProductManagement/DeleteCategoriesToProduct";
+import Dashboard from "./pages/admin/Dashboard/Dashboard";
 
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
@@ -62,6 +63,15 @@ const App = () => {
 
         <Route
           exact
+          path="/admin/dashboard"
+          element={
+            <AdminAuthentication>
+              <Dashboard />
+            </AdminAuthentication>
+          }
+        />
+        <Route
+          exact
           path="/admin/users"
           element={
             <AdminAuthentication>
@@ -69,6 +79,7 @@ const App = () => {
             </AdminAuthentication>
           }
         />
+
         <Route
           exact
           path="/admin/books"
