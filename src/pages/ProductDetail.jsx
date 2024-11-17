@@ -4,6 +4,7 @@ import TabProductDetail from "../components/TabProductDetail";
 import { colors, endpoint } from "../data";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
+import ProductComment from "../components/comment/ProductComment";
 
 const Container = styled.div``;
 
@@ -147,7 +148,7 @@ const ProductDetail = () => {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => {})
+      .then((data) => { })
       .catch((error) => console.error(error));
   };
 
@@ -224,8 +225,13 @@ const ProductDetail = () => {
               </AddContainer>
             )}
             <TabProductDetail book={book} />
+
           </InfoContainer>
         </Wrapper>
+        <div style={{ margin: 20 }}>
+        <ProductComment book_id={id} />
+
+        </div>
       </Container>
     </div>
   );
