@@ -100,9 +100,9 @@ const OrderDetails = ({ orderId }) => {
           </Info>
           <Info>
             <InfoLabel>Trạng thái đơn hàng:</InfoLabel>
-            <InfoContent>{
-              listOrderStatus.find(item => item.id == order.status)?.name
-            }</InfoContent>
+            <InfoContent>
+              {listOrderStatus.find((item) => item.id == order.status)?.name}
+            </InfoContent>
           </Info>
           <Info>
             <InfoLabel>Tổng số tiền thanh toán:</InfoLabel>

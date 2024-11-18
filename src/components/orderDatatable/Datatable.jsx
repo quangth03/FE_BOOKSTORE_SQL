@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { endpoint } from "../../data";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { getColor } from "../../datatablesource";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
@@ -73,17 +74,34 @@ const Datatable = () => {
       headerName: "Trạng thái",
       width: 180,
       renderCell: (params) => {
+        const color = getColor(params.row.status); // Get the color based on the status id
+
         return (
           <div className="cellAction">
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              style={{ width: 180 }}
               value={params.row.status}
               onChange={(event) => handleChange(event, params.row.id)}
+              style={{
+                width: 180,
+                color: color, // Text color for the selected value
+                borderColor: color, // Border color for the select
+              }}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    backgroundColor: color + "20", // Light background for the dropdown
+                  },
+                },
+              }}
             >
               {listOrderStatus.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
+                <MenuItem
+                  key={item.id}
+                  value={item.id}
+                  style={{ color: getColor(item.id) }} // Color for each MenuItem text
+                >
                   {item.name}
                 </MenuItem>
               ))}

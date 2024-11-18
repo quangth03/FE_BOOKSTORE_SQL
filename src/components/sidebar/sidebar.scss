@@ -31,7 +31,7 @@
       padding: 0;
 
       .title {
-        font-size: 10px;
+        font-size: 30px;
         font-weight: bold;
         color: #999;
         margin-top: 15px;
@@ -41,7 +41,7 @@
       li {
         display: flex;
         align-items: center;
-        padding: 5px;
+        padding: 8px;
         cursor: pointer;
 
         &:hover {
@@ -49,12 +49,12 @@
         }
 
         .icon {
-          font-size: 18px;
+          font-size: 25px;
           color: #7451f8;
         }
 
         span{
-            font-size: 13px;
+            font-size: 22px;
             font-weight: 600;
             color: #888;
             margin-left: 10px;

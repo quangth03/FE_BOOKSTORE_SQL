@@ -130,8 +130,8 @@ export const productColumns = [
     width: 100,
     renderCell: (params) => {
       return (
-        <div style={{ color: "red" }}>
-          {params.row.isDelete ? "Đã xóa" : ""}
+        <div style={{ color: params.row.isDelete ? "red" : "green" }}>
+          {params.row.isDelete ? "Đã xóa" : "Khả dụng"}
         </div>
       );
     },
@@ -166,6 +166,23 @@ export const orderColumns = [
     width: 200,
   },
 ];
+export const getColor = (id) => {
+  switch (id) {
+    case 1:
+      return "red"; // Red color for id 1
+    case 2:
+      return "orange"; // Orange color for id 2
+    case 3:
+      return "Magenta"; // Yellow color for id 3
+    case 4:
+      return "blue"; // Blue color for id 4
+    case 5:
+      return "green"; // Green color for id 5
+    default:
+      return "black"; // Default color
+  }
+};
+
 export const listOrderStatus = [
   { id: 1, name: "Chờ xác nhận" },
   { id: 2, name: "Đã xác nhận" },

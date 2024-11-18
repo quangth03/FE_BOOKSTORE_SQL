@@ -106,7 +106,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <Sidebar />
       <div className="dashboard-content">
-        <h1 className="dashboard-title">Dashboard</h1>
+        <h1 className="dashboard-title">Thống kê</h1>
         <div className="dashboard-stats">
           <div className="dashboard-card">
             <PersonOutline className="dashboard-icon user-icon" />

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { colors } from "../data";
 import { useNavigate } from "react-router-dom";
 import { listOrderStatus } from "../datatablesource";
+import { getColor } from "../datatablesource";
 
 const Container = styled.div`
   width: 100%;
@@ -77,6 +78,8 @@ const OrderItem = ({ data }) => {
   const handleNavigate = () => {
     navigate(`/orders/${data.id}`);
   };
+  const statusColor = getColor(data.status);
+
   return (
     <Container>
       <OrderItemId>
@@ -90,7 +93,9 @@ const OrderItem = ({ data }) => {
           </InfoItem>
           <InfoItem>
             <InfoItemLabel>Trạng thái đơn hàng</InfoItemLabel>
-            <InfoItemContent>{listOrderStatus.find(item => item.id == data.status)?.name}</InfoItemContent>
+            <InfoItemContent style={{ color: statusColor }}>
+              {listOrderStatus.find((item) => item.id == data.status)?.name}
+            </InfoItemContent>
           </InfoItem>
           <InfoItem>
             <InfoItemLabel>Ngày đặt hàng</InfoItemLabel>
