@@ -4,8 +4,7 @@ import { mobile } from "../responsive";
 import background from "../assets/dog_background.jpg";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
-import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
+import { useEffect, useState, useRef } from "react";
 import { endpoint } from "../data";
 
 const Container = styled.div`
@@ -31,7 +30,7 @@ const Wrapper = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.2);
-  ${mobile({ width: "75%" })}
+  ${mobile({ width: "75%" })};
   position: relative;
 `;
 
@@ -84,9 +83,14 @@ const Button = styled.div`
   background: -moz-linear-gradient(to left, #ffc3a1, #ff6e31);
   background: linear-gradient(to left, #ffc3a1, #ff6e31);
   cursor: pointer;
+
+  &:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+  }
 `;
 
-const LoginButon = styled.div`
+const ForgotButton = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -106,6 +110,7 @@ const Text = styled.span`
   line-height: 1.5;
   padding-right: 5px;
 `;
+
 const Link = styled.span`
   font-size: 14px;
   color: #ef5f45;
@@ -129,58 +134,47 @@ const Message = styled.div`
   display: none;
 `;
 
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRequestSent, setIsRequestSent] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0); // Thời gian còn lại
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Trạng thái của nút
 
   const errorMessageRef = useRef();
 
-  const handleLogin = () => {
-    if (username.trim() === "") setErrorMessage("Vui lòng nhập Username");
-    else if (password.trim() === "") setErrorMessage("Vui lòng nhập mật khẩu");
-    else {
+  const handleForgotPassword = () => {
+    if (email.trim() === "") {
+      setErrorMessage("Vui lòng nhập email");
+    } else {
       setErrorMessage("");
+      setSuccessMessage("");
+      setIsLoading(true);
+      setIsRequestSent(false);
 
-      const data = {
-        username: username,
-        password: password,
-      };
+      const data = { email };
 
-      fetch(`${endpoint}/auth/signin`, {
+      fetch(`${endpoint}/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
         .then((response) => {
+          setIsLoading(false);
           if (response.status === 200) {
-            return response.json();
+            setSuccessMessage("Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn.");
+            setIsRequestSent(true);
+            setIsButtonDisabled(true); // Vô hiệu hóa nút gửi yêu cầu
+            setRemainingTime(5); // Đặt lại thời gian đếm ngược
           } else {
-            setErrorMessage("Username hoặc mật khẩu không chính xác");
-            return;
+            setErrorMessage("Đã xảy ra lỗi, vui lòng thử lại.");
           }
         })
-        .then((data) => {
-          Cookies.set("authToken", data.authToken);
-
-          fetch(`${endpoint}/user/profile`, {
-            headers: { authorization: Cookies.get("authToken") },
-          })
-            .then((response) => {
-              if (response.status === 200) {
-                return response.json();
-              }
-            })
-            .then((data) => {
-              const isAdmin = data["isAdmin"];
-              if (isAdmin) {
-                Cookies.set("isAdmin", true);
-                window.location = "http://localhost:3000/admin/dashboard";
-              } else window.location = "http://localhost:3000";
-            });
-        })
-        .catch((error) => {
-          setErrorMessage("Username hoặc mật khẩu không chính xác");
+        .catch(() => {
+          setIsLoading(false);
+          setErrorMessage("Đã xảy ra lỗi, vui lòng thử lại.");
         });
     }
   };
@@ -191,39 +185,60 @@ const Login = () => {
     } else errorMessageRef.current.style.display = "none";
   }, [errorMessage]);
 
+  useEffect(() => {
+    // Đếm ngược thời gian sau khi nút bị vô hiệu hóa
+    if (isButtonDisabled && remainingTime > 0) {
+      const timer = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    } else if (remainingTime === 0) {
+      setIsButtonDisabled(false); // Sau khi hết thời gian, bật lại nút
+    }
+  }, [isButtonDisabled, remainingTime]);
+
   return (
     <Container>
       <Wrapper>
         <LogoWrapper>
           <Logo />
         </LogoWrapper>
-        <Title>Đăng nhập</Title>
+        <Title>Quên mật khẩu</Title>
         <Message ref={errorMessageRef}>
           <ErrorOutlineIcon />
           {` ${errorMessage}`}
         </Message>
+        {successMessage && (
+          <Message style={{ color: "#4CAF50", display: "flex" }}>
+            <ErrorOutlineIcon />
+            {` ${successMessage}`}
+          </Message>
+        )}
         <Form>
           <Input
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Email của bạn"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            placeholder="Mật khẩu"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <LoginButon>
-            <Button onClick={handleLogin}>Đăng nhập</Button>
-          </LoginButon>
-          <CustomNavLink to={"/forgotPassword"}>
-              <Link>Quên mật khẩu</Link>
-            </CustomNavLink>
+          
+<ForgotButton>
+  <Button
+    onClick={handleForgotPassword}
+    disabled={isLoading || isButtonDisabled || remainingTime > 0} // disable khi đang đếm ngược
+  >
+    {isLoading
+      ? "Đang gửi yêu cầu..."
+      : remainingTime > 0
+      ? `Vui lòng đợi ${remainingTime}s để gửi lại yêu cầu`
+      : isRequestSent
+      ? "Gửi lại yêu cầu"
+      : "Gửi yêu cầu"}
+  </Button>
+</ForgotButton>
           <TextDiv>
-            <Text>Bạn chưa có tài khoản?</Text>
-            <CustomNavLink to={"/register"}>
-              <Link>Tạo tài khoản</Link>
+            <Text>Quay lại </Text>
+            <CustomNavLink to={"/login"}>
+              <Link>Đăng nhập</Link>
             </CustomNavLink>
           </TextDiv>
         </Form>
@@ -232,4 +247,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

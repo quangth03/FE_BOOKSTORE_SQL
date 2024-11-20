@@ -31,6 +31,7 @@ import AdminUpdateProduct from "./pages/admin/ProductManagement/UpdateProduct";
 import AddCategoryBook from "./pages/admin/ProductManagement/AddCategoriesToProduct";
 import DeleteCategoryBook from "./pages/admin/ProductManagement/DeleteCategoriesToProduct";
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
@@ -60,6 +61,8 @@ const App = () => {
         <Route exact path="/books" Component={ProductsPage} />
         <Route exact path="/books/:id" Component={ProductDetail} />
         <Route exact path="/category/:id" Component={CategiryBooks} />
+        
+        <Route exact path="/forgotPassword" Component={ForgotPassword} />
 
         <Route
           exact
