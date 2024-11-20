@@ -52,7 +52,7 @@ const Slide = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 100%;
+  height: 50%;
 `;
 
 const Slider = () => {

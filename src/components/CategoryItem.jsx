@@ -31,9 +31,19 @@ const CategoryName = styled.span`
 const CategoryItem = ({ item }) => {
   return (
     <Container>
-      <Image src={item.image ? item.image : categoryIcon} />
       <CategoryName>
-        <CustomNavLink to={`category/${item.id}`}>{item.name}</CustomNavLink>
+        <CustomNavLink to={`category/${item.id}`}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Image src={item.image ? item.image : categoryIcon} />
+            <span style={{ marginTop: "15px" }}>{item.name}</span>
+          </div>
+        </CustomNavLink>
       </CategoryName>
     </Container>
   );

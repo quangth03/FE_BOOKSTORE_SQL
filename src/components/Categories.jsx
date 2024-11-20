@@ -6,10 +6,7 @@ import { useEffect, useState } from "react";
 
 const Container = styled.div`
   display: flex;
-  overflow-x: scroll;
-  scrollbar-width: thin;
 
-  scrollbar-color: #999 #eee;
   justify-content: space-between;
   ${mobile({ padding: "0px", flexDirection: "column" })}
 
@@ -44,9 +41,11 @@ const Categories = () => {
 
   return (
     <Container>
-      {categories && categories.length > 0 ? categories.map((item) => (
-        <CategoryItem item={item} key={item.id} />
-      )) : <p></p>}
+      {categories && categories.length > 0 ? (
+        categories.map((item) => <CategoryItem item={item} key={item.id} />)
+      ) : (
+        <p></p>
+      )}
     </Container>
   );
 };
