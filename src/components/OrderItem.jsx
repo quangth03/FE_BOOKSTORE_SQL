@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { colors } from "../data";
+import { colors, endpoint } from "../data";
 import { useNavigate } from "react-router-dom";
 import { listOrderStatus } from "../datatablesource";
 import { getColor } from "../datatablesource";
+import Cookies from "js-cookie";
 
 const Container = styled.div`
   width: 100%;
@@ -53,6 +54,7 @@ const DetailsButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex: 3;
+  flex-direction: column; 
 `;
 
 const DetailsButton = styled.button`
@@ -60,6 +62,7 @@ const DetailsButton = styled.button`
   width: 100px;
   height: 30px;
   border-radius: 20px;
+  margin: 10px 0px;
 
   &:hover {
     background-color: ${colors.color1};
@@ -69,14 +72,32 @@ const DetailsButton = styled.button`
 
 const OrderItem = ({ data }) => {
   const dateObject = new Date(data.createdAt);
-  const dateString = `${dateObject.getDate()}/${
-    dateObject.getMonth() + 1
-  }/${dateObject.getFullYear()}`;
+  const dateString = `${dateObject.getDate()}/${dateObject.getMonth() + 1
+    }/${dateObject.getFullYear()}`;
 
   const navigate = useNavigate();
 
   const handleNavigate = () => {
     navigate(`/orders/${data.id}`);
+  };
+  const handlePay = () => {
+    fetch(`${endpoint}/user/createPay`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: Cookies.get("authToken"),
+      },
+      body: JSON.stringify({
+        id: data.id,  
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) return response.json();
+      })
+      .then((data) => {
+        window.location.href = data.payUrl
+      })
+      .catch((error) => console.error(error));
   };
   const statusColor = getColor(data.status);
 
@@ -109,8 +130,12 @@ const OrderItem = ({ data }) => {
           </InfoItem>
         </OrderItemInfo>
         <DetailsButtonWrapper>
+          {data.status === 1 ? (
+            <DetailsButton onClick={handlePay}>Thanh toán</DetailsButton>
+          ) : null}
           <DetailsButton onClick={handleNavigate}>Xem chi tiết</DetailsButton>
         </DetailsButtonWrapper>
+
       </Wrapper>
     </Container>
   );

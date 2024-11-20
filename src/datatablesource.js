@@ -184,11 +184,12 @@ export const getColor = (id) => {
 };
 
 export const listOrderStatus = [
-  { id: 1, name: "Chờ xác nhận" },
-  { id: 2, name: "Đã xác nhận" },
-  { id: 3, name: "Đang giao hàng" },
-  { id: 4, name: "Đã giao hàng" },
-  { id: 5, name: "Hoàn thành" },
+  { id: 1, name: "Chờ thanh toán" },
+  { id: 2, name: "Chờ xác nhận" },
+  { id: 3, name: "Đã xác nhận" },
+  { id: 4, name: "Đang giao hàng" },
+  { id: 5, name: "Đã giao hàng" },
+  { id: 6, name: "Hoàn thành" },
 ];
 export const categoryColumns = [
   { field: "id", headerName: "ID", width: 70 },
