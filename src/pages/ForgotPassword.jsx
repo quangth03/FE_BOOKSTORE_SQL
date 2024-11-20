@@ -162,13 +162,9 @@ const ForgotPassword = () => {
         .then((response) => {
           setIsLoading(false);
           if (response.status === 200) {
-<<<<<<< HEAD:src/pages/ForgotPassword.jsx
             setSuccessMessage(
-              "Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn."
+              "Chúng tôi đã gửi mật khẩu mới đến email của bạn."
             );
-=======
-            setSuccessMessage("Chúng tôi đã gửi mật khẩu mới đến email của bạn.");
->>>>>>> 229490339930fb5e9620aab206adee18b1c18fc2:src/pages/ForgotPassword.js
             setIsRequestSent(true);
             setIsButtonDisabled(true); 
           } else {
@@ -211,37 +207,19 @@ const ForgotPassword = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-<<<<<<< HEAD:src/pages/ForgotPassword.jsx
 
           <ForgotButton>
             <Button
               onClick={handleForgotPassword}
-              disabled={isLoading || isButtonDisabled || remainingTime > 0} // disable khi đang đếm ngược
+              disabled={isLoading || isButtonDisabled} 
             >
               {isLoading
                 ? "Đang gửi yêu cầu..."
-                : remainingTime > 0
-                ? `Vui lòng đợi ${remainingTime}s để gửi lại yêu cầu`
                 : isRequestSent
                 ? "Gửi lại yêu cầu"
                 : "Gửi yêu cầu"}
             </Button>
           </ForgotButton>
-=======
-          
-<ForgotButton>
-  <Button
-    onClick={handleForgotPassword}
-    disabled={isLoading || isButtonDisabled }
-  >
-    {isLoading
-      ? "Đang gửi yêu cầu..."
-      : isRequestSent
-      ? "Gửi lại yêu cầu"
-      : "Gửi yêu cầu"}
-  </Button>
-</ForgotButton>
->>>>>>> 229490339930fb5e9620aab206adee18b1c18fc2:src/pages/ForgotPassword.js
           <TextDiv>
             <Text>Quay lại </Text>
             <CustomNavLink to={"/login"}>
