@@ -214,7 +214,9 @@ const CartItem = ({ cartItem, updateCart }) => {
           <ProductName>
             <CustomNavLink to={`/books/${cartItem.id}`}>
               {cartItem.title}{" "}
-              <a style={{ color: "red" }}>Số lượng: {cartItem.quantity}</a>
+              <div style={{ color: "red", marginTop: "15px" }}>
+                Số lượng: {cartItem.quantity}
+              </div>
             </CustomNavLink>
           </ProductName>
           <AmountContainer>

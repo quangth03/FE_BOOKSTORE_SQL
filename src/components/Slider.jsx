@@ -1,5 +1,5 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { sliderItems } from "../data";
 import { mobile } from "../responsive";
@@ -33,6 +33,13 @@ export const Arrow = styled.div`
   cursor: pointer;
   opacity: 0.5;
   z-index: 2;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #f97316;
+    opacity: 1;
+    transform: scale(1.1);
+  }
 `;
 
 const Wrapper = styled.div`
@@ -51,12 +58,14 @@ const Slide = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%;
+  width: 90%;
   height: 50%;
+  margin: 0 auto;
 `;
 
 const Slider = () => {
   const [slideIndex, setSlideIndex] = useState(0);
+
   const handleClick = (direction) => {
     if (direction === "left") {
       setSlideIndex(slideIndex > 0 ? slideIndex - 1 : sliderItems.length - 1);
@@ -65,6 +74,17 @@ const Slider = () => {
     }
   };
 
+  // Tự chuyển động slider
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlideIndex((prevIndex) =>
+        prevIndex < sliderItems.length - 1 ? prevIndex + 1 : 0
+      );
+    }, 3500); // Thời gian giữa các slide (3 giây)
+
+    return () => clearInterval(interval); // Dọn dẹp interval khi component unmount
+  }, []);
+
   return (
     <Container>
       <Arrow direction="left" onClick={() => handleClick("left")}>
@@ -72,7 +92,7 @@ const Slider = () => {
       </Arrow>
       <Wrapper slideIndex={slideIndex}>
         {sliderItems.map((item, index) => (
-          <Slide key={`slider-${index}`}>
+          <Slide key={`slider-${index}`} bg={item.bg}>
             <Image src={item} />
           </Slide>
         ))}

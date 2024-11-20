@@ -7,11 +7,12 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
 import { mobile } from "../responsive";
-import icon from "../assets/icon.png";
+import icon from "../assets/img-2.png";
 import CustomNavLink from "./CustomNavLink";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Wrapper = styled.div`

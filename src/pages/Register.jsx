@@ -3,7 +3,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useEffect, useRef, useState } from "react";
 import { mobile } from "../responsive";
-import dogBackground from "../assets/dog_background.jpg";
+import dogBackground from "../assets/bg-login.avif";
 import { endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";

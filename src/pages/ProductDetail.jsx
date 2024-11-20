@@ -5,6 +5,7 @@ import { colors, endpoint } from "../data";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import ProductComment from "../components/comment/ProductComment";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -129,8 +130,6 @@ const ProductDetail = () => {
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
-        console.log("data", data);
-        console.log("book", book);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -139,8 +138,12 @@ const ProductDetail = () => {
     book_id: Number(id),
     quantity: amount,
   };
-
+  const navigate = useNavigate();
   const handleAddToCart = () => {
+    if (Cookies.get("authToken") === undefined) {
+      // If no authToken, redirect to the login page
+      navigate("/login");
+    }
     fetch(`${endpoint}/user/cart`, {
       method: "POST",
       headers: {

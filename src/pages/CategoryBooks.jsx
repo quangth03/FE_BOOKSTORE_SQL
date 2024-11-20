@@ -37,11 +37,11 @@ const CategiryBooks = () => {
   return (
     <div>
       <ProductsList books={books} title={title} />
-      <PageNavigation
+      {/* <PageNavigation
         current={Number(current)}
         total={5}
         urlPattern={`/category/${id}`}
-      />
+      /> */}
     </div>
   );
 };

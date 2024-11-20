@@ -88,6 +88,21 @@ export const CartButton = styled.div`
       0.125rem 0.125rem 1rem rgba(255, 154, 90, 0.5);
   }
 `;
+
+const DiscountBadge = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: red;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 7px 12px;
+  border-radius: 10px;
+  z-index: 3;
+  text-align: center;
+`;
+
 const ProductItem = ({ item }) => {
   const data = {
     book_id: Number(item.id),
@@ -125,6 +140,9 @@ const ProductItem = ({ item }) => {
 
   return (
     <Container>
+      {item.discount > 0 && (
+        <DiscountBadge>{`-${item.discount}%`}</DiscountBadge>
+      )}
       <CustomNavLink to={`/books/${item.id}`} width={"100%"} height={"60%"}>
         <ImageWrapper>
           <Image src={item.image} />

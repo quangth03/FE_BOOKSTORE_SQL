@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { mobile } from "../responsive";
-import background from "../assets/dog_background.jpg";
+import background from "../assets/bg-login.avif";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useEffect, useState, useRef } from "react";
@@ -164,7 +164,9 @@ const ForgotPassword = () => {
         .then((response) => {
           setIsLoading(false);
           if (response.status === 200) {
-            setSuccessMessage("Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn.");
+            setSuccessMessage(
+              "Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn."
+            );
             setIsRequestSent(true);
             setIsButtonDisabled(true); // Vô hiệu hóa nút gửi yêu cầu
             setRemainingTime(5); // Đặt lại thời gian đếm ngược
@@ -220,21 +222,21 @@ const ForgotPassword = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          
-<ForgotButton>
-  <Button
-    onClick={handleForgotPassword}
-    disabled={isLoading || isButtonDisabled || remainingTime > 0} // disable khi đang đếm ngược
-  >
-    {isLoading
-      ? "Đang gửi yêu cầu..."
-      : remainingTime > 0
-      ? `Vui lòng đợi ${remainingTime}s để gửi lại yêu cầu`
-      : isRequestSent
-      ? "Gửi lại yêu cầu"
-      : "Gửi yêu cầu"}
-  </Button>
-</ForgotButton>
+
+          <ForgotButton>
+            <Button
+              onClick={handleForgotPassword}
+              disabled={isLoading || isButtonDisabled || remainingTime > 0} // disable khi đang đếm ngược
+            >
+              {isLoading
+                ? "Đang gửi yêu cầu..."
+                : remainingTime > 0
+                ? `Vui lòng đợi ${remainingTime}s để gửi lại yêu cầu`
+                : isRequestSent
+                ? "Gửi lại yêu cầu"
+                : "Gửi yêu cầu"}
+            </Button>
+          </ForgotButton>
           <TextDiv>
             <Text>Quay lại </Text>
             <CustomNavLink to={"/login"}>
