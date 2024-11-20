@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/icon.png";
+import logo from "../assets/img-2.png";
 import styled from "styled-components";
 
 const IconWrapper = styled.div`

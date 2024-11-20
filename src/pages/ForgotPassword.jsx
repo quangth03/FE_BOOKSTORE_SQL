@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { mobile } from "../responsive";
-import background from "../assets/dog_background.jpg";
+import background from "../assets/bg-login.avif";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useEffect, useState, useRef } from "react";
@@ -140,9 +140,7 @@ const ForgotPassword = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isRequestSent, setIsRequestSent] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(0); // Thời gian còn lại
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Trạng thái của nút
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); 
   const errorMessageRef = useRef();
 
   const handleForgotPassword = () => {
@@ -164,10 +162,11 @@ const ForgotPassword = () => {
         .then((response) => {
           setIsLoading(false);
           if (response.status === 200) {
-            setSuccessMessage("Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn.");
+            setSuccessMessage(
+              "Chúng tôi đã gửi mật khẩu mới đến email của bạn."
+            );
             setIsRequestSent(true);
-            setIsButtonDisabled(true); // Vô hiệu hóa nút gửi yêu cầu
-            setRemainingTime(5); // Đặt lại thời gian đếm ngược
+            setIsButtonDisabled(true); 
           } else {
             setErrorMessage("Đã xảy ra lỗi, vui lòng thử lại.");
           }
@@ -184,18 +183,6 @@ const ForgotPassword = () => {
       errorMessageRef.current.style.display = "flex";
     } else errorMessageRef.current.style.display = "none";
   }, [errorMessage]);
-
-  useEffect(() => {
-    // Đếm ngược thời gian sau khi nút bị vô hiệu hóa
-    if (isButtonDisabled && remainingTime > 0) {
-      const timer = setInterval(() => {
-        setRemainingTime((prevTime) => prevTime - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    } else if (remainingTime === 0) {
-      setIsButtonDisabled(false); // Sau khi hết thời gian, bật lại nút
-    }
-  }, [isButtonDisabled, remainingTime]);
 
   return (
     <Container>
@@ -220,21 +207,19 @@ const ForgotPassword = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          
-<ForgotButton>
-  <Button
-    onClick={handleForgotPassword}
-    disabled={isLoading || isButtonDisabled || remainingTime > 0} // disable khi đang đếm ngược
-  >
-    {isLoading
-      ? "Đang gửi yêu cầu..."
-      : remainingTime > 0
-      ? `Vui lòng đợi ${remainingTime}s để gửi lại yêu cầu`
-      : isRequestSent
-      ? "Gửi lại yêu cầu"
-      : "Gửi yêu cầu"}
-  </Button>
-</ForgotButton>
+
+          <ForgotButton>
+            <Button
+              onClick={handleForgotPassword}
+              disabled={isLoading || isButtonDisabled} 
+            >
+              {isLoading
+                ? "Đang gửi yêu cầu..."
+                : isRequestSent
+                ? "Gửi lại yêu cầu"
+                : "Gửi yêu cầu"}
+            </Button>
+          </ForgotButton>
           <TextDiv>
             <Text>Quay lại </Text>
             <CustomNavLink to={"/login"}>

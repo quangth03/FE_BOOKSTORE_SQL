@@ -33,6 +33,7 @@ import DeleteCategoryBook from "./pages/admin/ProductManagement/DeleteCategories
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 
+import "./App.css";
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
     return <Navigate to={"/login"} replace />;
@@ -61,7 +62,7 @@ const App = () => {
         <Route exact path="/books" Component={ProductsPage} />
         <Route exact path="/books/:id" Component={ProductDetail} />
         <Route exact path="/category/:id" Component={CategiryBooks} />
-        
+
         <Route exact path="/forgotPassword" Component={ForgotPassword} />
 
         <Route

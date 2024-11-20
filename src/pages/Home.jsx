@@ -7,7 +7,7 @@ import { endpoint } from "../data";
 const Home = () => {
   const [books, setPopularProducts] = useState([]);
   useEffect(() => {
-    fetch(`${endpoint}/user/books?limit=8`)
+    fetch(`${endpoint}/user/books?limit=16`)
       .then((response) => response.json())
       .then((data) => {
         setPopularProducts(data);

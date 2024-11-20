@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import CustomNavLink from "./CustomNavLink";
+import { colors, endpoint } from "../data";
+import Cookies from "js-cookie";
+import { useParams } from "react-router-dom";
 
+import { Link } from "react-router-dom";
 const Product = styled.div`
   padding: 10px 20px;
   border: 1px solid #eee;
@@ -58,8 +62,40 @@ const Amount = styled.span`
   justify-content: center;
   margin: 0px 5px;
 `;
+const Button = styled.button`
+  padding: 10px;
+  border: 2px solid ${colors.color2};
+  background-color: white;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 10px;
 
+  &:hover {
+    background-color: ${colors.color2};
+    color: white;
+  }
+`;
 const OrderDetailsItem = ({ book }) => {
+  // const { id } = useParams();
+  const data = {
+    book_id: Number(book.id),
+    quantity: 1,
+  };
+
+  const reBuyHandle = () => {
+    fetch(`${endpoint}/user/cart`, {
+      method: "POST",
+      headers: {
+        authorization: Cookies.get("authToken"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {})
+      .catch((error) => console.error(error));
+    // toast.success("Thêm vào giỏ hàng thành công");
+  };
   return (
     <Product>
       <ProductDetail>
@@ -71,6 +107,9 @@ const OrderDetailsItem = ({ book }) => {
           <Amount>{book.order_detail.quantity}</Amount>
         </AmountContainer>
         <Price>{Number(book.order_detail.total).toLocaleString()} VND</Price>
+        <CustomNavLink to={"/cart"}>
+          <Button onClick={reBuyHandle}>Mua lại</Button>
+        </CustomNavLink>
       </ProductDetail>
     </Product>
   );

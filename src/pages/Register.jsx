@@ -3,7 +3,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useEffect, useRef, useState } from "react";
 import { mobile } from "../responsive";
-import dogBackground from "../assets/dog_background.jpg";
+import dogBackground from "../assets/bg-login.avif";
 import { endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
@@ -97,6 +97,9 @@ const isValidPhone = (phone_number) => {
   return phoneRegex.test(phone_number);
 };
 
+const isValidPassword = (password) => {
+  return password.length >= 8;
+};
 // Component
 const Register = () => {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -126,6 +129,8 @@ const Register = () => {
       );
     else if (address.trim() === "") setErrorMessage("Vui lòng nhập địa chỉ");
     else if (password.trim() === "") setErrorMessage("Vui lòng nhập mật khẩu");
+    else if (!isValidPassword(password))
+      setErrorMessage("Mật khẩu phải có ít nhất 8 ký tự");
     else if (confirmPassword.trim() === "")
       setErrorMessage("Vui lòng xác nhận mật khẩu");
     else if (confirmPassword.trim() !== password.trim())
@@ -148,18 +153,17 @@ const Register = () => {
       })
         .then((response) => {
           if (response.status === 200) {
-            setErrorMessage("Đăng ký thành công");
             setIsSuccess(true);
             toast.success("Đăng ký thành công");
             setTimeout(() => {
               navigate("/login");
-            }, 2000);
+            }, 4000);
             return response.json();
           } else if (response.status === 400) {
             response.json().then((error) => {
               const message = error.message || "Lỗi không xác định";
               if (message.indexOf("Email") !== -1)
-                setErrorMessage("Email đã tồn tại hoặc không hợp lệ");
+                setErrorMessage("Email đã tồn tại");
               else if (message.indexOf("Username") !== -1)
                 setErrorMessage("Username đã tồn tại");
               else setErrorMessage("Đã có lỗi xảy ra. Vui lòng kiểm tra lại");
@@ -196,7 +200,7 @@ const Register = () => {
         </Message>
         <Form>
           <Input
-            placeholder="Username"
+            placeholder="Tên đăng nhập"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />

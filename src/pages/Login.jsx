@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { mobile } from "../responsive";
-import background from "../assets/dog_background.jpg";
+import background from "../assets/bg-login.avif";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useEffect, useRef, useState } from "react";
@@ -218,8 +218,8 @@ const Login = () => {
             <Button onClick={handleLogin}>Đăng nhập</Button>
           </LoginButon>
           <CustomNavLink to={"/forgotPassword"}>
-              <Link>Quên mật khẩu</Link>
-            </CustomNavLink>
+            <Link>Quên mật khẩu</Link>
+          </CustomNavLink>
           <TextDiv>
             <Text>Bạn chưa có tài khoản?</Text>
             <CustomNavLink to={"/register"}>

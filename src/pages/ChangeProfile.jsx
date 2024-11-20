@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../components/ErrorMessage";
 
+// Styled components
 export const Title = styled.span`
   font-weight: bold;
   font-size: 20pt;
@@ -38,6 +39,7 @@ export const Button = styled.div`
   border-radius: 10px;
   cursor: pointer;
 `;
+
 const ChangeProfile = () => {
   const [data, setData] = useState({});
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const ChangeProfile = () => {
   useEffect(() => {}, [errorMessage]);
 
   useEffect(() => {
+    // Fetch profile data
     fetch(`${endpoint}/user/profile`, {
       headers: {
         authorization: Cookies.get("authToken"),
@@ -59,24 +62,46 @@ const ChangeProfile = () => {
       .catch((error) => console.error(error));
   }, []);
 
+  // Hàm validate thông tin người dùng
+  const validateForm = () => {
+    if (data.username.trim() === "") return "Vui lòng nhập username";
+    if (data.full_name.trim() === "") return "Vui lòng nhập họ tên";
+    if (data.email.trim() === "") return "Vui lòng nhập email";
+    if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(data.email)) {
+      return "Email không hợp lệ";
+    }
+    if (data.phone_number.trim() === "") return "Vui lòng nhập số điện thoại";
+    if (!/^\d{10}$/.test(data.phone_number)) {
+      return "Số điện thoại không hợp lệ";
+    }
+    if (data.address.trim() === "") return "Vui lòng nhập địa chỉ";
+    return "";
+  };
+
   const handleUpdate = () => {
-    fetch(`${endpoint}/user/profile`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: Cookies.get("authToken"),
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/profile");
-          return;
-        }
+    const validationError = validateForm();
+    if (validationError) {
+      setErrorMessage(validationError);
+    } else {
+      setErrorMessage(""); // Reset error message
+      fetch(`${endpoint}/user/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: Cookies.get("authToken"),
+        },
+        body: JSON.stringify(data),
       })
-      .catch((error) => {
-        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
-      });
+        .then((response) => {
+          if (response.status === 200) {
+            navigate("/profile");
+            return;
+          }
+        })
+        .catch((error) => {
+          setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
+        });
+    }
   };
 
   return (
@@ -84,9 +109,7 @@ const ChangeProfile = () => {
       <Container>
         <Wrapper>
           <ProfileLeft index={2} />
-          <Right
-            style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
-          >
+          <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
             <Title>Chỉnh sửa thông tin cá nhân</Title>
             <ErrorMessage
               errorMessage={errorMessage}
@@ -97,7 +120,7 @@ const ChangeProfile = () => {
                 <InfoItemLabel>Username</InfoItemLabel>
                 <FormInput
                   placeholder={"Username"}
-                  value={data.username}
+                  value={data.username || ""}
                   onChange={(e) =>
                     setData((prevData) => ({
                       ...prevData,
@@ -110,7 +133,7 @@ const ChangeProfile = () => {
                 <InfoItemLabel>Họ tên</InfoItemLabel>
                 <FormInput
                   placeholder={"Nguyễn Văn A"}
-                  value={data.full_name}
+                  value={data.full_name || ""}
                   onChange={(e) =>
                     setData((prevData) => ({
                       ...prevData,
@@ -120,25 +143,11 @@ const ChangeProfile = () => {
                 />
               </InfoItem>
               <InfoItem>
-                <InfoItemLabel>Email</InfoItemLabel>
-                <FormInput
-                  type="email"
-                  placeholder="nguyenvana@gmail.com"
-                  value={data.email}
-                  onChange={(e) =>
-                    setData((prevData) => ({
-                      ...prevData,
-                      email: e.target.value,
-                    }))
-                  }
-                />
-              </InfoItem>
-              <InfoItem>
                 <InfoItemLabel>Số điện thoại</InfoItemLabel>
                 <FormInput
                   type="tel"
                   placeholder="012345689"
-                  value={data.phone_number}
+                  value={data.phone_number || ""}
                   onChange={(e) =>
                     setData((prevData) => ({
                       ...prevData,
@@ -151,7 +160,7 @@ const ChangeProfile = () => {
                 <InfoItemLabel>Địa chỉ</InfoItemLabel>
                 <FormInput
                   placeholder="1 Võ Văn Ngân, Linh Chiểu, TP Thủ Đức"
-                  value={data.address}
+                  value={data.address || ""}
                   onChange={(e) =>
                     setData((prevData) => ({
                       ...prevData,
