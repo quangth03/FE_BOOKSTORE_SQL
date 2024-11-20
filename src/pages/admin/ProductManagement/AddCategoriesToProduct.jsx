@@ -17,6 +17,8 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
+import { toast, ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const AddCategoriesToProduct = () => {
   const [book, setBook] = useState({});
@@ -66,7 +68,10 @@ const AddCategoriesToProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate(`/admin/book/update/${id}`);
+          toast.success("Thêm thể loại thành công");
+          setTimeout(() => {
+            navigate(`/admin/book/update/${id}`);
+          }, 2000);
           return;
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
@@ -109,6 +114,8 @@ const AddCategoriesToProduct = () => {
           </InfoItem>
 
           <ButtonWrapper>
+            <ToastContainer />
+
             <Button onClick={handleAddCateBook}>Thêm thể loại vào sách</Button>
           </ButtonWrapper>
         </Form>

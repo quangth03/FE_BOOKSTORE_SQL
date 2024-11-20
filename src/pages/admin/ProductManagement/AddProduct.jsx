@@ -6,6 +6,8 @@ import { colors, endpoint } from "../../../data";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import ErrorMessage from "../../../components/ErrorMessage";
+import { toast, ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -58,7 +60,10 @@ const AddProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/admin/books");
+          toast.success("Thêm sản phẩm thành công");
+          setTimeout(() => {
+            navigate("/admin/books");
+          }, 2000);
           return;
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
@@ -72,6 +77,7 @@ const AddProduct = () => {
   return (
     <div className="list">
       <Sidebar />
+      <ToastContainer />
 
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Thêm Sản Phẩm Mới</Title>

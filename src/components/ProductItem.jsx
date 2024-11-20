@@ -4,6 +4,8 @@ import iconCategory from "../assets/icon_category.png";
 import CustomNavLink from "./CustomNavLink";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Container = styled.div`
   margin: 15px;
@@ -112,6 +114,7 @@ const ProductItem = ({ item }) => {
         // Handle success or update cart state as needed
       })
       .catch((error) => console.error(error));
+    toast.success("Thêm vào giỏ hàng thành công");
   };
   // };
 
@@ -142,7 +145,10 @@ const ProductItem = ({ item }) => {
       {Cookies.get("isAdmin") ? (
         ""
       ) : (
-        <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
+        <>
+          <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
+          <ToastContainer />
+        </>
       )}
     </Container>
   );

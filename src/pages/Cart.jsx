@@ -5,6 +5,8 @@ import CustomNavLink from "../components/CustomNavLink";
 import CartItem from "../components/CartItem";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Container = styled.div``;
 
@@ -117,10 +119,10 @@ const Cart = () => {
     for (let cartItem of cartItems) {
       if (cartItem.cart_details.quantity > cartItem.quantity) {
         isValid = false;
-        alert(
+        toast.error(
           `Số lượng của sản phẩm "${cartItem.title}" không đủ để thanh toán.`
         );
-        break;
+        // break;
       }
     }
 
@@ -154,6 +156,7 @@ const Cart = () => {
             <TopButton type="filled" onClick={handleCheckout}>
               THANH TOÁN
             </TopButton>
+            <ToastContainer />
           </Top>
           <Bottom>
             <Info>
