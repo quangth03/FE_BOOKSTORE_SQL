@@ -5,6 +5,8 @@ import { colors, endpoint } from "../data";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import ProductComment from "../components/comment/ProductComment";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Container = styled.div``;
 
@@ -148,8 +150,9 @@ const ProductDetail = () => {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => { })
+      .then((data) => {})
       .catch((error) => console.error(error));
+    toast.success("Thêm vào giỏ hàng thành công");
   };
 
   const handleChange = (e) => {
@@ -222,15 +225,14 @@ const ProductDetail = () => {
                 <AddButton onClick={handleAddToCart}>
                   THÊM VÀO GIỎ HÀNG
                 </AddButton>
+                <ToastContainer />
               </AddContainer>
             )}
             <TabProductDetail book={book} />
-
           </InfoContainer>
         </Wrapper>
         <div style={{ margin: 20 }}>
-        <ProductComment book_id={id} />
-
+          <ProductComment book_id={id} />
         </div>
       </Container>
     </div>

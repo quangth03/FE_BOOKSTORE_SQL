@@ -8,6 +8,8 @@ import { endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Styled Components
 const Container = styled.div`
@@ -148,7 +150,10 @@ const Register = () => {
           if (response.status === 200) {
             setErrorMessage("Đăng ký thành công");
             setIsSuccess(true);
-            navigate("/login");
+            toast.success("Đăng ký thành công");
+            setTimeout(() => {
+              navigate("/login");
+            }, 2000);
             return response.json();
           } else if (response.status === 400) {
             response.json().then((error) => {
@@ -234,6 +239,7 @@ const Register = () => {
             <b>Chính sách quyền riêng tư</b> của chúng tôi
           </Agreement>
           <Button onClick={handleCreateAccount}>Tạo tài khoản</Button>
+          <ToastContainer />
           <AlreadyAccount>
             Bạn đã có tài khoản?{" "}
             <CustomNavLink to={"/login"}>
