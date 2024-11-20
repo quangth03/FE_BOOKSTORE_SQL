@@ -9,6 +9,7 @@ import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
 
+// Styled Components
 const Container = styled.div`
   width: 100vw;
   background: url(${dogBackground});
@@ -65,10 +66,7 @@ const Button = styled.div`
   align-items: center;
   width: 100%;
   height: 50px;
-  background: teal;
   background: -webkit-linear-gradient(to left, #ffc3a1, #ff6e31);
-  background: -o-linear-gradient(to left, #ffc3a1, #ff6e31);
-  background: -moz-linear-gradient(to left, #ffc3a1, #ff6e31);
   background: linear-gradient(to left, #ffc3a1, #ff6e31);
   cursor: pointer;
 `;
@@ -83,12 +81,21 @@ const AlreadyAccount = styled.div`
 const Message = styled.div`
   padding: 5px 0px 0px 0px;
   width: 100%;
-  color: #d06262;
-  display: flex;
-  align-items: center;
   display: none;
+  align-items: center;
 `;
 
+// Helper Function
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+const isValidPhone = (phone_number) => {
+  const phoneRegex = /^(0|\+84)[0-9]{9}$/;
+  return phoneRegex.test(phone_number);
+};
+
+// Component
 const Register = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
@@ -107,8 +114,14 @@ const Register = () => {
     if (userName.trim() === "") setErrorMessage("Vui lòng nhập username");
     else if (fullName.trim() === "") setErrorMessage("Vui lòng nhập họ tên");
     else if (email.trim() === "") setErrorMessage("Vui lòng nhập email");
+    else if (!isValidEmail(email))
+      setErrorMessage("Email không hợp lệ. Vui lòng nhập lại email");
     else if (phone_number.trim() === "")
       setErrorMessage("Vui lòng nhập số điện thoại");
+    else if (!isValidPhone(phone_number))
+      setErrorMessage(
+        "Số điện thoại không hợp lệ. Vui lòng nhập lại số điện thoại"
+      );
     else if (address.trim() === "") setErrorMessage("Vui lòng nhập địa chỉ");
     else if (password.trim() === "") setErrorMessage("Vui lòng nhập mật khẩu");
     else if (confirmPassword.trim() === "")
@@ -139,16 +152,16 @@ const Register = () => {
             return response.json();
           } else if (response.status === 400) {
             response.json().then((error) => {
-              const message = error.message;
-
+              const message = error.message || "Lỗi không xác định";
               if (message.indexOf("Email") !== -1)
-                setErrorMessage("Email đã tồn tại");
+                setErrorMessage("Email đã tồn tại hoặc không hợp lệ");
               else if (message.indexOf("Username") !== -1)
                 setErrorMessage("Username đã tồn tại");
+              else setErrorMessage("Đã có lỗi xảy ra. Vui lòng kiểm tra lại");
             });
           }
         })
-        .catch((error) => {
+        .catch(() => {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         });
     }
@@ -157,7 +170,6 @@ const Register = () => {
   useEffect(() => {
     if (errorMessage !== "") {
       errorMessageRef.current.style.display = "flex";
-
       if (errorMessage.indexOf("thành công") !== -1)
         errorMessageRef.current.style.color = "#37cf60";
       else errorMessageRef.current.style.color = "#d06262";
@@ -170,10 +182,10 @@ const Register = () => {
         <Logo />
         <Title>Tạo tài khoản mới</Title>
         <Message ref={errorMessageRef}>
-          {errorMessage.indexOf("") === -1 ? (
-            <ErrorOutlineIcon />
-          ) : (
+          {errorMessage.includes("thành công") ? (
             <CheckCircleOutlineIcon />
+          ) : (
+            <ErrorOutlineIcon />
           )}
           {` ${errorMessage}`}
         </Message>

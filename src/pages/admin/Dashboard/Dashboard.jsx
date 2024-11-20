@@ -39,6 +39,7 @@ const Dashboard = () => {
     orders: 0,
     books: 0,
     totalRevenue: 0,
+    topBook: [],
   });
   const [revenueData, setRevenueData] = useState([]); // Thêm state cho doanh thu
 
@@ -57,7 +58,10 @@ const Dashboard = () => {
         }
 
         const data = await response.json();
-        setStats(data);
+        setStats({
+          ...data,
+          topBook: data.topBook || [],
+        });
         setRevenueData(data.revenueByMonth || []); // Lưu dữ liệu doanh thu
       } catch (error) {
         console.error("Có lỗi khi lấy dữ liệu:", error);
@@ -67,13 +71,15 @@ const Dashboard = () => {
     fetchData();
   }, []); // Chạy 1 lần khi component mount
 
-  // Chuẩn bị dữ liệu cho biểu đồ
+  // Chuẩn bị dữ liệu cho biểu đồ doanh thu
   const chartData = {
-    labels: revenueData.map((item) => item.month), // Gắn nhãn theo tháng
+    labels: revenueData.length
+      ? revenueData.map((item) => item.month)
+      : ["Không có dữ liệu"],
     datasets: [
       {
         label: "Doanh thu (VNĐ)",
-        data: revenueData.map((item) => item.total), // Dữ liệu doanh thu
+        data: revenueData.length ? revenueData.map((item) => item.total) : [0],
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
@@ -97,6 +103,53 @@ const Dashboard = () => {
         text: "Doanh thu theo từng tháng",
         font: {
           size: 18,
+        },
+      },
+    },
+  };
+
+  // Biểu đồ sách bán chạy nhất
+  const topBooksChartData = {
+    labels: stats.topBook.slice(0, 5).map((book) => book.title), // Lấy 5 sách bán chạy nhất
+    datasets: [
+      {
+        label: "Số lượng bán",
+        data: stats.topBook.slice(0, 5).map((book) => book.totalSold),
+        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const topBooksChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 16,
+          },
+        },
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Top 5 sách bán chạy nhất",
+        font: {
+          size: 18,
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          maxRotation: 0,
+          minRotation: 0,
+          autoSkip: false, // Tắt tính năng tự động bỏ qua tên sách
+        },
+        grid: {
+          display: false,
         },
       },
     },
@@ -147,9 +200,13 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Thêm biểu đồ doanh thu */}
+        {/* Biểu đồ doanh thu */}
         <div className="dashboard-chart">
           <Bar data={chartData} options={chartOptions} />
+        </div>
+        {/* Biểu đồ sách bán chạy nhất */}
+        <div className="dashboard-card">
+          <Bar data={topBooksChartData} options={topBooksChartOptions} />
         </div>
       </div>
     </div>
