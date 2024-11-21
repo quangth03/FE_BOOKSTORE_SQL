@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { mobile } from "../responsive";
-import background from "../assets/bg-login.avif";
+import background from "../assets/background.jpg";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useEffect, useState, useRef } from "react";

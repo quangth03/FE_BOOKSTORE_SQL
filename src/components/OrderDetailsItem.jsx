@@ -3,9 +3,9 @@ import styled from "styled-components";
 import CustomNavLink from "./CustomNavLink";
 import { colors, endpoint } from "../data";
 import Cookies from "js-cookie";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { Link } from "react-router-dom";
+
 const Product = styled.div`
   padding: 10px 20px;
   border: 1px solid #eee;
@@ -77,6 +77,7 @@ const Button = styled.button`
 `;
 const OrderDetailsItem = ({ book }) => {
   // const { id } = useParams();
+  const navigate = useNavigate();
   const data = {
     book_id: Number(book.id),
     quantity: 1,
@@ -96,6 +97,11 @@ const OrderDetailsItem = ({ book }) => {
       .catch((error) => console.error(error));
     // toast.success("Thêm vào giỏ hàng thành công");
   };
+  const handleReBuyAndNavigate = async () => {
+    reBuyHandle(); // Thực hiện hàm
+    setTimeout(() => navigate("/cart"), 250);
+  };
+  
   return (
     <Product>
       <ProductDetail>
@@ -107,9 +113,13 @@ const OrderDetailsItem = ({ book }) => {
           <Amount>{book.order_detail.quantity}</Amount>
         </AmountContainer>
         <Price>{Number(book.order_detail.total).toLocaleString()} VND</Price>
-        <CustomNavLink to={"/cart"}>
-          <Button onClick={reBuyHandle}>Mua lại</Button>
-        </CustomNavLink>
+        <Button
+      onClick={() => {
+        handleReBuyAndNavigate();
+      }}
+    >
+      Mua lại
+    </Button>
       </ProductDetail>
     </Product>
   );
