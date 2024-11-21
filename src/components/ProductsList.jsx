@@ -5,7 +5,7 @@ import CustomNavLink from "./CustomNavLink";
 
 const Container = styled.div`
   width: 100%;
-  padding: 20px 40px;
+  padding: 0px 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -22,7 +22,7 @@ const Banner = styled.div`
   text-transform: capitalize;
 
   width: 100%;
-  height: 150px;
+  height: 100px;
   color: ${colors.color1};
 `;
 

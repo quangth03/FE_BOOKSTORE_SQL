@@ -18,7 +18,7 @@ const ProductsPage = () => {
   return (
     <>
       <ProductsList books={books} title="Tất cả sản phẩm" />
-      <PageNavigation current={Number(current)} total={5} urlPattern="/books" />
+      <PageNavigation current={Number(current)} total={100} urlPattern="/books" />
     </>
   );
 };
