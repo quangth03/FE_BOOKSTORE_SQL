@@ -4,7 +4,7 @@ import { colors, endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import CartItem from "../components/CartItem";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -137,7 +137,7 @@ const Cart = () => {
           if (response.status === 200) return response.json();
         })
         .then((data) => {
-          navigate("/payment-successful", { state: data });
+          window.location.href = data.payUrl
         })
         .catch((error) => console.error(error));
     }
@@ -163,12 +163,12 @@ const Cart = () => {
               <Products>
                 {cartItems
                   ? cartItems.map((cartItem, index) => (
-                      <CartItem
-                        cartItem={cartItem}
-                        key={`cart-item-${index}`}
-                        updateCart={updateCart}
-                      />
-                    ))
+                    <CartItem
+                      cartItem={cartItem}
+                      key={`cart-item-${index}`}
+                      updateCart={updateCart}
+                    />
+                  ))
                   : ""}
               </Products>
             </Info>
