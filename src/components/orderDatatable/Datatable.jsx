@@ -43,7 +43,7 @@ const Datatable = () => {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {})
+      .then((data) => { })
       .catch((error) => console.error(error));
     setData(tempData);
   };
@@ -96,15 +96,24 @@ const Datatable = () => {
                 },
               }}
             >
-              {listOrderStatus.map((item) => (
+
+              {params.row.status == 1 ?
                 <MenuItem
-                  key={item.id}
-                  value={item.id}
-                  style={{ color: getColor(item.id) }} // Color for each MenuItem text
+                  key={1}
+                  value={1}
+                  style={{ color: getColor(1) }}
                 >
-                  {item.name}
-                </MenuItem>
-              ))}
+                  Chưa Thanh toán
+                </MenuItem> :
+                listOrderStatus.slice(1).map((item) => (
+                  <MenuItem
+                    key={item.id}
+                    value={item.id}
+                    style={{ color: getColor(item.id) }}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
             </Select>
           </div>
         );

@@ -81,23 +81,7 @@ const OrderItem = ({ data }) => {
     navigate(`/orders/${data.id}`);
   };
   const handlePay = () => {
-    fetch(`${endpoint}/user/createPay`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: Cookies.get("authToken"),
-      },
-      body: JSON.stringify({
-        id: data.id,  
-      }),
-    })
-      .then((response) => {
-        if (response.status === 200) return response.json();
-      })
-      .then((data) => {
-        window.location.href = data.payUrl
-      })
-      .catch((error) => console.error(error));
+    window.location.href = data.pay_url
   };
   const statusColor = getColor(data.status);
 
