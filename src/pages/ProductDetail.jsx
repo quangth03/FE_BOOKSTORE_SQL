@@ -8,6 +8,7 @@ import ProductComment from "../components/comment/ProductComment";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Products from "../components/ProductsList";
 
 const Container = styled.div``;
 
@@ -126,6 +127,7 @@ const AddButton = styled.button`
 const ProductDetail = () => {
   const [amount, setAmount] = useState(1);
   const [book, setBook] = useState({});
+  const [books, setBooks] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -133,6 +135,13 @@ const ProductDetail = () => {
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
+      })
+      .catch((error) => console.error(error));
+
+      fetch(`${endpoint}/user/arrr-books/id/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setBooks(data);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -240,6 +249,7 @@ const ProductDetail = () => {
         <div style={{ margin: 20 }}>
           <ProductComment book_id={id} />
         </div>
+        {books.length == 0 ? <></> : <Products books={books} title="Các sản phẩm liên quan"></Products>}
       </Container>
     </div>
   );
