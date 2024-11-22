@@ -35,7 +35,7 @@ export default function Partner() {
 
   const productTemplate = (product) => {
     return (
-      <div className="p-7 text-center">
+      <div className="p-4 text-center">
         <img
           className="w-7rem h-7rem"
           src={`${product.image}`}

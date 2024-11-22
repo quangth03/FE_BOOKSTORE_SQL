@@ -24,7 +24,10 @@ const UserOrders = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setOrders(data);
+        const sortedOrders = data.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        setOrders(sortedOrders);
       })
       .catch((error) => console.error(error));
   }, []);

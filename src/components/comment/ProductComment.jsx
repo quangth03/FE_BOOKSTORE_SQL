@@ -143,8 +143,7 @@ export default function ProductComment({ book_id }) {
             </form>
           </div>
         ) : (
-          <p style={{ textAlign: "center", color: "red", padding: "20px" }}>
-            Bạn đã gửi đánh giá. Cảm ơn bạn!
+          <p >
           </p>
         )
       ) : (

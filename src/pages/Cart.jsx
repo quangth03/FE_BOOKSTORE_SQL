@@ -100,15 +100,16 @@ const Cart = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setCartItems(data.books);
-        setNumberOfBooks(data.books.length);
+        const sortedBooks = data.books.sort((a, b) => new Date(b.cart_details.createdAt) - new Date(a.cart_details.createdAt));
+  
+        setCartItems(sortedBooks); 
+        setNumberOfBooks(sortedBooks.length); 
         console.log("data", data);
-        console.log("cartItems", cartItems);
-        setTotalAmount(data.total);
+        console.log("cartItems", sortedBooks);
+        setTotalAmount(data.total); 
       })
       .catch((error) => console.error(error));
   };
-
   const updateCart = () => {
     handleGetCart();
   };

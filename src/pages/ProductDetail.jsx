@@ -17,27 +17,29 @@ const Wrapper = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  flex: 1;
+  flex: 4;
   display: flex;
   justify-content: center;
 `;
 
 const Image = styled.img`
   object-fit: cover;
+  width: 400px;
+  height: 550px;
 `;
 
 const InfoContainer = styled.div`
-  flex: 1;
+  flex: 5;
   padding: 0px 50px;
 `;
 
 const Title = styled.h1`
   font-weight: 500;
-  font-size: 75px;
+  font-size: 50px;
 `;
 
 const Author = styled.p`
-  font-size: 40px;
+  font-size: 35px;
   padding: 10px 0px;
 `;
 
@@ -107,11 +109,12 @@ const Amount = styled.input.attrs({ type: "number" })`
 `;
 
 const AddButton = styled.button`
+  margin-left: 30px;
   padding: 10px;
   border: 2px solid ${colors.color2};
   background-color: white;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
   border-radius: 10px;
 
   &:hover {
@@ -193,7 +196,7 @@ const ProductDetail = () => {
           </ImgContainer>
           <InfoContainer>
             <Title>{book.title}</Title>
-            <Author>{book.author}</Author>
+            <Author>Tác giả: {book.author}</Author>
             <Quantity>Số lượng: {book.quantity}</Quantity>
             <HR />
             <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
