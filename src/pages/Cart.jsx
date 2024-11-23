@@ -113,21 +113,13 @@ const Cart = () => {
       .then((response) => response.json())
       .then((data) => {
         const sortedBooks = data.books.sort(
-<<<<<<< HEAD
           (a, b) =>
             new Date(b.cart_details.createdAt) -
             new Date(a.cart_details.createdAt)
-=======
-          (a, b) => new Date(b.cart_details.createdAt) - new Date(a.cart_details.createdAt)
->>>>>>> 96dd3b1d26a54709cf7a76ed2939357d2a3cbab5
         );
 
         setCartItems(sortedBooks);
         setNumberOfBooks(sortedBooks.length);
-<<<<<<< HEAD
-        console.log("cartItems", sortedBooks);
-=======
->>>>>>> 96dd3b1d26a54709cf7a76ed2939357d2a3cbab5
         setTotalAmount(data.total);
       })
       .catch((error) => console.error(error));
@@ -254,7 +246,8 @@ const Cart = () => {
                         value={JSON.stringify(discount)}
                         disabled={isDisabled} // Disable nếu không đủ giá trị đơn hàng
                       >
-                        {discount.description} - {discount.value} {isDisabled && "(Không áp dụng)"}
+                        {discount.description} - {discount.value}{" "}
+                        {isDisabled && "(Không áp dụng)"}
                       </option>
                     );
                   })}
@@ -269,8 +262,11 @@ const Cart = () => {
               <TotalItem type="total">
                 <TotalText>Tổng thanh toán</TotalText>
                 <TotalPrice>
-                  {selectedDiscount && totalAmount >= selectedDiscount.minimumOrderValue
-                    ? Number(totalAmount -  selectedDiscount.value).toLocaleString()
+                  {selectedDiscount &&
+                  totalAmount >= selectedDiscount.minimumOrderValue
+                    ? Number(
+                        totalAmount - selectedDiscount.value
+                      ).toLocaleString()
                     : Number(totalAmount).toLocaleString()}{" "}
                   VND
                 </TotalPrice>
