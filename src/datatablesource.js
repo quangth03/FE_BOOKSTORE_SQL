@@ -239,3 +239,37 @@ export const categoryColumns = [
   //   },
   // },
 ];
+
+export const discountColumns = [
+  { field: "id", headerName: "ID", width: 70 },
+  {
+    field: "value",
+    headerName: "Giá trị",
+    width: 150,
+  },
+  {
+    field: "description",
+    headerName: "Mô tả",
+    width: 400,
+  },
+  {
+    field: "minimumOrderValue",
+    headerName: "Đơn hàng tối thiểu",
+    width: 200,
+  },
+  {
+    field: "createdAt",
+    headerName: "Ngày tạo",
+    width: 200,
+  },
+  {
+    field: "updatedAt",
+    headerName: "Ngày cập nhật",
+    width: 200,
+  },
+  {
+    field: "expiredAt",
+    headerName: "Ngày hết hạn",
+    width: 200,
+  },
+];
