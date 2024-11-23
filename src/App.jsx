@@ -32,6 +32,9 @@ import AddCategoryBook from "./pages/admin/ProductManagement/AddCategoriesToProd
 import DeleteCategoryBook from "./pages/admin/ProductManagement/DeleteCategoriesToProduct";
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
+import AdminDiscounts from "./pages/admin/DiscountManagement/discountList/List";
+import AdminAddDiscount from "./pages/admin/DiscountManagement/AddDiscount";
+import AdminUpdateDiscount from "./pages/admin/DiscountManagement/UpdateDiscount";
 
 import "./App.css";
 import Comment from "./pages/admin/Comment/Comment";
@@ -65,6 +68,34 @@ const App = () => {
         <Route exact path="/category/:id" Component={CategiryBooks} />
 
         <Route exact path="/forgotPassword" Component={ForgotPassword} />
+
+        <Route
+          exact
+          path="/admin/discounts"
+          element={
+            <AdminAuthentication>
+              <AdminDiscounts />
+            </AdminAuthentication>
+          }
+        />
+        <Route
+          exact
+          path="/admin/discount/add"
+          element={
+            <AdminAuthentication>
+              <AdminAddDiscount />
+            </AdminAuthentication>
+          }
+        />
+        <Route
+          exact
+          path="/admin/discount/update/:id"
+          element={
+            <AdminAuthentication>
+              <AdminUpdateDiscount />
+            </AdminAuthentication>
+          }
+        />
 
         <Route
           exact

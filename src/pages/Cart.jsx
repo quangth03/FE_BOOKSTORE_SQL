@@ -4,7 +4,7 @@ import { colors, endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import CartItem from "../components/CartItem";
 import Cookies from "js-cookie";
-import { useNavigate, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -73,6 +73,7 @@ const TotalTitle = styled.h1`
 const TotalItem = styled.div`
   margin: 30px 0px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   font-weight: ${(props) => props.type === "total" && "500"};
   font-size: ${(props) => props.type === "total" && "25px"};
@@ -82,14 +83,25 @@ const TotalText = styled.span``;
 
 const TotalPrice = styled.span``;
 
+const DiscountSelect = styled.select`
+  width: 70%;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+`;
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [numberOfBooks, setNumberOfBooks] = useState(0);
+  const [discounts, setDiscounts] = useState([]);
+  const [selectedDiscount, setSelectedDiscount] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     handleGetCart();
+    handleGetDiscounts();
   }, []);
 
   const handleGetCart = () => {
@@ -101,18 +113,43 @@ const Cart = () => {
       .then((response) => response.json())
       .then((data) => {
         const sortedBooks = data.books.sort(
+<<<<<<< HEAD
           (a, b) =>
             new Date(b.cart_details.createdAt) -
             new Date(a.cart_details.createdAt)
+=======
+          (a, b) => new Date(b.cart_details.createdAt) - new Date(a.cart_details.createdAt)
+>>>>>>> 96dd3b1d26a54709cf7a76ed2939357d2a3cbab5
         );
 
         setCartItems(sortedBooks);
         setNumberOfBooks(sortedBooks.length);
+<<<<<<< HEAD
         console.log("cartItems", sortedBooks);
+=======
+>>>>>>> 96dd3b1d26a54709cf7a76ed2939357d2a3cbab5
         setTotalAmount(data.total);
       })
       .catch((error) => console.error(error));
   };
+
+  const handleGetDiscounts = () => {
+    fetch(`${endpoint}/user/discounts/valid`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setDiscounts(data);
+        } else {
+          console.error("Dữ liệu mã giảm giá không hợp lệ");
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
   const updateCart = () => {
     handleGetCart();
   };
@@ -126,7 +163,6 @@ const Cart = () => {
         toast.error(
           `Số lượng của sản phẩm "${cartItem.title}" không đủ để thanh toán.`
         );
-        // break;
       }
     }
 
@@ -144,6 +180,14 @@ const Cart = () => {
           window.location.href = data.payUrl;
         })
         .catch((error) => console.error(error));
+    }
+  };
+
+  const applyDiscount = () => {
+    if (selectedDiscount) {
+      const discountValue = selectedDiscount.value;
+      const discountedTotal = totalAmount - (totalAmount * discountValue) / 100;
+      setTotalAmount(discountedTotal);
     }
   };
 
@@ -188,12 +232,46 @@ const Cart = () => {
                 <TotalText>Phí vận chuyển</TotalText>
                 <TotalPrice>{numberOfBooks === 0 ? 0 : "0"} VND</TotalPrice>
               </TotalItem>
+              <TotalItem>
+                <TotalText>Chọn mã giảm giá</TotalText>
+                <DiscountSelect
+                  onChange={(e) => {
+                    const selectedValue = e.target.value;
+                    // Kiểm tra nếu không phải "null" thì mới parse
+                    if (selectedValue !== "null") {
+                      setSelectedDiscount(JSON.parse(selectedValue));
+                    } else {
+                      setSelectedDiscount(null); // Đặt lại selectedDiscount nếu chọn "Chọn mã giảm giá"
+                    }
+                  }}
+                >
+                  <option value="null">Chọn mã giảm giá</option>
+                  {discounts.map((discount) => {
+                    const isDisabled = totalAmount < discount.minimumOrderValue; // Kiểm tra điều kiện disable
+                    return (
+                      <option
+                        key={discount.id}
+                        value={JSON.stringify(discount)}
+                        disabled={isDisabled} // Disable nếu không đủ giá trị đơn hàng
+                      >
+                        {discount.description} - {discount.value} {isDisabled && "(Không áp dụng)"}
+                      </option>
+                    );
+                  })}
+                </DiscountSelect>
+              </TotalItem>
               <TotalItem type="total">
                 <TotalText>Tổng cộng</TotalText>
                 <TotalPrice>
-                  {Number(
-                    totalAmount + (numberOfBooks === 0 ? 0 : 0)
-                  ).toLocaleString()}{" "}
+                  {Number(totalAmount).toLocaleString()} VND
+                </TotalPrice>
+              </TotalItem>
+              <TotalItem type="total">
+                <TotalText>Tổng thanh toán</TotalText>
+                <TotalPrice>
+                  {selectedDiscount && totalAmount >= selectedDiscount.minimumOrderValue
+                    ? Number(totalAmount -  selectedDiscount.value).toLocaleString()
+                    : Number(totalAmount).toLocaleString()}{" "}
                   VND
                 </TotalPrice>
               </TotalItem>
@@ -205,4 +283,5 @@ const Cart = () => {
     </div>
   );
 };
+
 export default Cart;

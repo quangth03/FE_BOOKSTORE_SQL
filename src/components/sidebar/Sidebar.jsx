@@ -1,5 +1,6 @@
 import "./sidebar.scss";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
@@ -30,6 +31,12 @@ const Sidebar = () => {
               <StoreIcon className="icon" />
               <span>Sản phẩm</span>
             </li>
+            <Link to="/admin/discounts" style={{ textDecoration: "none" }}>
+            <li>
+              <LocalOfferIcon className="icon" />
+              <span>Giảm giá</span>
+            </li>
+          </Link>
           </Link>
           <Link to="/admin/order/all" style={{ textDecoration: "none" }}>
             <li>

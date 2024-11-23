@@ -239,6 +239,7 @@ export const categoryColumns = [
   //   },
   // },
 ];
+<<<<<<< HEAD
 export const commentColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {
@@ -264,6 +265,25 @@ export const commentColumns = [
       const rate = parseInt(params.row.rate);
       return <div className="cellWithImg">{"⭐".repeat(rate)}</div>;
     },
+=======
+
+export const discountColumns = [
+  { field: "id", headerName: "ID", width: 70 },
+  {
+    field: "value",
+    headerName: "Giá trị",
+    width: 150,
+  },
+  {
+    field: "description",
+    headerName: "Mô tả",
+    width: 400,
+  },
+  {
+    field: "minimumOrderValue",
+    headerName: "Đơn hàng tối thiểu",
+    width: 200,
+>>>>>>> 96dd3b1d26a54709cf7a76ed2939357d2a3cbab5
   },
   {
     field: "createdAt",
@@ -275,4 +295,12 @@ export const commentColumns = [
     headerName: "Ngày cập nhật",
     width: 200,
   },
+<<<<<<< HEAD
+=======
+  {
+    field: "expiredAt",
+    headerName: "Ngày hết hạn",
+    width: 200,
+  },
+>>>>>>> 96dd3b1d26a54709cf7a76ed2939357d2a3cbab5
 ];
