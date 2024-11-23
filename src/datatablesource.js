@@ -239,3 +239,40 @@ export const categoryColumns = [
   //   },
   // },
 ];
+export const commentColumns = [
+  { field: "id", headerName: "ID", width: 70 },
+  {
+    field: "user_id",
+    headerName: "ID người dùng",
+    width: 200,
+  },
+  {
+    field: "book_id",
+    headerName: "ID sản phẩm",
+    width: 200,
+  },
+  {
+    field: "value",
+    headerName: "Nội dung",
+    width: 300,
+  },
+  {
+    field: "rate",
+    headerName: "Đánh giá",
+    width: 200,
+    renderCell: (params) => {
+      const rate = parseInt(params.row.rate);
+      return <div className="cellWithImg">{"⭐".repeat(rate)}</div>;
+    },
+  },
+  {
+    field: "createdAt",
+    headerName: "Ngày tạo",
+    width: 200,
+  },
+  {
+    field: "updatedAt",
+    headerName: "Ngày cập nhật",
+    width: 200,
+  },
+];

@@ -77,6 +77,28 @@ export default function ProductComment({ book_id }) {
       })
       .catch((error) => console.error("Lỗi khi gửi dữ liệu:", error));
   };
+  const handleDelete = (id) => {
+    fetch(`${endpoint}/admin/comment/${id}`, {
+      method: "DELETE", // Gửi yêu cầu DELETE
+      headers: {
+        "Content-Type": "application/json",
+        authorization: Cookies.get("authToken"), // Gửi token xác thực
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete the comment");
+        }
+        return response.json();
+      })
+      .then(() => {
+        // Loại bỏ bình luận khỏi danh sách reviews
+        setReviews((prevReviews) =>
+          prevReviews.filter((review) => review.id !== id)
+        );
+      })
+      .catch((error) => console.error("Lỗi khi xóa bình luận:", error));
+  };
 
   return (
     <div>
@@ -143,8 +165,7 @@ export default function ProductComment({ book_id }) {
             </form>
           </div>
         ) : (
-          <p >
-          </p>
+          <p></p>
         )
       ) : (
         <p></p>
@@ -171,27 +192,52 @@ export default function ProductComment({ book_id }) {
                 padding: "20px",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <h3 style={{ fontSize: "20px" }}>{item.user.full_name}</h3>
-              <p style={{ color: "gray", padding: "5px 0px" }}>
-                {moment(item.createdAt).format("DD-MM-YYYY")}
-              </p>
               <div>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    style={{
-                      fontSize: "24px",
-                      color: star <= item.rate ? "gold" : "gray",
-                    }}
-                  >
-                    ★
-                  </span>
-                ))}
+                <h3 style={{ fontSize: "20px" }}>{item.user.full_name}</h3>
+                <p style={{ color: "gray", padding: "5px 0px" }}>
+                  {moment(item.createdAt).format("DD-MM-YYYY")}
+                </p>
+                <div>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <>
+                      <span
+                        key={star}
+                        style={{
+                          fontSize: "24px",
+                          color: star <= item.rate ? "gold" : "gray",
+                        }}
+                      >
+                        ★
+                      </span>
+                    </>
+                  ))}
+                </div>
+                <div>
+                  <p style={{ marginLeft: "15px" }}>{item.value}</p>
+                </div>
               </div>
               <div>
-                <p style={{ marginLeft: "15px" }}>{item.value}</p>
+                {Cookies.get("isAdmin") ? (
+                  <button
+                    onClick={() => handleDelete(item.id)} // Gọi hàm xóa khi nhấn
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      padding: "10px 25px",
+                      marginTop: "10px",
+                      cursor: "pointer",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    Xóa
+                  </button>
+                ) : null}
               </div>
             </div>
           ))}

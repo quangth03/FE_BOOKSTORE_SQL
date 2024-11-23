@@ -94,9 +94,10 @@ const AmountButton = styled.button`
 `;
 
 const Amount = styled.input.attrs({ type: "number" })`
-  width: 30px;
+  width: 70px;
   height: 30px;
-  border: none;
+  border: 2px solid ${colors.color1};
+  border-radius: 8%;
   text-align: center;
   font-size: 16px;
   margin: 0px 5px;
@@ -138,7 +139,7 @@ const ProductDetail = () => {
       })
       .catch((error) => console.error(error));
 
-      fetch(`${endpoint}/user/arrr-books/id/${id}`)
+    fetch(`${endpoint}/user/arrr-books/id/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setBooks(data);
@@ -173,7 +174,7 @@ const ProductDetail = () => {
   const handleChange = (e) => {
     const newValue = e.target.value;
     const min = 1;
-    const max = 100;
+    const max = book.quantity;
 
     if (newValue === "") {
       setAmount("");
@@ -249,7 +250,11 @@ const ProductDetail = () => {
         <div style={{ margin: 20 }}>
           <ProductComment book_id={id} />
         </div>
-        {books.length == 0 ? <></> : <Products books={books} title="Các sản phẩm liên quan"></Products>}
+        {Cookies.get("isAdmin") || books.length == 0 ? (
+          <></>
+        ) : (
+          <Products books={books} title="Các sản phẩm liên quan"></Products>
+        )}
       </Container>
     </div>
   );

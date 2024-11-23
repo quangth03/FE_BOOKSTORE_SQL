@@ -93,9 +93,10 @@ const AmountButton = styled.button`
 `;
 
 const Amount = styled.input.attrs({ type: "number" })`
-  width: 30px;
+  width: 70px;
   height: 30px;
-  border: none;
+  border: 1px solid ${colors.color2};
+  border-radius: 8%;
   text-align: center;
   font-size: 16px;
   margin: 0px 5px;
@@ -129,7 +130,6 @@ const CartItem = ({ cartItem, updateCart }) => {
     book_id: cartItem.id,
     quantity: 1,
   };
-  console.log("amount: ", amount);
   const handleRequest = (method, data) => {
     fetch(`${endpoint}/user/cart`, {
       method: method,
@@ -160,9 +160,9 @@ const CartItem = ({ cartItem, updateCart }) => {
     }, 100);
   }, [amount]);
 
-  useEffect(() => {
-    setAmount(cartItem.cart_details.quantity);
-  }, [cartItem]);
+  // useEffect(() => {
+  //   setAmount(cartItem.cart_details.quantity);
+  // }, [cartItem]);
 
   const handleDescrease = () => {
     if (amount >= 1) {
@@ -188,15 +188,17 @@ const CartItem = ({ cartItem, updateCart }) => {
   const handleChange = (e) => {
     const newValue = e.target.value;
     const min = 1;
-    const max = 100;
+    const max = cartItem.quantity;
 
     if (newValue === "") {
       setAmount("");
     } else if (parseInt(newValue) < min) {
       setAmount(min);
-    } else if (parseInt(newValue) > max) {
-      setAmount(max);
-    } else {
+    }
+    // else if (parseInt(newValue) > max) {
+    //   setAmount(max);
+    // }
+    else {
       setAmount(newValue);
     }
   };

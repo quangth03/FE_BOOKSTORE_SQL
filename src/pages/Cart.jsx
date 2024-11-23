@@ -100,13 +100,16 @@ const Cart = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const sortedBooks = data.books.sort((a, b) => new Date(b.cart_details.createdAt) - new Date(a.cart_details.createdAt));
-  
-        setCartItems(sortedBooks); 
-        setNumberOfBooks(sortedBooks.length); 
-        console.log("data", data);
+        const sortedBooks = data.books.sort(
+          (a, b) =>
+            new Date(b.cart_details.createdAt) -
+            new Date(a.cart_details.createdAt)
+        );
+
+        setCartItems(sortedBooks);
+        setNumberOfBooks(sortedBooks.length);
         console.log("cartItems", sortedBooks);
-        setTotalAmount(data.total); 
+        setTotalAmount(data.total);
       })
       .catch((error) => console.error(error));
   };
@@ -138,7 +141,7 @@ const Cart = () => {
           if (response.status === 200) return response.json();
         })
         .then((data) => {
-          window.location.href = data.payUrl
+          window.location.href = data.payUrl;
         })
         .catch((error) => console.error(error));
     }
@@ -164,12 +167,12 @@ const Cart = () => {
               <Products>
                 {cartItems
                   ? cartItems.map((cartItem, index) => (
-                    <CartItem
-                      cartItem={cartItem}
-                      key={`cart-item-${index}`}
-                      updateCart={updateCart}
-                    />
-                  ))
+                      <CartItem
+                        cartItem={cartItem}
+                        key={`cart-item-${index}`}
+                        updateCart={updateCart}
+                      />
+                    ))
                   : ""}
               </Products>
             </Info>

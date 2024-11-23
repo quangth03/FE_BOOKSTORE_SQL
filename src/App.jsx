@@ -34,6 +34,7 @@ import Dashboard from "./pages/admin/Dashboard/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 
 import "./App.css";
+import Comment from "./pages/admin/Comment/Comment";
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
     return <Navigate to={"/login"} replace />;
@@ -248,6 +249,15 @@ const App = () => {
             <UserAuthentication>
               <Cart />
             </UserAuthentication>
+          }
+        />
+        <Route
+          exact
+          path="/admin/comments"
+          element={
+            <AdminAuthentication>
+              <Comment />
+            </AdminAuthentication>
           }
         />
       </Routes>

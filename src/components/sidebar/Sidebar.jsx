@@ -5,6 +5,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import { Link } from "react-router-dom";
 import { CategoryOutlined } from "@mui/icons-material";
+import CommentIcon from "@mui/icons-material/Comment";
 
 const Sidebar = () => {
   return (
@@ -40,6 +41,12 @@ const Sidebar = () => {
             <li>
               <CategoryOutlined className="icon" />
               <span>Thể loại</span>
+            </li>
+          </Link>
+          <Link to="/admin/comments" style={{ textDecoration: "none" }}>
+            <li>
+              <CommentIcon className="icon" />
+              <span>Bình luận và Đánh giá</span>
             </li>
           </Link>
         </ul>
