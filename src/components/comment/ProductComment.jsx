@@ -200,7 +200,7 @@ export default function ProductComment({ book_id }) {
               <div>
                 <h3 style={{ fontSize: "20px" }}>{item.user.full_name}</h3>
                 <p style={{ color: "gray", padding: "5px 0px" }}>
-                  {moment(item.createdAt).format("DD-MM-YYYY")}
+                  {moment(item.createdAt).format("HH:mm    DD-MM-YYYY ")}
                 </p>
                 <div>
                   {[1, 2, 3, 4, 5].map((star) => (
