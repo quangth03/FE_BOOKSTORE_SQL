@@ -1,5 +1,8 @@
+import moment from "moment";
+import { formatMoney } from "./utils/table-pagination";
+
 export const userColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "id", headerName: "ID", width: 120 },
   {
     field: "avatar",
     headerName: "Ảnh đại diện",
@@ -58,11 +61,17 @@ export const userColumns = [
     field: "createdAt",
     headerName: "Ngày tạo",
     width: 100,
+    renderCell: (params) => {
+      return moment(params.row.createdAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "updatedAt",
     headerName: "Ngày cập nhật",
     width: 100,
+    renderCell: (params) => {
+      return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
   },
 ];
 
@@ -112,17 +121,26 @@ export const productColumns = [
   {
     field: "publication_date",
     headerName: "Ngày xuất bản",
-    width: 150,
+    width: 120,
+    renderCell: (params) => {
+      return moment(params.row.publication_date).format("DD-MM-YYYY");
+    },
   },
   {
     field: "createdAt",
     headerName: "Ngày tạo",
-    width: 150,
+    width: 100,
+    renderCell: (params) => {
+      return moment(params.row.createdAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "updatedAt",
     headerName: "Ngày cập nhật",
-    width: 150,
+    width: 120,
+    renderCell: (params) => {
+      return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "isDelete",
@@ -139,16 +157,23 @@ export const productColumns = [
 ];
 
 export const orderColumns = [
-  { field: "id", headerName: "ID", width: 200 },
+  { field: "id", headerName: "ID", width: 250 },
   {
     field: "user_id",
     headerName: "ID người mua",
-    width: 200,
+    width: 150,
+    renderCell: (params) => {
+      return params.row.user.full_name
+    },
   },
   {
     field: "total",
     headerName: "Tổng tiền (VNĐ)",
     width: 150,
+
+    renderCell: (params) => {
+      return formatMoney(params.row.total, "")
+    },
   },
   {
     field: "total_quantity",
@@ -158,12 +183,18 @@ export const orderColumns = [
   {
     field: "createdAt",
     headerName: "Ngày tạo",
-    width: 200,
+    width: 100,
+    renderCell: (params) => {
+      return moment(params.row.createdAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "updatedAt",
     headerName: "Ngày cập nhật",
-    width: 200,
+    width: 120,
+    renderCell: (params) => {
+      return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
   },
 ];
 export const getColor = (id) => {
@@ -219,12 +250,18 @@ export const categoryColumns = [
   {
     field: "createdAt",
     headerName: "Ngày tạo",
-    width: 200,
+    width: 100,
+    renderCell: (params) => {
+      return moment(params.row.createdAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "updatedAt",
     headerName: "Ngày cập nhật",
-    width: 200,
+    width: 120,
+    renderCell: (params) => {
+      return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
   },
   // {
   //   field: "isDelete",
@@ -240,26 +277,57 @@ export const categoryColumns = [
   // },
 ];
 export const commentColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "id", headerName: "ID", width: 60 },
   {
     field: "user_id",
-    headerName: "ID người dùng",
-    width: 200,
+    headerName: "Người dùng",
+    width: 150,
+    renderCell: (params) => {
+      return params.row.user.full_name
+    }
   },
   {
-    field: "book_id",
-    headerName: "ID sản phẩm",
-    width: 200,
+    field: "book_img",
+    headerName: "Bìa sách",
+    width: 80,
+    renderCell: (params) => {
+      if (params.row.book.image) {
+        return (
+          <div>
+            <img
+              src={params.row.book.image}
+              alt="Sách"
+              style={{ width: '50px', objectFit: 'cover' }}
+            />
+          </div>
+        );
+      } else {
+        <></>
+      }
+
+    }
+  },
+  {
+    field: "book_mane",
+    headerName: "Tựa sách",
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <div style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}>
+          {params.row.book.title}
+        </div>
+      );
+    }
   },
   {
     field: "value",
     headerName: "Nội dung",
-    width: 300,
+    width: 350,
   },
   {
     field: "rate",
     headerName: "Đánh giá",
-    width: 200,
+    width: 140,
     renderCell: (params) => {
       const rate = parseInt(params.row.rate);
       return <div className="cellWithImg">{"⭐".repeat(rate)}</div>;
@@ -268,12 +336,18 @@ export const commentColumns = [
   {
     field: "createdAt",
     headerName: "Ngày tạo",
-    width: 200,
+    width: 100,
+    renderCell: (params) => {
+      return moment(params.row.createdAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "updatedAt",
     headerName: "Ngày cập nhật",
-    width: 200,
+    width: 120,
+    renderCell: (params) => {
+      return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
   },
 ];
 
@@ -282,7 +356,7 @@ export const discountColumns = [
   {
     field: "value",
     headerName: "Giá trị",
-    width: 150,
+    width: 120,
   },
   {
     field: "description",
@@ -292,21 +366,30 @@ export const discountColumns = [
   {
     field: "minimumOrderValue",
     headerName: "Đơn hàng tối thiểu",
-    width: 200,
+    width: 180,
   },
   {
     field: "createdAt",
     headerName: "Ngày tạo",
-    width: 200,
+    width: 100,
+    renderCell: (params) => {
+      return moment(params.row.createdAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "updatedAt",
     headerName: "Ngày cập nhật",
-    width: 200,
+    width: 120,
+    renderCell: (params) => {
+      return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
   },
   {
     field: "expiredAt",
     headerName: "Ngày hết hạn",
-    width: 200,
+    width: 100,
+    renderCell: (params) => {
+      return moment(params.row.expiredAt).format("DD-MM-YYYY");
+    },
   },
 ];

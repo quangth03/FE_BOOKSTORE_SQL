@@ -27,7 +27,7 @@ const Datatable = () => {
     {
       field: "action",
       headerName: "Lựa chọn",
-      width: 200,
+      width: 100,
       renderCell: (params) => {
         return !params.row.isDelete ? (
           <div className="cellAction">
@@ -76,6 +76,7 @@ const Datatable = () => {
         // columns={commentColumns}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        rowHeight={90}
       />
     </div>
   );

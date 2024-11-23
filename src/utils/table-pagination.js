@@ -10,8 +10,16 @@ const calculateRange = (data, rowsPerPage) => {
 const sliceData = (data, page, rowsPerPage) => {
     return data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 }  
-
+const formatMoney = (amountStr, type = "VNĐ") => {
+    let amount = parseInt(amountStr);
+    if (isNaN(amount)) {
+        return amountStr;
+    }
+    let formattedAmount = amount.toLocaleString();
+    return formattedAmount + " " + type;
+}
 export {
     calculateRange,
-    sliceData
+    sliceData,
+    formatMoney
 }
