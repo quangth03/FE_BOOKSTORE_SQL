@@ -160,10 +160,10 @@ export const orderColumns = [
   { field: "id", headerName: "ID", width: 250 },
   {
     field: "user_id",
-    headerName: "ID người mua",
+    headerName: "Tên người mua",
     width: 150,
     renderCell: (params) => {
-      return params.row.user.full_name
+      return params.row.user.full_name;
     },
   },
   {
@@ -172,7 +172,7 @@ export const orderColumns = [
     width: 150,
 
     renderCell: (params) => {
-      return formatMoney(params.row.total, "")
+      return formatMoney(params.row.total, "");
     },
   },
   {
@@ -283,8 +283,8 @@ export const commentColumns = [
     headerName: "Người dùng",
     width: 150,
     renderCell: (params) => {
-      return params.row.user.full_name
-    }
+      return params.row.user.full_name;
+    },
   },
   {
     field: "book_img",
@@ -297,15 +297,14 @@ export const commentColumns = [
             <img
               src={params.row.book.image}
               alt="Sách"
-              style={{ width: '50px', objectFit: 'cover' }}
+              style={{ width: "50px", objectFit: "cover" }}
             />
           </div>
         );
       } else {
-        <></>
+        <></>;
       }
-
-    }
+    },
   },
   {
     field: "book_mane",
@@ -313,11 +312,11 @@ export const commentColumns = [
     width: 150,
     renderCell: (params) => {
       return (
-        <div style={{ wordWrap: 'break-word', whiteSpace: 'normal' }}>
+        <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
           {params.row.book.title}
         </div>
       );
-    }
+    },
   },
   {
     field: "value",
