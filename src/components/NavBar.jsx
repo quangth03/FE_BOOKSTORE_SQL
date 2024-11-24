@@ -102,8 +102,8 @@ const MenuPopup = styled.div`
 
 const MenuItem = styled.div`
   padding: 6px 20px;
-  background-color: #FFFF99;
-  border-color: #FFFF99;
+  background-color: #ffff99;
+  border-color: #ffff99;
   border-style: solid;
   border-radius: 30px;
   font-size: 14px;
@@ -116,7 +116,7 @@ const MenuItem = styled.div`
 
   &:hover ${MenuPopup} {
     display: block;
-    color: #FFFF33;
+    color: #ffff33;
   }
 `;
 
@@ -204,9 +204,15 @@ const Navbar = () => {
 
               <CustomNavLink to={"/cart"}>
                 <MenuItem>
-                <div style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
-                  <ShoppingCartCheckoutOutlined color="action" />
-                  <span>Giỏ hàng</span>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ShoppingCartCheckoutOutlined color="" />
+                    <span>Giỏ hàng</span>
                   </div>
                 </MenuItem>
               </CustomNavLink>
@@ -216,18 +222,30 @@ const Navbar = () => {
           {isLoggedIn ? (
             <CustomNavLink to={"/profile"}>
               <MenuItem>
-              <div style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
-                <PersonOutlineOutlinedIcon />
-                <span>Tài khoản</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <PersonOutlineOutlinedIcon />
+                  <span>Tài khoản</span>
                 </div>
               </MenuItem>
             </CustomNavLink>
           ) : (
             <MenuItem>
-            <div style={{display: "flex", justifyContent:"center", alignItems:"center"}}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <PersonOutlineOutlinedIcon />
                 <span>Tài khoản</span>
-                </div>
+              </div>
               <MenuPopup>
                 <CustomNavLink to={"/login"}>
                   <MenuButton style={{ backgroundColor: "#153f4f" }}>
