@@ -135,6 +135,7 @@ const ProductDetail = () => {
     fetch(`${endpoint}/user/books/id/${id}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log('bookkkkk = ', data)
         setBook(data);
       })
       .catch((error) => console.error(error));
