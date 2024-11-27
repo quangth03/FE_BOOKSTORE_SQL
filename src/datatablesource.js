@@ -50,14 +50,6 @@ export const userColumns = [
     width: 100,
   },
   {
-    field: "isAdmin",
-    headerName: "Quyền quản trị",
-    width: 120,
-    renderCell: (params) => {
-      return <div>{params.row.isAdmin ? "Quản trị viên" : "Người dùng"}</div>;
-    },
-  },
-  {
     field: "createdAt",
     headerName: "Ngày tạo",
     width: 100,
@@ -71,6 +63,18 @@ export const userColumns = [
     width: 100,
     renderCell: (params) => {
       return moment(params.row.updatedAt).format("DD-MM-YYYY");
+    },
+  },
+  {
+    field: "isDelete",
+    headerName: "Trạng thái",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div style={{ color: params.row.isDelete ? "red" : "green" }}>
+          {params.row.isDelete ? "Đã bị chặn" : "Khả dụng"}
+        </div>
+      );
     },
   },
 ];

@@ -155,14 +155,17 @@ const Login = () => {
         .then((response) => {
           if (response.status === 200) {
             return response.json();
+          } else if (response.status === 403) {
+            throw new Error("Tài khoản của bạn đã bị chặn.");
+          } else if (response.status === 401) {
+            throw new Error("Username hoặc mật khẩu không chính xác.");
           } else {
-            setErrorMessage("Username hoặc mật khẩu không chính xác");
-            return;
+            throw new Error("Đã xảy ra lỗi, vui lòng thử lại.");
           }
         })
         .then((data) => {
           Cookies.set("authToken", data.authToken);
-
+      
           fetch(`${endpoint}/user/profile`, {
             headers: { authorization: Cookies.get("authToken") },
           })
@@ -180,7 +183,7 @@ const Login = () => {
             });
         })
         .catch((error) => {
-          setErrorMessage("Username hoặc mật khẩu không chính xác");
+          setErrorMessage(error.message);
         });
     }
   };
