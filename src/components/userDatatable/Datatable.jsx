@@ -31,6 +31,7 @@ const Datatable = () => {
         columns={userColumns}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        rowHeight={70}
       />
     </div>
   );

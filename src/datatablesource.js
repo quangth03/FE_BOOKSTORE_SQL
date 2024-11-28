@@ -2,27 +2,27 @@ import moment from "moment";
 import { formatMoney } from "./utils/table-pagination";
 
 export const userColumns = [
-  { field: "id", headerName: "ID", width: 120 },
-  {
-    field: "avatar",
-    headerName: "Ảnh đại diện",
-    width: 100,
-    renderCell: (params) => {
-      return (
-        <div className="cellWithImg">
-          <img
-            className="cellImg"
-            src={
-              params.row.avatar === "avatar"
-                ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-                : params.row.avatar
-            }
-            alt="avatar"
-          />
-        </div>
-      );
-    },
-  },
+  { field: "id", headerName: "ID", width: 150 },
+  // {
+  //   field: "avatar",
+  //   headerName: "Ảnh đại diện",
+  //   width: 100,
+  //   renderCell: (params) => {
+  //     return (
+  //       <div className="cellWithImg">
+  //         <img
+  //           className="cellImg"
+  //           src={
+  //             params.row.avatar === "avatar"
+  //               ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+  //               : params.row.avatar
+  //           }
+  //           alt="avatar"
+  //         />
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     field: "username",
     headerName: "Tên người dùng",
@@ -31,7 +31,7 @@ export const userColumns = [
   {
     field: "email",
     headerName: "Địa chỉ email",
-    width: 150,
+    width: 230,
   },
   {
     field: "full_name",
@@ -47,7 +47,14 @@ export const userColumns = [
   {
     field: "address",
     headerName: "Địa chỉ",
-    width: 100,
+    width: 220,
+    renderCell: (params) => {
+      return (
+        <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
+          {params.row.address}
+        </div>
+      );
+    },
   },
   {
     field: "isAdmin",
@@ -79,20 +86,34 @@ export const productColumns = [
   { field: "id", headerName: "ID", width: 50 },
   {
     field: "image",
-    headerName: "Ảnh bìa",
+    headerName: "Bìa sách",
     width: 100,
     renderCell: (params) => {
       return (
-        <div className="cellWithImg">
-          <img className="cellImg" src={params.row.image} alt="image" />
+        // <div className="cellWithImg">
+        //   <img className="cellImg" src={params.row.image} alt="image" />
+        // </div>
+        <div>
+          <img
+            src={params.row.image}
+            alt="Sách"
+            style={{ width: "50px", objectFit: "cover" }}
+          />
         </div>
       );
     },
   },
   {
     field: "title",
-    headerName: "Tiêu đề",
-    width: 200,
+    headerName: "Tựa sách",
+    width: 150,
+    renderCell: (params) => {
+      return (
+        <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
+          {params.row.title}
+        </div>
+      );
+    },
   },
   {
     field: "author",
@@ -278,14 +299,7 @@ export const categoryColumns = [
 ];
 export const commentColumns = [
   { field: "id", headerName: "ID", width: 60 },
-  {
-    field: "user_id",
-    headerName: "Người dùng",
-    width: 150,
-    renderCell: (params) => {
-      return params.row.user.full_name;
-    },
-  },
+
   {
     field: "book_img",
     headerName: "Bìa sách",
@@ -319,9 +333,32 @@ export const commentColumns = [
     },
   },
   {
+    field: "user_id",
+    headerName: "ID Người dùng",
+    width: 150,
+    renderCell: (params) => {
+      return params.row.user.id;
+    },
+  },
+  {
+    field: "name",
+    headerName: "Người dùng",
+    width: 150,
+    renderCell: (params) => {
+      return params.row.user.full_name;
+    },
+  },
+  {
     field: "value",
     headerName: "Nội dung",
     width: 350,
+    renderCell: (params) => {
+      return (
+        <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
+          {params.row.value}
+        </div>
+      );
+    },
   },
   {
     field: "rate",
@@ -334,20 +371,20 @@ export const commentColumns = [
   },
   {
     field: "createdAt",
-    headerName: "Ngày tạo",
-    width: 100,
+    headerName: "Ngày bình luận",
+    width: 150,
     renderCell: (params) => {
-      return moment(params.row.createdAt).format("DD-MM-YYYY");
+      return moment(params.row.createdAt).format("HH:mm DD-MM-YYYY ");
     },
   },
-  {
-    field: "updatedAt",
-    headerName: "Ngày cập nhật",
-    width: 120,
-    renderCell: (params) => {
-      return moment(params.row.updatedAt).format("DD-MM-YYYY");
-    },
-  },
+  // {
+  //   field: "updatedAt",
+  //   headerName: "Ngày cập nhật",
+  //   width: 120,
+  //   renderCell: (params) => {
+  //     return moment(params.row.updatedAt).format("DD-MM-YYYY");
+  //   },
+  // },
 ];
 
 export const discountColumns = [

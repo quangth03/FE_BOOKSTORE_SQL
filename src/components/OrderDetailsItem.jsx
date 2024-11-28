@@ -5,7 +5,6 @@ import { colors, endpoint } from "../data";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-
 const Product = styled.div`
   padding: 10px 20px;
   border: 1px solid #eee;
@@ -101,7 +100,7 @@ const OrderDetailsItem = ({ book }) => {
     reBuyHandle(); // Thực hiện hàm
     setTimeout(() => navigate("/cart"), 250);
   };
-  
+
   return (
     <Product>
       <ProductDetail>
@@ -113,13 +112,17 @@ const OrderDetailsItem = ({ book }) => {
           <Amount>{book.order_detail.quantity}</Amount>
         </AmountContainer>
         <Price>{Number(book.order_detail.total).toLocaleString()} VND</Price>
-        <Button
-      onClick={() => {
-        handleReBuyAndNavigate();
-      }}
-    >
-      Mua lại
-    </Button>
+        {Cookies.get("isAdmin") ? (
+          <></>
+        ) : (
+          <Button
+            onClick={() => {
+              handleReBuyAndNavigate();
+            }}
+          >
+            Mua lại
+          </Button>
+        )}
       </ProductDetail>
     </Product>
   );

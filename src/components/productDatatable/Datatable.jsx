@@ -126,6 +126,7 @@ const Datatable = () => {
         columns={productColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        rowHeight={90}
       />
       <PageNavigation
         current={Number(page)}
