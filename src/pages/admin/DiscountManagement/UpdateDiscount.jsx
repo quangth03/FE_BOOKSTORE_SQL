@@ -75,10 +75,23 @@ const UpdateDiscount = () => {
       return;
     }
 
+    if (isNaN(data.value) || data.value <= 0) {
+      setErrorMessage("Giá trị giảm giá phải lơn hơn 0.");
+      return ;
+    }
+
     if (data.minimumOrderValue <= data.value) {
       setErrorMessage("Đơn hàng tối thiểu phải lớn hơn giá trị giảm giá");
       return;
     }
+    
+    const today = new Date();
+      const expiredDate = new Date(data.expiredAt);
+      if (expiredDate <= today) {
+        setErrorMessage("Ngày hết hạn phải sau ngày hôm nay.");
+        return;
+      }
+
 
     // Gửi yêu cầu cập nhật mã giảm giá
     fetch(`${endpoint}/admin/discounts/${id}`, {

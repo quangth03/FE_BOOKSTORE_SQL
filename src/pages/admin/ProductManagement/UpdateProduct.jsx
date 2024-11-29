@@ -51,6 +51,7 @@ const CategoriesButtonWrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
 `;
+
 const CategoriesButton = styled.button`
   display: block;
   background-color: ${colors.color3};
@@ -63,28 +64,72 @@ const CategoriesButton = styled.button`
 const UpdateProduct = () => {
   const [data, setData] = useState({});
   const navigate = useNavigate();
-
   const { id } = useParams();
-
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {}, [errorMessage]);
-
+  // Load product data on mount
   useEffect(() => {
     fetch(`${endpoint}/admin/books/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setData(data);
+        // Format the date to ensure it's in the correct format
+        const formattedDate = new Date(data.publication_date).toISOString().split("T")[0];
+        setData({ ...data, publication_date: formattedDate });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        setErrorMessage("Không thể tải thông tin sản phẩm.");
+        console.error(error);
+      });
   }, [id]);
 
-  const dateObj = new Date(data.publication_date);
-  const publication_date = `${dateObj.getFullYear()}-${String(
-    dateObj.getMonth() + 1
-  ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`;
+  // Validate the input fields
+  const validateInput = () => {
+    const currentDate = new Date().toISOString().split("T")[0];
+  
+    if (
+      !data.title ||
+      !data.author ||
+      !data.price ||
+      !data.quantity ||
+      !data.image ||
+      !data.description ||
+      !data.publication_date
+    ) {
+      setErrorMessage("Vui lòng điền đầy đủ thông tin.");
+      return false;
+    }
+  
+    if (isNaN(data.quantity) || data.quantity < 0) {
+      setErrorMessage("Số lượng phải là số hơn hoặc bằng 0.");
+      return false;
+    }
+  
+    if (isNaN(data.price) || data.price <= 0) {
+      setErrorMessage("Giá tiền phải là số lớn hơn 0.");
+      return false;
+    }
+  
+    if (isNaN(data.discount) || data.discount < 0 || data.discount >= 100) {
+      setErrorMessage("Khuyến mãi phải là số từ 0 đến dưới 100 (%)");
+      return false;
+    }
+  
+    if (data.publication_date >= currentDate) {
+      setErrorMessage("Ngày xuất bản phải trước ngày hiện tại.");
+      return false;
+    }
+  
+    setErrorMessage(""); // Xóa lỗi nếu tất cả hợp lệ
+    return true;
+  };
 
+  // Handle the update request
   const handleUpdateBook = () => {
+    if (!validateInput()) {
+      return; // Dừng lại nếu có lỗi
+    }
+
+    // Send update request
     fetch(`${endpoint}/admin/books/id/${id}`, {
       method: "PUT",
       headers: {
@@ -95,14 +140,14 @@ const UpdateProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/admin/books");
-          return;
+          navigate("/admin/books"); // Navigate to books page if successful
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
       })
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
+        console.error(error);
       });
   };
 
@@ -117,15 +162,15 @@ const UpdateProduct = () => {
   return (
     <div className="list">
       <Sidebar />
-
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Chỉnh Sửa Thông Tin Sản Phẩm</Title>
         <Form>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <InfoItem>
             <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
             <FormInput
               placeholder="http://"
-              value={data.image}
+              value={data.image || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -138,7 +183,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Tiêu đề</InfoItemLabel>
             <FormInput
               placeholder={"Cuốn sách"}
-              value={data.title}
+              value={data.title || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -151,7 +196,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Tác giả</InfoItemLabel>
             <FormInput
               placeholder={"Nguyễn Văn A"}
-              value={data.author}
+              value={data.author || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -164,7 +209,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Số lượng</InfoItemLabel>
             <FormInput
               placeholder={"10"}
-              value={data.quantity}
+              value={data.quantity || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -177,7 +222,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Giá tiền</InfoItemLabel>
             <FormInput
               placeholder="VNĐ"
-              value={data.price}
+              value={data.price || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -190,7 +235,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Khuyến mãi</InfoItemLabel>
             <FormInput
               placeholder="%"
-              value={data.discount}
+              value={data.discount || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -204,7 +249,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Mô tả</InfoItemLabel>
             <FormInput
               placeholder="Cuốn sách hay"
-              value={data.description}
+              value={data.description || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -217,7 +262,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Ngày xuất bản</InfoItemLabel>
             <FormInput
               type="date"
-              value={publication_date}
+              value={data.publication_date || ""}
               onChange={(e) =>
                 setData((prevData) => ({
                   ...prevData,
@@ -230,7 +275,7 @@ const UpdateProduct = () => {
             <InfoItemLabel>Thể loại</InfoItemLabel>
             <CategoriesInfo>
               {data.categories && data.categories.length > 0
-                ? data.categories.map((item) => <p>- {item.name} </p>)
+                ? data.categories.map((item, index) => <p key={index}>- {item.name} </p>)
                 : ""}
             </CategoriesInfo>
             <CategoriesButtonWrapper>

@@ -53,7 +53,7 @@ const Sidebar = () => {
           <Link to="/admin/comments" style={{ textDecoration: "none" }}>
             <li>
               <CommentIcon className="icon" />
-              <span>Bình luận và Đánh giá</span>
+              <span>Đánh giá, bình luận</span>
             </li>
           </Link>
         </ul>
