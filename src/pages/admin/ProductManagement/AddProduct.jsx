@@ -108,10 +108,12 @@ const AddProduct = () => {
   })
     .then((response) => {
       if (response.status === 200) {
-        toast.success("Thêm sản phẩm thành công");
+        toast.success("Thêm sản phẩm thành công",{
+          autoClose: 3000, 
+        });
         setTimeout(() => {
           navigate("/admin/books");
-        }, 2000);
+        }, 3000);
       } else {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
       }

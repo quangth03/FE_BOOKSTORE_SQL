@@ -4,12 +4,14 @@ import { userColumns } from "../../datatablesource";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { endpoint } from "../../data";
-
-
-
+import { toast, ToastContainer } from "react-toastify";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Trạng thái mở modal
+  const [blockReason, setBlockReason] = useState(""); // Lý do chặn
+  const [userIdToBlock, setUserIdToBlock] = useState(null); // ID người dùng cần chặn
+  const [errorMessage, setErrorMessage] = useState(""); // Lưu thông báo lỗi
 
   useEffect(() => {
     handleGetUsers();
@@ -27,24 +29,61 @@ const Datatable = () => {
       })
       .catch((error) => console.error(error));
   };
+  
+  const handleBlockUser = async () => {
+    if (!blockReason) {
+      setErrorMessage("Vui lòng nhập lý do chặn.");  // Hiển thị thông báo lỗi
+      return;
+    }
 
-  const handleDelete = (id) => {
-    fetch(`${endpoint}/admin/users/${id}`, {
-      method: "DELETE",
+    setErrorMessage("");
+    const response = await fetch(`${endpoint}/admin/blockUserAndSendEmail`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         authorization: Cookies.get("authToken"),
       },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          handleGetUsers();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
+      body: JSON.stringify({
+        userId: userIdToBlock,  // ID người dùng cần chặn
+        blockReason: blockReason,  // Lý do chặn
+      }),
+    });
+  
+    if (response.status === 200) {
+      toast.success("Chặn người dùng thành công",{
+        autoClose: 3000, 
       });
+      handleGetUsers();  // Cập nhật lại danh sách người dùng
+      setIsModalOpen(false);  // Đóng modal sau khi chặn thành công
+      setBlockReason("");  // Reset lý do chặn
+      setErrorMessage("");
+    } else {
+      alert("Đã xảy ra lỗi khi xử lý yêu cầu của bạn.");  // Hiển thị lỗi nếu có
+    }
+    
+   
   };
+
+  // const handleDelete = (id) => {
+  //   fetch(`${endpoint}/admin/users/${id}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: Cookies.get("authToken"),
+  //     },
+  //   })
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         handleGetUsers();
+  //         setIsModalOpen(false); // Đóng modal sau khi chặn thành công
+  //         setBlockReason(""); 
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
+
   const handleRestore = (id) => {
     fetch(`${endpoint}/admin/users/restore/${id}`, {
       method: "PUT",
@@ -57,6 +96,9 @@ const Datatable = () => {
       .then((response) => {
         if (response.status === 200) {
           handleGetUsers();
+          toast.success("Bỏ chặn người dùng thành công",{
+            autoClose: 3000, 
+          });
         }
       })
       .catch((error) => {
@@ -74,7 +116,10 @@ const Datatable = () => {
           <div className="cellAction">
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => {
+                setUserIdToBlock(params.row.id); // Lưu ID người dùng cần chặn
+                setIsModalOpen(true); // Mở modal để nhập lý do
+              }}
             >
               Chặn
             </div>
@@ -95,16 +140,45 @@ const Datatable = () => {
 
   return (
     <div className="datatable">
+    <ToastContainer />
       <div className="datatableTitle">Danh Sách Người Dùng</div>
       <DataGrid
         className="datagrid"
         rows={data}
-        // columns={userColumns.concat(actionColumn)}
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         rowHeight={70}
       />
+
+      {/* Modal (hộp chat) */}
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modalContent">
+            <h3>Nhập lý do chặn:</h3>
+            {errorMessage && (
+              <div style={{ color: "red", marginTop: "5px", fontSize: "14px" }}>
+                {errorMessage}
+              </div>
+            )}
+            <textarea
+              value={blockReason}
+              onChange={(e) => setBlockReason(e.target.value)}
+              placeholder="Nhập lý do chặn..."
+            ></textarea>
+            
+            <button style={{color: "white", backgroundColor:"#d33"}}
+              onClick={() => {
+                handleBlockUser(userIdToBlock); // Gọi hàm chặn với ID người dùng
+              }}
+            >
+              Chặn
+            </button>
+            <button style={{backgroundColor: "#3085d6", color: "white"}}
+            onClick={() => {setIsModalOpen(false);setBlockReason("");setErrorMessage("")}}>Hủy</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

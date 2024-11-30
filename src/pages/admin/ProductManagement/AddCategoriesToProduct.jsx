@@ -68,11 +68,12 @@ const AddCategoriesToProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Thêm thể loại thành công");
+          toast.success("Thêm thể loại thành công",{
+            autoClose: 3000, 
+          });
           setTimeout(() => {
             navigate(`/admin/book/update/${id}`);
-          }, 2000);
-          return;
+          }, 3000);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
@@ -80,7 +81,9 @@ const AddCategoriesToProduct = () => {
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
+      setErrorMessage("");
   };
+
 
   const dataSend = { id: selectedCategories };
 

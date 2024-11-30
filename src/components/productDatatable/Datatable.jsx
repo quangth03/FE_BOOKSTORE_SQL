@@ -7,15 +7,17 @@ import Cookies from "js-cookie";
 import { endpoint } from "../../data";
 import CustomNavLink from "../CustomNavLink";
 import PageNavigation from "../PageNavigation";
+import Modal from "../Modal/Modal";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentDeleteId, setCurrentDeleteId] = useState(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const page = searchParams.get("page");
 
   const handleGetBooks = () => {
-    console.log(page);
     fetch(`${endpoint}/admin/books?page=${page ? Number(page) + 1 : 1}`, {
       headers: {
         authorization: Cookies.get("authToken"),
@@ -28,8 +30,13 @@ const Datatable = () => {
       .catch((error) => console.error(error));
   };
 
-  const handleDelete = (id) => {
-    fetch(`${endpoint}/admin/books/${id}`, {
+  const openDeleteModal = (id) => {
+    setCurrentDeleteId(id);
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    fetch(`${endpoint}/admin/books/${currentDeleteId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -39,11 +46,10 @@ const Datatable = () => {
       .then((response) => {
         if (response.status === 200) {
           handleGetBooks();
+          setIsModalOpen(false);
         }
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => console.error(error));
   };
 
   const handleRestore = (id) => {
@@ -60,14 +66,11 @@ const Datatable = () => {
           handleGetBooks();
         }
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
     handleGetBooks();
-    // eslint-disable-next-line
   }, [page]);
 
   const actionColumn = [
@@ -94,9 +97,9 @@ const Datatable = () => {
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => openDeleteModal(params.row.id)}
             >
-              Xóa
+              Ẩn
             </div>
           </div>
         ) : (
@@ -112,6 +115,7 @@ const Datatable = () => {
       },
     },
   ];
+
   return (
     <div className="datatable">
       <div className="datatableTitle">
@@ -120,6 +124,13 @@ const Datatable = () => {
           Thêm Sản Phẩm Mới
         </Link>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        title="Xác nhận ẩn"
+        message="Bạn có chắc chắn muốn xóa không?"
+        onConfirm={confirmDelete}
+        onCancel={() => setIsModalOpen(false)}
+      />
       <DataGrid
         className="datagrid"
         rows={data}

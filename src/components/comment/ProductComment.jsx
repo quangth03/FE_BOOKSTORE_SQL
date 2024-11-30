@@ -2,14 +2,21 @@ import React, { useState, useEffect } from "react";
 import { endpoint } from "../../data";
 import Cookies from "js-cookie";
 import moment from "moment/moment";
+import Modal from "../Modal/Modal"
+import { toast, ToastContainer } from "react-toastify";
 
 export default function ProductComment({ book_id }) {
   const [commentRole, setCommentRole] = useState(false); // Kiểm tra người dùng có quyền bình luận hay không
   const [rating, setRating] = useState(0); // Đánh giá (từ 1 đến 5)
   const [comment, setComment] = useState(""); // Nội dung bình luận
   const [reviews, setReviews] = useState([]); // Dữ liệu các đánh giá đã có
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentDeleteId, setCurrentDeleteId] = useState(null);
   // Kiểm tra xem người dùng đã bình luận về sách này chưa
+  const openDeleteModal = (id) => {
+    setCurrentDeleteId(id); // Đặt ID hiện tại
+    setIsModalOpen(true);   // Mở modal
+  };;
 
   const getReview = () => {
     if (book_id) {
@@ -92,16 +99,28 @@ export default function ProductComment({ book_id }) {
         return response.json();
       })
       .then(() => {
+        toast.success("Xóa bình luận thành công.",{
+          autoClose: 3000, 
+        });
         // Loại bỏ bình luận khỏi danh sách reviews
         setReviews((prevReviews) =>
           prevReviews.filter((review) => review.id !== id)
         );
+        setIsModalOpen(false);
       })
       .catch((error) => console.error("Lỗi khi xóa bình luận:", error));
   };
 
   return (
+    
     <div>
+    <ToastContainer />
+      <Modal
+        isOpen={isModalOpen}
+        title="Xác nhận xóa"
+        onConfirm={() => handleDelete(currentDeleteId)}
+        onCancel={() => setIsModalOpen(false)}
+      />
       {Cookies.get("authToken") ? (
         commentRole ? (
           <div
@@ -223,8 +242,9 @@ export default function ProductComment({ book_id }) {
               </div>
               <div>
                 {Cookies.get("isAdmin") ? (
+                  <div>
                   <button
-                    onClick={() => handleDelete(item.id)} // Gọi hàm xóa khi nhấn
+                    onClick={() => openDeleteModal(item.id)} // Gọi hàm xóa khi nhấn
                     style={{
                       backgroundColor: "red",
                       color: "white",
@@ -237,6 +257,8 @@ export default function ProductComment({ book_id }) {
                   >
                     Xóa
                   </button>
+
+      </div>
                 ) : null}
               </div>
             </div>

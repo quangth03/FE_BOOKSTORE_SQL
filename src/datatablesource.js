@@ -174,7 +174,7 @@ export const productColumns = [
     renderCell: (params) => {
       return (
         <div style={{ color: params.row.isDelete ? "red" : "green" }}>
-          {params.row.isDelete ? "Đã xóa" : "Khả dụng"}
+          {params.row.isDelete ? "Đã ẩn" : "Khả dụng"}
         </div>
       );
     },
