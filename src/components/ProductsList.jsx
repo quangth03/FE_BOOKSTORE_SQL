@@ -5,16 +5,17 @@ import CustomNavLink from "./CustomNavLink";
 
 const Container = styled.div`
   width: 100%;
-  padding: 0px 40px;
+  // padding: 0px 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  // align-items: center;
+  // border: 1px solid ${colors.color1};
 `;
 
 const Banner = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   font-weight: bold;
@@ -27,44 +28,53 @@ const Banner = styled.div`
 `;
 
 const Wrapper = styled.div`
-  width: 100%;
+  // width: 100%;
   display: flex;
   justify-content: center;
 `;
 
 const AllProductsButton = styled.div`
   display: block;
-  color: white;
-  background-color: ${colors.color1};
-  padding: 10px 40px;
-  border-radius: 20px;
+  color: ${colors.color1};
+  font-size: 20px;
+  // background-color: ${colors.color1};
+  // padding: 10px 40px;
+  // border-radius: 20px;
   cursor: pointer;
 `;
 
 const Products = ({
   books,
-  title = "Sách mới nhất",
+  title,
   hasBanner = true,
   hasButton = false,
+  categorie_id,
 }) => {
   return (
     <>
-      {hasBanner ? <Banner>{title}</Banner> : ""}
+      {hasBanner ? (
+        <Banner>
+          {title}
+
+          {hasButton ? (
+            <Wrapper>
+              <CustomNavLink to={`category/${categorie_id}`}>
+                <AllProductsButton>Xem thêm &gt;&gt; </AllProductsButton>
+              </CustomNavLink>
+            </Wrapper>
+          ) : (
+            ""
+          )}
+        </Banner>
+      ) : (
+        ""
+      )}
 
       <Container>
         {books != null && books.length > 0
           ? books.map((item) => <ProductItem item={item} key={item.id} />)
           : ""}
       </Container>
-      {hasButton ? (
-        <Wrapper>
-          <CustomNavLink to={"/books"}>
-            <AllProductsButton>Xem tất cả</AllProductsButton>
-          </CustomNavLink>
-        </Wrapper>
-      ) : (
-        ""
-      )}
     </>
   );
 };

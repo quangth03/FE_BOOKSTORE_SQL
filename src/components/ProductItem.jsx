@@ -1,38 +1,45 @@
 import styled from "styled-components";
 import { colors, endpoint } from "../data";
-import iconCategory from "../assets/icon_category.png";
 import CustomNavLink from "./CustomNavLink";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { Link } from "react-router-dom";
+import { Tooltip } from "primereact/tooltip";
+
 const Container = styled.div`
-  margin: 15px;
+  margin: 0rem 1rem 3rem 1rem;
   width: 20%;
-  height: 350px;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: ${colors.color2Light};
+  // background-color: ${colors.color2Light};
   position: relative;
   cursor: pointer;
-  border-radius: 20px;
 `;
 
 const ImageWrapper = styled.div`
-  width: 100%;
+  width: auto;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  // background-color: red;
 `;
+
 const Image = styled.img`
-  height: 100%;
-  border-radius: 20px;
+  // height: 100%;
+  // border-radius: 20px;
   z-index: 2;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
+  // padding-top: 10px;
+  height: 16rem;
+  width: 100%;
+  border: 1px solid #d3d3d3;
 `;
 
 const ProductName = styled.div`
@@ -45,9 +52,10 @@ const ProductName = styled.div`
   max-height: 25px;
   overflow: hidden;
 `;
+
 const Price = styled.p`
-  font-weight: 200;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 18px;
   padding: 0px;
   color: red;
 `;
@@ -91,16 +99,17 @@ export const CartButton = styled.div`
 
 const DiscountBadge = styled.div`
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: -15px;
   background-color: red;
   color: white;
   font-size: 15px;
   font-weight: bold;
-  padding: 7px 12px;
-  border-radius: 10px;
+  padding: 6px 10px;
+  // border-radius: 10px;
   z-index: 3;
   text-align: center;
+  border: 1px solid white;
 `;
 
 const ProductItem = ({ item }) => {
@@ -131,7 +140,6 @@ const ProductItem = ({ item }) => {
       .catch((error) => console.error(error));
     toast.success("Thêm vào giỏ hàng thành công");
   };
-  // };
 
   const calculatePrice = (price, discount) => {
     return Math.round(price * (1 - discount / 100));
@@ -140,23 +148,29 @@ const ProductItem = ({ item }) => {
 
   return (
     <Container>
+      <Tooltip target=".link" />
       {item.discount > 0 && (
         <DiscountBadge>{`-${item.discount}%`}</DiscountBadge>
       )}
-      <CustomNavLink to={`/books/${item.id}`} width={"100%"} height={"60%"}>
+      <Link
+        to={`/books/${item.id}`}
+        className="link no-underline text-color"
+        data-pr-tooltip={item.title} // Tooltip cho Link
+        data-pr-position="right"
+      >
         <ImageWrapper>
           <Image src={item.image} />
         </ImageWrapper>
-      </CustomNavLink>
+      </Link>
 
       <CustomNavLink to={`/books/${item.id}`}>
         <ProductName>{item.title}</ProductName>
       </CustomNavLink>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <Price>{Number(sellPrice).toLocaleString()} VND</Price>
+        <Price>{Number(sellPrice).toLocaleString()}đ</Price>
         {item.discount > 0 && (
           <del style={{ fontSize: "18px" }}>
-            {Number(item.price).toLocaleString()} VND
+            {Number(item.price).toLocaleString()}đ
           </del>
         )}
       </div>
@@ -171,5 +185,4 @@ const ProductItem = ({ item }) => {
     </Container>
   );
 };
-
 export default ProductItem;

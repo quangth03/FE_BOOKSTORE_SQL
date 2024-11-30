@@ -135,7 +135,7 @@ const ProductDetail = () => {
     fetch(`${endpoint}/user/books/id/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('bookkkkk = ', data)
+        console.log("bookkkkk = ", data);
         setBook(data);
       })
       .catch((error) => console.error(error));
@@ -195,7 +195,7 @@ const ProductDetail = () => {
 
   return (
     <div>
-      <Container>
+      <Container className="container mx-auto">
         <Wrapper>
           <ImgContainer>
             <Image

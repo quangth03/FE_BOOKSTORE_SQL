@@ -113,10 +113,10 @@
 
 // export default Footer;
 
-import "primeflex/primeflex.css";
-import "primeicons/primeicons.css";
-import "primereact/resources/primereact.min.css";
-import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+// import "primeflex/primeflex.css";
+// import "primeicons/primeicons.css";
+// import "primereact/resources/primereact.min.css";
+// import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import Partner from "./Partner";
@@ -128,7 +128,7 @@ export default function Footer() {
       </div>
 
       <div className="input-email bg-orange-500 ">
-        <div className="container flex justify-content-between align-items-center mx-auto py-5">
+        <div className="container flex justify-content-between align-items-center mx-auto py-3">
           <div className=" justify-content-between align-items-center text-100">
             <h2 className="mb-3">ĐĂNG KÝ NHẬN EMAIL</h2>
             <p style={{ margin: "13px 0" }}>
@@ -155,7 +155,7 @@ export default function Footer() {
 
       <div className="about py-5">
         <div className="container justify-content-between mx-auto grid">
-          <div className="col-6 grid text-600">
+          <div className="col-5 grid text-600">
             <div className="col-4 ">
               <h4 className="text-900">VỀ CÔNG TY</h4>
               <p style={{ margin: "13px 0" }}>Giới thiệu công ty</p>
@@ -183,10 +183,10 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid col-6">
-            <div className="col-4">
+          <div className="grid col-7">
+            <div className="col-4 ">
               <h4>CHẤP NHẬN THANH TOÁN</h4>
-              <div className="flex flex-wrap justify-content-center align-items-center gap-2">
+              <div className="flex flex-wrap  align-items-center gap-1 py-2 mb-2">
                 <img
                   src="https://theme.hstatic.net/200000845405/1001223012/14/footer_logo_payment_1.png?v=354"
                   alt=""
@@ -214,13 +214,15 @@ export default function Footer() {
               </div>
 
               <h4>THANH TOÁN AN TOÀN</h4>
-              <div className="flex flex-wrap justify-content-center align-items-center gap-2">
+              <div className="flex flex-wrap  align-items-center gap-2 py-2">
                 <img
-                  src="https://theme.hstatic.net/200000845405/1001223012/14/footer_logo_payment_7.png?v=354"
+                  style={{ width: "5rem" }}
+                  src="https://cdn0.fahasa.com/media//wysiwyg/Logo-NCC/vnpay_logo.png"
                   alt=""
                 />
                 <img
-                  src="https://theme.hstatic.net/200000845405/1001223012/14/footer_logo_payment_8.png?v=354"
+                  style={{ width: "2rem" }}
+                  src="https://cdn0.fahasa.com/media//wysiwyg/Logo-NCC/momopay.png"
                   alt=""
                 />
                 <img

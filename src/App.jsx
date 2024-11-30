@@ -17,7 +17,7 @@ import Cart from "./pages/Cart";
 import UserOrders from "./pages/UserOrders";
 import OrderDetails from "./pages/OrderDetails";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails/AdminOrderDetails/AdminOrderDetails";
-import CategiryBooks from "./pages/CategoryBooks";
+import CategoryBooks from "./pages/CategoryBooks";
 import Search from "./pages/Search";
 
 import AdminUsers from "./pages/admin/UserManagement/userList/List";
@@ -35,9 +35,15 @@ import ForgotPassword from "./pages/ForgotPassword";
 import AdminDiscounts from "./pages/admin/DiscountManagement/discountList/List";
 import AdminAddDiscount from "./pages/admin/DiscountManagement/AddDiscount";
 import AdminUpdateDiscount from "./pages/admin/DiscountManagement/UpdateDiscount";
+import { ScrollTop } from "primereact/scrolltop";
 
 import "./App.css";
 import Comment from "./pages/admin/Comment/Comment";
+import "primeflex/primeflex.css";
+import "primeicons/primeicons.css";
+import "primereact/resources/primereact.min.css";
+import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
     return <Navigate to={"/login"} replace />;
@@ -57,6 +63,7 @@ const AdminAuthentication = ({ children }) => {
 const App = () => {
   return (
     <>
+      <ScrollTop />
       <NavBar />
       <Routes>
         <Route exact path="/" Component={Home} />
@@ -65,7 +72,7 @@ const App = () => {
         <Route exact path="/search/:title" Component={Search} />
         <Route exact path="/books" Component={ProductsPage} />
         <Route exact path="/books/:id" Component={ProductDetail} />
-        <Route exact path="/category/:id" Component={CategiryBooks} />
+        <Route exact path="/category/:id" Component={CategoryBooks} />
 
         <Route exact path="/forgotPassword" Component={ForgotPassword} />
 

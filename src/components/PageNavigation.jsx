@@ -32,7 +32,7 @@ const PageNumberItem = styled.div`
 const PageNavigation = ({
   current = 0,
   total = 10,
-  urlPattern = "/books",
+  urlPattern,
   padding = "0px 75px",
 }) => {
   var min = current - 2 >= 0 ? current - 2 : 0;

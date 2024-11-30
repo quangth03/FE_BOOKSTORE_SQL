@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { endpoint } from "../data";
-import PageNavigation from "../components/PageNavigation";
+// import PageNavigation from "../components/PageNavigation";
 import ProductsList from "../components/ProductsList";
 
 const CategiryBooks = () => {
@@ -35,7 +35,7 @@ const CategiryBooks = () => {
       .catch((error) => console.error(error));
   }, [current]);
   return (
-    <div>
+    <div className="container mx-auto">
       <ProductsList books={books} title={title} />
       {/* <PageNavigation
         current={Number(current)}
