@@ -6,6 +6,7 @@ import { colors, endpoint } from "../../../data";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -140,7 +141,12 @@ const UpdateProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/admin/books"); // Navigate to books page if successful
+          toast.success("Cập nhật sản phẩm thành công",{
+            autoClose: 3000, 
+          });
+          setTimeout(() => {
+            navigate("/admin/books");
+          }, 3000);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
@@ -162,6 +168,7 @@ const UpdateProduct = () => {
   return (
     <div className="list">
       <Sidebar />
+      <ToastContainer />
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Chỉnh Sửa Thông Tin Sản Phẩm</Title>
         <Form>

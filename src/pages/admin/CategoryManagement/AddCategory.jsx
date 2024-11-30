@@ -6,6 +6,7 @@ import { colors, endpoint } from "../../../data";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
+import { toast, ToastContainer } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -48,6 +49,12 @@ const AddCategory = () => {
   useEffect(() => {}, [errorMessage]);
 
   const handleCreateCategory = () => {
+
+    if (!data.image || !data.name || !data.description) {
+      setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
     fetch(`${endpoint}/admin/categories/`, {
       method: "POST",
       headers: {
@@ -58,18 +65,24 @@ const AddCategory = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/admin/categories");
-          return;
+          toast.success("Thêm thể loại thành công",{
+            autoClose: 3000, 
+          });
+          setTimeout(() => {
+            navigate("/admin/categories");
+          }, 3000);
         } else setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       })
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
+      setErrorMessage("");
   };
 
   return (
     <div className="list">
       <Sidebar />
+      <ToastContainer />
 
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Thêm Thể loại Mới</Title>

@@ -6,6 +6,7 @@ import { colors, endpoint } from "../../../data";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
+import { toast, ToastContainer } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -85,7 +86,12 @@ const AddDiscount = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/admin/discounts"); // Điều hướng tới danh sách mã giảm giá
+          toast.success("Thêm mã giảm giá thành công",{
+            autoClose: 3000, 
+          });
+          setTimeout(() => {
+            navigate("/admin/discounts");
+          }, 3000);
           return;
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
@@ -94,11 +100,13 @@ const AddDiscount = () => {
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
+      setErrorMessage("");
   };
 
   return (
     <div className="list">
       <Sidebar />
+      <ToastContainer />
 
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Thêm Mã Giảm Giá Mới</Title>
