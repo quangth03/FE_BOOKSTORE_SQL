@@ -163,7 +163,9 @@ const Cart = () => {
         method: "POST",
         headers: {
           authorization: Cookies.get("authToken"),
+          "Content-Type": "application/json"
         },
+        body: JSON.stringify(selectedDiscount),
       })
         .then((response) => {
           if (response.status === 200) return response.json();
