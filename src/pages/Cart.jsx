@@ -159,11 +159,15 @@ const Cart = () => {
     }
 
     if (isValid && cartItems.length > 0) {
+      
+      const temp = selectedDiscount ??{};
       fetch(`${endpoint}/user/order`, {
         method: "POST",
         headers: {
           authorization: Cookies.get("authToken"),
+          "Content-Type": "application/json"
         },
+        body: JSON.stringify(temp),
       })
         .then((response) => {
           if (response.status === 200) return response.json();
@@ -172,14 +176,6 @@ const Cart = () => {
           window.location.href = data.payUrl;
         })
         .catch((error) => console.error(error));
-    }
-  };
-
-  const applyDiscount = () => {
-    if (selectedDiscount) {
-      const discountValue = selectedDiscount.value;
-      const discountedTotal = totalAmount - (totalAmount * discountValue) / 100;
-      setTotalAmount(discountedTotal);
     }
   };
 

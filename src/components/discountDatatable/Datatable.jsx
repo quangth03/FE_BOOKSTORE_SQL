@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { endpoint } from "../../data";
+import Modal from "../Modal/Modal";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentDeleteId, setCurrentDeleteId] = useState(null);
 
   // API để lấy danh sách giảm giá
   const handleGetDiscounts = () => {
@@ -27,6 +30,12 @@ const Datatable = () => {
     handleGetDiscounts();
   }, []);
 
+  const openDeleteModal = (id) => {
+    setCurrentDeleteId(id);
+    setIsModalOpen(true);
+  };
+
+
   // Xóa discount
   const handleDelete = (id) => {
     fetch(`${endpoint}/admin/discounts/${id}`, {
@@ -39,6 +48,7 @@ const Datatable = () => {
       .then((response) => {
         if (response.status === 200) {
           handleGetDiscounts();
+          setIsModalOpen(false);
         }
       })
       .catch((error) => {
@@ -64,7 +74,7 @@ const Datatable = () => {
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)} // Xóa discount
+              onClick={() => openDeleteModal(params.row.id)} // Xóa discount
             >
               Xóa
             </div>
@@ -82,6 +92,12 @@ const Datatable = () => {
           Thêm Giảm Giá Mới
         </Link>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        title="Xác nhận xóa"
+        onConfirm={() => handleDelete(currentDeleteId)}
+        onCancel={() => setIsModalOpen(false)}
+      />
       <DataGrid
         className="datagrid"
         rows={data}

@@ -77,9 +77,8 @@ const OrderDetails = ({ orderId }) => {
   var dateString = "27/04/2023";
   if (order.createdAt) {
     const dateObject = new Date(order.createdAt);
-    dateString = `${dateObject.getDate()}/${
-      dateObject.getMonth() + 1
-    }/${dateObject.getFullYear()}`;
+    dateString = `${dateObject.getDate()}/${dateObject.getMonth() + 1
+      }/${dateObject.getFullYear()}`;
   }
 
   return (
@@ -104,6 +103,23 @@ const OrderDetails = ({ orderId }) => {
               {listOrderStatus.find((item) => item.id == order.status)?.name}
             </InfoContent>
           </Info>
+
+          {order.discount != 0 ? 
+          <>
+            <Info>
+              <InfoLabel>Tổng cộng:</InfoLabel>
+              <InfoContent>
+                {Number(order.total + order.discount).toLocaleString()} VND
+              </InfoContent>
+            </Info>
+            <Info>
+            <InfoLabel>Giảm giá:</InfoLabel>
+            <InfoContent>
+              - {Number(order.discount).toLocaleString()} VND
+            </InfoContent>
+          </Info>
+          </> : <></>}
+          
           <Info>
             <InfoLabel>Tổng số tiền thanh toán:</InfoLabel>
             <InfoContent>

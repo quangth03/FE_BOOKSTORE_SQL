@@ -13,10 +13,11 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { MultiSelect } from "primereact/multiselect";
-// import 'primereact/resources/themes/lara-light-indigo/theme.css';
-// import 'primereact/resources/primereact.css';
-// import 'primeicons/primeicons.css';
-// import 'primeflex/primeflex.css';
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const DeleteCategoriesToProduct = () => {
   const [book, setBook] = useState({});
@@ -50,8 +51,12 @@ const DeleteCategoriesToProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate(`/admin/book/update/${id}`);
-          return;
+          toast.success("Xóa thể loại thành công", {
+            autoClose: 3000,
+          });
+          setTimeout(() => {
+            navigate(`/admin/book/update/${id}`);
+          }, 3000);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
@@ -59,6 +64,7 @@ const DeleteCategoriesToProduct = () => {
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
+    setErrorMessage("");
   };
 
   const dataSend = { id: selectedCategories };
@@ -66,6 +72,7 @@ const DeleteCategoriesToProduct = () => {
   return (
     <div className="list">
       <Sidebar />
+      <ToastContainer />
 
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Xóa Thể Loại Khỏi Sản Phẩm "{book.title}"</Title>

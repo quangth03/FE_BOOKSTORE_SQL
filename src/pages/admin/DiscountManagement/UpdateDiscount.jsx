@@ -6,6 +6,7 @@ import { colors, endpoint } from "../../../data";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -75,10 +76,23 @@ const UpdateDiscount = () => {
       return;
     }
 
+    if (isNaN(data.value) || data.value <= 0) {
+      setErrorMessage("Giá trị giảm giá phải lơn hơn 0.");
+      return ;
+    }
+
     if (data.minimumOrderValue <= data.value) {
       setErrorMessage("Đơn hàng tối thiểu phải lớn hơn giá trị giảm giá");
       return;
     }
+    
+    const today = new Date();
+      const expiredDate = new Date(data.expiredAt);
+      if (expiredDate <= today) {
+        setErrorMessage("Ngày hết hạn phải sau ngày hôm nay.");
+        return;
+      }
+
 
     // Gửi yêu cầu cập nhật mã giảm giá
     fetch(`${endpoint}/admin/discounts/${id}`, {
@@ -91,7 +105,12 @@ const UpdateDiscount = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          navigate("/admin/discounts"); // Điều hướng tới danh sách mã giảm giá
+          toast.success("Cập nhật mã giảm giá thành công",{
+            autoClose: 3000, 
+          });
+          setTimeout(() => {
+            navigate("/admin/discounts");
+          }, 3000);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
@@ -99,11 +118,13 @@ const UpdateDiscount = () => {
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
+      setErrorMessage("");
   };
 
   return (
     <div className="list">
       <Sidebar />
+      <ToastContainer />
 
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Chỉnh Sửa Thông Tin Mã Giảm Giá</Title>

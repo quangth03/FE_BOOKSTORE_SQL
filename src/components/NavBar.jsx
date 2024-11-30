@@ -10,7 +10,6 @@ import { AutoComplete } from "primereact/autocomplete";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import _debounce from "lodash.debounce";
 
 import { mobile } from "../responsive";
 import icon from "../assets/img-2.png";
@@ -37,48 +36,6 @@ const Left = styled.div`
   justify-content: space-between;
   height: 60px;
 `;
-
-// const SearchContainer = styled.form`
-//   border: 1px solid #ddd;
-//   display: flex;
-//   flex: 1;
-//   align-items: center;
-//   border-radius: 30px; /* Bo tròn mềm mại */
-//   margin-left: 25px;
-//   padding: 10px 15px; /* Tăng padding để có khoảng cách hợp lý */
-//   height: 40px;
-//   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ */
-//   transition: box-shadow 0.3s ease-in-out; /* Hiệu ứng chuyển động */
-
-//   &:focus-within {
-//     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Tăng bóng đổ khi focus */
-//   }
-// `;
-
-// const SearchButton = styled.button`
-//   flex: 0;
-//   border: none;
-//   padding: 10px 20px; /* Kích thước vừa vặn cho nút */
-//   border-radius: 30px; /* Bo tròn cho nút */
-//   margin-left: 10px;
-//   cursor: pointer;
-//   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Hiệu ứng hover */
-
-//   &:hover {
-//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Bóng đổ khi hover */
-//   }
-// `;
-
-// const Input = styled.input`
-//   border: none;
-//   outline: none;
-//   flex: 9;
-//   ${mobile({ width: "50px" })}
-
-//   &:focus {
-//     outline: none;
-//   }
-// `;
 
 const Brand = styled.h1`
   font-weight: bold;
@@ -165,6 +122,30 @@ const Navbar = () => {
   // const handleSearchChange = _debounce((query) => {
   //   setSearchQuery(query); // Cập nhật từ khóa tìm kiếm
   // }, 500); // Giới hạn mỗi lần gọi API cách nhau 500ms
+
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "vi-VN"; // Đặt ngôn ngữ là tiếng Việt
+
+  // Hàm bắt đầu nhận diện giọng nói
+  const startSpeechRecognition = () => {
+    recognition.start();
+  };
+
+  // Lắng nghe sự kiện khi nhận diện xong
+  recognition.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    setQuery(transcript); // Cập nhật kết quả nhận diện giọng nói vào query
+    triggerSearch(transcript); // Tự động gọi hàm tìm kiếm sau khi nhận diện
+  };
+
+  // Hàm tìm kiếm (giống như khi nhấn nút Tìm kiếm)
+  const triggerSearch = (query) => {
+    navigate(`/search/${query}`, { replace: true });
+    setQuery(""); // Sau khi tìm kiếm xong, reset query
+  };
 
   const searchItems = (event) => {
     const query = event.query.toLowerCase();
@@ -282,11 +263,17 @@ const Navbar = () => {
               />
               <Button
                 label="Tìm kiếm"
-                className="p-button-secondary"
+                className="p-button-warning border-round-right"
                 onClick={() => {
                   navigate(`/search/${query}`, { replace: true });
                   setQuery("");
                 }}
+              />
+              <Button
+                style={{ marginLeft: "10px", borderRadius: "50px" }}
+                icon="pi pi-microphone"
+                className="p-button-warning p-ml-2"
+                onClick={startSpeechRecognition}
               />
             </div>
           )}

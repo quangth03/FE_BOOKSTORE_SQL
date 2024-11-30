@@ -4,8 +4,10 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import styled from "styled-components";
 import { colors, endpoint } from "../../../data";
 import Cookies from "js-cookie";
+import ErrorMessage from "../../../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -62,6 +64,10 @@ const UpdateCategory = () => {
   }, [id]);
   
     const handleUpdateCategory = () => {
+      if (!data.image || !data.name || !data.description) {
+        setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
+        return;
+      }
       fetch(`${endpoint}/admin/categories/${id}`, {
         method: "PUT",
         headers: {
@@ -72,23 +78,33 @@ const UpdateCategory = () => {
       })
         .then((response) => {
           if (response.status === 200) {
-            navigate("/admin/categories");
-            return;
+            toast.success("Cập nhật thể loại thành công",{
+              autoClose: 3000, 
+            });
+            setTimeout(() => {
+              navigate("/admin/categories");
+            }, 3000);
           }
         })
         .catch((error) => {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         });
+      setErrorMessage("");
     };
 
   return (
     <div className="list">
       <Sidebar />
-
+      <ToastContainer />
       <Right
         style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
       >
         <Title>Chỉnh Sửa Thông Tin Thể loại</Title>
+        <ErrorMessage
+          errorMessage={errorMessage}
+          display={errorMessage === "" ? "none" : "flex"}
+        />
+
         <Form>
           <InfoItem>
             <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
