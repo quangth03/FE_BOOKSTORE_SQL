@@ -107,7 +107,7 @@ const OrderDetails = ({ orderId }) => {
           {order.discount != 0 ? 
           <>
             <Info>
-              <InfoLabel>Tổng số tiền:</InfoLabel>
+              <InfoLabel>Tổng cộng:</InfoLabel>
               <InfoContent>
                 {Number(order.total + order.discount).toLocaleString()} VND
               </InfoContent>
