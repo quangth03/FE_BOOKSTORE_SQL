@@ -13,10 +13,6 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { MultiSelect } from "primereact/multiselect";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
 import { toast, ToastContainer } from "react-toastify";
 
 const DeleteCategoriesToProduct = () => {
@@ -52,11 +48,11 @@ const DeleteCategoriesToProduct = () => {
       .then((response) => {
         if (response.status === 200) {
           toast.success("Xóa thể loại thành công", {
-            autoClose: 3000,
+            autoClose: 2000,
           });
           setTimeout(() => {
             navigate(`/admin/book/update/${id}`);
-          }, 3000);
+          }, 2100);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }

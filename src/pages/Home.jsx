@@ -4,6 +4,8 @@ import Categories from "../components/Categories";
 import ProductsList from "../components/ProductsList";
 import { endpoint } from "../data";
 import { Button } from "primereact/button";
+import Partner from "../components/Partner";
+import CustomNavLink from "../components/CustomNavLink";
 
 const Home = () => {
   const [books, setPopularProducts] = useState([]);
@@ -41,8 +43,11 @@ const Home = () => {
   // }, []);
 
   return (
-    <div className="container grid mx-auto mt-2">
-      <div className="col-3 px-3 ">
+    <div
+      className="container grid mx-auto mt-2"
+      style={{ backgroundColor: "floralwhite" }}
+    >
+      <div className="col-3  ">
         <div className="sidebar">
           <div className="category px-3">
             <Categories categories={categories} />
@@ -76,7 +81,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="col-9 px-3 ">
+      <div className="col-9 ">
         <div className="slider mt-3">
           <Slider />
         </div>
@@ -101,28 +106,34 @@ const Home = () => {
           </div>
         </section>
 
-        {/* <section>
+        <section>
           <div className="button flex gap-5">
-            <Button className=" p-3" label="Sách Mới Nổi Bật"></Button>
-            <Button className=" p-3" label="Sách Khuyến Mãi"></Button>
+            <CustomNavLink to={"/books"}>
+              <Button className=" p-3" label="Xem Tất Cả"></Button>
+            </CustomNavLink>
           </div>
-          <ProductsList />
-        </section> */}
+        </section>
 
-        {categories.map((category) => (
-          <section key={category.id}>
-            <ProductsList
-              books={books
-                .filter((book) =>
-                  book.categories.some((cat) => cat.name === category.name)
-                )
-                .slice(0, 8)}
-              hasButton={true}
-              title={"Sách " + category.name}
-              categorie_id={category.id}
-            />
-          </section>
-        ))}
+        <section>
+          {categories.map((category) => (
+            <section key={category.id}>
+              <ProductsList
+                books={books
+                  .filter((book) =>
+                    book.categories.some((cat) => cat.name === category.name)
+                  )
+                  .slice(0, 8)}
+                hasButton={true}
+                title={"Sách " + category.name}
+                categorie_id={category.id}
+              />
+            </section>
+          ))}
+        </section>
+
+        <section>
+          <Partner />
+        </section>
       </div>
     </div>
   );

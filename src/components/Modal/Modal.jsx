@@ -7,8 +7,8 @@ const Modal = ({ isOpen, title, message, onConfirm, onCancel }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h2>{title}</h2>
-        <div className="modal-actions">
+        <h2 className="text-align-center">{title}</h2>
+        <div className="modal-actions flex justify-content-around align-items-center">
           <button className="confirmButton" onClick={onConfirm}>
             Đồng ý
           </button>

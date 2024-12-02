@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Carousel } from "primereact/carousel";
 import { ProductService } from "../services/ProductService";
+import { Banner } from "./ProductsList";
 
 export default function Partner() {
   const [products, setProducts] = useState([]);
@@ -46,17 +47,20 @@ export default function Partner() {
   };
 
   return (
-    <div>
-      <Carousel
-        value={products}
-        numVisible={5}
-        numScroll={1}
-        responsiveOptions={responsiveOptions}
-        circular
-        autoplayInterval={3000}
-        itemTemplate={productTemplate}
-        showIndicators={false}
-      />
+    <div className="pb-5">
+      <Banner>Đối Tác</Banner>
+      <div className="bg-white">
+        <Carousel
+          value={products}
+          numVisible={5}
+          numScroll={1}
+          responsiveOptions={responsiveOptions}
+          circular
+          autoplayInterval={3000}
+          itemTemplate={productTemplate}
+          showIndicators={false}
+        />
+      </div>
     </div>
   );
 }

@@ -8,16 +8,17 @@ import { Card } from "primereact/card";
 import { formatMoney } from "../utils/table-pagination";
 import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
+import { Banner } from "./Search";
 
 const ProductsPage = () => {
   const fild = [
     {
       value: "price",
-      name: "giá cả",
+      name: "Giá cả",
     },
     {
       value: "publication_date",
-      name: "ngày xuất bản",
+      name: "Ngày xuất bản",
     },
   ];
   const contrain = [
@@ -41,7 +42,7 @@ const ProductsPage = () => {
 
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books?limit=12&page=${Number(current) + 1}&from=${
+      `${endpoint}/user/books?limit=16&page=${Number(current) + 1}&from=${
         priceRange[0]
       }&to=${
         priceRange[1]
@@ -85,11 +86,12 @@ const ProductsPage = () => {
       >
         <div
           style={{
-            width: "25%",
+            width: "30%",
             height: "100vh",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            // justifyContent: "center",sawps
+            marginTop: "125px",
             alignItems: "center",
           }}
         >
@@ -131,21 +133,21 @@ const ProductsPage = () => {
             </div>
             <div style={{ margin: "25px 5px" }}>
               <h4 style={{ alignItems: "center", marginBottom: "15px" }}>
-                Xắp xếp
+                Sắp xếp
               </h4>
               <SelectButton
                 value={sortBy}
                 onChange={(e) => setSortBy(e.value)}
                 optionLabel="name"
                 options={fild}
-                style={{ margin: "10px 0px" }}
+                style={{ margin: "15px 4px" }}
               />
               <SelectButton
                 value={sort}
                 onChange={(e) => setSort(e.value)}
                 optionLabel="name"
                 options={contrain}
-                style={{ margin: "10px 0px" }}
+                style={{ margin: "10px 8px" }}
               />
             </div>
             <div
@@ -159,9 +161,18 @@ const ProductsPage = () => {
               <Button label="Áp dụng" outlined rounded onClick={updateBook} />
             </div>
           </Card>
+          <div className="poster p-3">
+            <img
+              className="px-3 w-full "
+              src="https://theme.hstatic.net/200000845405/1001223012/14/widget_banner.jpg?v=335"
+              alt="poster"
+            />
+          </div>
         </div>
+
         <div style={{ width: "85%" }}>
-          <ProductsList books={books} title="Tất cả sản phẩm" />
+          <Banner>Tất cả sản phẩm</Banner>
+          <ProductsList books={books} hasBanner={false} />
           <PageNavigation
             current={Number(current)}
             total={100}

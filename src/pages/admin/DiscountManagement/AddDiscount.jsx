@@ -53,27 +53,26 @@ const AddDiscount = () => {
 
   // Hàm kiểm tra giá trị nhập liệu
   const handleCreateDiscount = () => {
-  
     if (!data.value || !data.description || !data.expiredAt) {
       setErrorMessage("Vui lòng điền đầy đủ thông tin");
       return;
     }
     if (isNaN(data.value) || data.value <= 0) {
       setErrorMessage("Giá trị giảm giá phải lơn hơn 0.");
-      return ;
+      return;
     }
 
     if (parseFloat(data.minimumOrderValue) <= parseFloat(data.value)) {
-        setErrorMessage("Đơn hàng tối thiểu phải lớn hơn giá trị giảm giá");
-        return;
-      }
+      setErrorMessage("Đơn hàng tối thiểu phải lớn hơn giá trị giảm giá");
+      return;
+    }
 
-      const today = new Date();
-      const expiredDate = new Date(data.expiredAt);
-      if (expiredDate <= today) {
-        setErrorMessage("Ngày hết hạn phải sau ngày hôm nay.");
-        return;
-      }
+    const today = new Date();
+    const expiredDate = new Date(data.expiredAt);
+    if (expiredDate <= today) {
+      setErrorMessage("Ngày hết hạn phải sau ngày hôm nay.");
+      return;
+    }
 
     // Gửi yêu cầu tạo mã giảm giá
     fetch(`${endpoint}/admin/discounts/`, {
@@ -86,12 +85,12 @@ const AddDiscount = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Thêm mã giảm giá thành công",{
-            autoClose: 3000, 
+          toast.success("Thêm mã giảm giá thành công", {
+            autoClose: 2000,
           });
           setTimeout(() => {
             navigate("/admin/discounts");
-          }, 3000);
+          }, 2100);
           return;
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
@@ -100,7 +99,7 @@ const AddDiscount = () => {
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
-      setErrorMessage("");
+    setErrorMessage("");
   };
 
   return (

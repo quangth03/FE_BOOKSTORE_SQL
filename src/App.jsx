@@ -61,12 +61,24 @@ const AdminAuthentication = ({ children }) => {
 };
 
 const App = () => {
+  const Layout = ({ children }) => {
+    return <div style={{ backgroundColor: "floralwhite" }}>{children}</div>;
+  };
   return (
-    <>
+    <div>
       <ScrollTop />
       <NavBar />
       <Routes>
-        <Route exact path="/" Component={Home} />
+        <Route
+          exact
+          path="/"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+
         <Route exact path="/login" Component={Login} />
         <Route exact path="/register" Component={Register} />
         <Route exact path="/search/:title" Component={Search} />
@@ -300,7 +312,7 @@ const App = () => {
         />
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 };
 

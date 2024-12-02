@@ -112,6 +112,7 @@ const Datatable = () => {
         columns={categoryColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
+        rowHeight={90}
       />
     </div>
   );

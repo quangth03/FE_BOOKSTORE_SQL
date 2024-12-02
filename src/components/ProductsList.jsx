@@ -13,18 +13,20 @@ const Container = styled.div`
   // border: 1px solid ${colors.color1};
 `;
 
-const Banner = styled.div`
+export const Banner = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   font-weight: bold;
-  font-size: 40px;
+  // font-size: 40px;
+  font-size: 35px;
   text-transform: capitalize;
 
   width: 100%;
-  height: 100px;
-  color: ${colors.color1};
+  height: 70px;
+  // color: ${colors.color1};
+  color: ${colors.color2};
 `;
 
 const Wrapper = styled.div`
@@ -35,8 +37,8 @@ const Wrapper = styled.div`
 
 const AllProductsButton = styled.div`
   display: block;
-  color: ${colors.color1};
-  font-size: 20px;
+  color: ${colors.color2};
+  font-size: 17px;
   // background-color: ${colors.color1};
   // padding: 10px 40px;
   // border-radius: 20px;
@@ -70,7 +72,7 @@ const Products = ({
         ""
       )}
 
-      <Container>
+      <Container className="bg-white pt-3 mb-3">
         {books != null && books.length > 0
           ? books.map((item) => <ProductItem item={item} key={item.id} />)
           : ""}

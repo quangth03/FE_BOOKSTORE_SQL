@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PrimeIcons } from "primereact/api";
 import Cookies from "js-cookie";
 import { Search, ShoppingCartCheckoutOutlined } from "@mui/icons-material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -54,8 +53,8 @@ const Right = styled.div`
 
 const MenuPopup = styled.div`
   position: absolute;
-  top: 60px;
-  right: 20px;
+  top: 100px;
+  right: 250px;
   background-color: white;
   z-index: 1;
   padding: 10px;
@@ -127,7 +126,8 @@ const Navbar = () => {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
 
-  recognition.lang = "vi-VN"; // Đặt ngôn ngữ là tiếng Việt
+  // recognition.lang = "vi-VN" ; // Đặt ngôn ngữ là tiếng Việt
+  recognition.lang = "en-US"; // Đặt ngôn ngữ là tiếng Anh
 
   // Hàm bắt đầu nhận diện giọng nói
   const startSpeechRecognition = () => {
@@ -137,8 +137,9 @@ const Navbar = () => {
   // Lắng nghe sự kiện khi nhận diện xong
   recognition.onresult = (e) => {
     const transcript = e.results[0][0].transcript;
-    setQuery(transcript); // Cập nhật kết quả nhận diện giọng nói vào query
-    triggerSearch(transcript); // Tự động gọi hàm tìm kiếm sau khi nhận diện
+    const cleanedTranscript = transcript.replace(/[.,]/g, ""); // Xóa dấu chấm, phẩy
+    setQuery(cleanedTranscript); // Cập nhật kết quả nhận diện giọng nói vào query
+    triggerSearch(cleanedTranscript); // Tự động gọi hàm tìm kiếm sau khi nhận diện
   };
 
   // Hàm tìm kiếm (giống như khi nhấn nút Tìm kiếm)
@@ -173,7 +174,7 @@ const Navbar = () => {
     }
     return (
       <Link to={`/books/${item.id}`} className="link no-underline text-color">
-        <div className="flex align-items-center">
+        <div className="flex align-items-center" onClick={() => setQuery("")}>
           <img src={item.image} alt={item.title} width="50" className="mr-2" />
           <div className="flex flex-column w-13rem">
             <span className="font-bold mb-2">{item.title}</span>
@@ -259,7 +260,7 @@ const Navbar = () => {
                   }
                 }}
                 panelStyle={{ maxHeight: "auto" }}
-                // onFocus={() => setValue("")}
+                onFocus={() => setQuery("")}
               />
               <Button
                 label="Tìm kiếm"

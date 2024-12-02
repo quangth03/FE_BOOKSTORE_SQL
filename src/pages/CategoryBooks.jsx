@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { endpoint } from "../data";
 // import PageNavigation from "../components/PageNavigation";
 import ProductsList from "../components/ProductsList";
+import { Banner } from "./Search";
 
 const CategiryBooks = () => {
   const { id } = useParams();
@@ -36,7 +37,8 @@ const CategiryBooks = () => {
   }, [current]);
   return (
     <div className="container mx-auto">
-      <ProductsList books={books} title={title} />
+      <Banner>{title}</Banner>
+      <ProductsList books={books} hasBanner={false} />
       {/* <PageNavigation
         current={Number(current)}
         total={5}

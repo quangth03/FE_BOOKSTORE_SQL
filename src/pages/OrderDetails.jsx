@@ -77,8 +77,9 @@ const OrderDetails = ({ orderId }) => {
   var dateString = "27/04/2023";
   if (order.createdAt) {
     const dateObject = new Date(order.createdAt);
-    dateString = `${dateObject.getDate()}/${dateObject.getMonth() + 1
-      }/${dateObject.getFullYear()}`;
+    dateString = `${dateObject.getDate()}/${
+      dateObject.getMonth() + 1
+    }/${dateObject.getFullYear()}`;
   }
 
   return (
@@ -104,24 +105,27 @@ const OrderDetails = ({ orderId }) => {
             </InfoContent>
           </Info>
 
-          {order.discount != 0 ? 
-          <>
-            <Info>
-              <InfoLabel>Tổng cộng:</InfoLabel>
-              <InfoContent>
-                {Number(order.total + order.discount).toLocaleString()} VND
-              </InfoContent>
-            </Info>
-            <Info>
-            <InfoLabel>Giảm giá:</InfoLabel>
-            <InfoContent>
-              - {Number(order.discount).toLocaleString()} VND
-            </InfoContent>
-          </Info>
-          </> : <></>}
-          
-          <Info>
-            <InfoLabel>Tổng số tiền thanh toán:</InfoLabel>
+          {order.discount > 0 ? (
+            <>
+              <Info>
+                <InfoLabel>Tổng tiền các sản phẩm:</InfoLabel>
+                <InfoContent>
+                  {Number(order.total + order.discount).toLocaleString()} VND
+                </InfoContent>
+              </Info>
+              <Info>
+                <InfoLabel>Giảm giá:</InfoLabel>
+                <InfoContent>
+                  {Number(order.discount).toLocaleString()} VND
+                </InfoContent>
+              </Info>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <Info style={{ fontSize: "24px", color: "red" }}>
+            <InfoLabel>Tổng thanh toán:</InfoLabel>
             <InfoContent>
               {Number(order.total).toLocaleString()} VND
             </InfoContent>

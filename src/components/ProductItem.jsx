@@ -39,18 +39,22 @@ const Image = styled.img`
   // padding-top: 10px;
   height: 16rem;
   width: 100%;
+  object-fit: fill;
   border: 1px solid #d3d3d3;
 `;
 
 const ProductName = styled.div`
-  text-transform: capitalize;
+  // text-transform: capitalize;
   font-weight: bold;
   font-size: 15pt;
   text-align: center;
   color: ${colors.color2};
-  margin: 5px 0px;
+  // margin: 5px 0px;
   max-height: 25px;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
 `;
 
 const Price = styled.p`
@@ -99,7 +103,7 @@ export const CartButton = styled.div`
 
 const DiscountBadge = styled.div`
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: -15px;
   background-color: red;
   color: white;
@@ -138,7 +142,7 @@ const ProductItem = ({ item }) => {
         // Handle success or update cart state as needed
       })
       .catch((error) => console.error(error));
-    toast.success("Thêm vào giỏ hàng thành công");
+    toast.success("Thêm vào giỏ hàng thành công", { autoClose: 2000 });
   };
 
   const calculatePrice = (price, discount) => {
@@ -161,12 +165,20 @@ const ProductItem = ({ item }) => {
         <ImageWrapper>
           <Image src={item.image} />
         </ImageWrapper>
+        <ProductName>{item.title}</ProductName>
       </Link>
 
-      <CustomNavLink to={`/books/${item.id}`}>
+      {/* <CustomNavLink to={`/books/${item.id}`}>
         <ProductName>{item.title}</ProductName>
-      </CustomNavLink>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      </CustomNavLink> */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          marginTop: "30px",
+        }}
+      >
         <Price>{Number(sellPrice).toLocaleString()}đ</Price>
         {item.discount > 0 && (
           <del style={{ fontSize: "18px" }}>

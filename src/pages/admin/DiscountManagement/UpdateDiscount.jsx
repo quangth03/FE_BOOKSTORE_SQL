@@ -59,7 +59,9 @@ const UpdateDiscount = () => {
     fetch(`${endpoint}/admin/discounts/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        const formattedDate = new Date(data.expiredAt).toISOString().split('T')[0];
+        const formattedDate = new Date(data.expiredAt)
+          .toISOString()
+          .split("T")[0];
         setData({
           ...data,
           expiredAt: formattedDate,
@@ -78,21 +80,20 @@ const UpdateDiscount = () => {
 
     if (isNaN(data.value) || data.value <= 0) {
       setErrorMessage("Giá trị giảm giá phải lơn hơn 0.");
-      return ;
+      return;
     }
 
     if (data.minimumOrderValue <= data.value) {
       setErrorMessage("Đơn hàng tối thiểu phải lớn hơn giá trị giảm giá");
       return;
     }
-    
-    const today = new Date();
-      const expiredDate = new Date(data.expiredAt);
-      if (expiredDate <= today) {
-        setErrorMessage("Ngày hết hạn phải sau ngày hôm nay.");
-        return;
-      }
 
+    const today = new Date();
+    const expiredDate = new Date(data.expiredAt);
+    if (expiredDate <= today) {
+      setErrorMessage("Ngày hết hạn phải sau ngày hôm nay.");
+      return;
+    }
 
     // Gửi yêu cầu cập nhật mã giảm giá
     fetch(`${endpoint}/admin/discounts/${id}`, {
@@ -105,12 +106,12 @@ const UpdateDiscount = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Cập nhật mã giảm giá thành công",{
-            autoClose: 3000, 
+          toast.success("Cập nhật mã giảm giá thành công", {
+            autoClose: 2000,
           });
           setTimeout(() => {
             navigate("/admin/discounts");
-          }, 3000);
+          }, 2100);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
@@ -118,7 +119,7 @@ const UpdateDiscount = () => {
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
-      setErrorMessage("");
+    setErrorMessage("");
   };
 
   return (

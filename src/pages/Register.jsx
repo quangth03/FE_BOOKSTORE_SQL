@@ -154,10 +154,10 @@ const Register = () => {
         .then((response) => {
           if (response.status === 200) {
             setIsSuccess(true);
-            toast.success("Đăng ký thành công");
+            toast.success("Đăng ký thành công", { autoClose: 2000 });
             setTimeout(() => {
               navigate("/login");
-            }, 4000);
+            }, 2100);
             return response.json();
           } else if (response.status === 400) {
             response.json().then((error) => {

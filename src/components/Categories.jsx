@@ -41,8 +41,8 @@ const Categories = ({ categories }) => {
 
   return (
     // <Container>
-    <div className="mt-4">
-      <h3 className="mb-3">Danh mục</h3>
+    <div className="mt-3">
+      <h3 className="mb-3 pt-3">Danh mục</h3>
       {categories && categories.length > 0 ? (
         categories.map((item) => <CategoryItem item={item} key={item.id} />)
       ) : (

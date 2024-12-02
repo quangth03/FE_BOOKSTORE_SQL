@@ -9,29 +9,35 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Products from "../components/ProductsList";
+import { Banner } from "../pages/Search";
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin: 50px 0px;
+`;
 
 const Wrapper = styled.div`
-  padding: 50px;
-  display: flex;
+  // padding: 50px 0px;
+  // display: flex;
 `;
 
 const ImgContainer = styled.div`
-  flex: 4;
-  display: flex;
+  // flex: 4;
+  // display: flex;
   justify-content: center;
 `;
 
 const Image = styled.img`
-  object-fit: cover;
-  width: 400px;
+  object-fit: fill;
+  width: 420px;
   height: 550px;
+  // width: 100%;
+  // height: 100%;
+  border: 1px solid #d3d3d3;
 `;
 
 const InfoContainer = styled.div`
-  flex: 5;
-  padding: 0px 50px;
+  // flex: 5;
+  // padding: 0px 50px;
 `;
 
 const Title = styled.h1`
@@ -63,7 +69,7 @@ const AddContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 50%;
+  width: 100%;
   padding: 20px 0px;
 `;
 
@@ -111,7 +117,7 @@ const Amount = styled.input.attrs({ type: "number" })`
 `;
 
 const AddButton = styled.button`
-  margin-left: 30px;
+  // margin-left: 100px;
   padding: 10px;
   border: 2px solid ${colors.color2};
   background-color: white;
@@ -135,7 +141,6 @@ const ProductDetail = () => {
     fetch(`${endpoint}/user/books/id/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("bookkkkk = ", data);
         setBook(data);
       })
       .catch((error) => console.error(error));
@@ -169,7 +174,7 @@ const ProductDetail = () => {
       .then((response) => response.json())
       .then((data) => {})
       .catch((error) => console.error(error));
-    toast.success("Thêm vào giỏ hàng thành công");
+    toast.success("Thêm vào giỏ hàng thành công", { autoClose: 2000 });
   };
 
   const handleChange = (e) => {
@@ -196,65 +201,123 @@ const ProductDetail = () => {
   return (
     <div>
       <Container className="container mx-auto">
-        <Wrapper>
-          <ImgContainer>
-            <Image
-              src={
-                book.image ||
-                "https://www.bookgeeks.in/wp-content/uploads/2022/11/The-Art-of-War-by-Sun-Tzu.jpg"
-              }
-            />
-          </ImgContainer>
-          <InfoContainer>
-            <Title>{book.title}</Title>
-            <Author>Tác giả: {book.author}</Author>
-            <Quantity>Số lượng: {book.quantity}</Quantity>
-            <HR />
-            <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-              <Price>{Number(sellPrice).toLocaleString()} VND</Price>
-              {book.discount > 0 && (
-                <del style={{ fontSize: "22px" }}>
-                  {Number(book.price).toLocaleString()} VND
-                </del>
-              )}
-            </div>
-            <HR />
-            {Cookies.get("isAdmin") ? (
-              ""
-            ) : (
-              <AddContainer>
-                <AmountContainer>
-                  <AmountButton
-                    onClick={() => (amount > 1 ? setAmount(amount - 1) : 1)}
-                  >
-                    -
-                  </AmountButton>
-                  <Amount value={amount} onChange={handleChange}></Amount>
+        <div className="grid-nogutter flex ">
+          <Wrapper className="grid-nogutter flex col-9">
+            <ImgContainer className="col-6 ">
+              <Image
+                src={
+                  book.image ||
+                  "https://www.bookgeeks.in/wp-content/uploads/2022/11/The-Art-of-War-by-Sun-Tzu.jpg"
+                }
+              />
+            </ImgContainer>
 
-                  <AmountButton
-                    onClick={() =>
-                      setAmount(amount < book.quantity ? amount + 1 : amount)
-                    }
-                  >
-                    +
-                  </AmountButton>
-                </AmountContainer>
-                <AddButton onClick={handleAddToCart}>
-                  THÊM VÀO GIỎ HÀNG
-                </AddButton>
-                <ToastContainer />
-              </AddContainer>
-            )}
-            <TabProductDetail book={book} />
-          </InfoContainer>
-        </Wrapper>
-        <div style={{ margin: 20 }}>
+            <InfoContainer className="col-6 pr-4">
+              <Title>{book.title}</Title>
+              <Author>Tác giả: {book.author}</Author>
+              <Quantity>Số lượng: {book.quantity}</Quantity>
+              <HR />
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "30px" }}
+              >
+                <Price>{Number(sellPrice).toLocaleString()} VND</Price>
+                {book.discount > 0 && (
+                  <del style={{ fontSize: "22px" }}>
+                    {Number(book.price).toLocaleString()} VND
+                  </del>
+                )}
+              </div>
+              <HR />
+              {Cookies.get("isAdmin") ? (
+                ""
+              ) : (
+                <AddContainer>
+                  <AmountContainer>
+                    <AmountButton
+                      onClick={() => (amount > 1 ? setAmount(amount - 1) : 1)}
+                    >
+                      -
+                    </AmountButton>
+                    <Amount value={amount} onChange={handleChange}></Amount>
+
+                    <AmountButton
+                      onClick={() =>
+                        setAmount(amount < book.quantity ? amount + 1 : amount)
+                      }
+                    >
+                      +
+                    </AmountButton>
+                  </AmountContainer>
+                  <AddButton onClick={handleAddToCart}>
+                    {/* <i className="pi pi-cart-plus"></i> */}
+                    Thêm vào giỏ hàng
+                  </AddButton>
+                  <ToastContainer />
+                </AddContainer>
+              )}
+              <TabProductDetail book={book} />
+            </InfoContainer>
+          </Wrapper>
+
+          <div className="col-3 border-1 border-300 border-round h-21rem">
+            <div className="surface-400 p-2">
+              <h3 className="px-3">Chỉ có ở BookStore</h3>
+            </div>
+
+            <div className="px-3">
+              <div className="flex my-5 align-items-center ">
+                <div className="mr-3">
+                  <img
+                    src="https://theme.hstatic.net/200000845405/1001223012/14/pro_service_icon_1.png?v=351"
+                    alt=""
+                  />
+                </div>
+                <div>Sản phẩm 100% chính hãng</div>
+              </div>
+
+              <div className="flex my-5 align-items-center">
+                <div className="mr-3">
+                  <img
+                    src="	https://theme.hstatic.net/200000845405/1001223012/14/pro_service_icon_2.png?v=351"
+                    alt=""
+                  />
+                </div>
+                <div>Tư vấn mua sách trong giờ hành chính</div>
+              </div>
+
+              <div className="flex my-5 align-items-center">
+                <div className="mr-3">
+                  <img
+                    src="https://theme.hstatic.net/200000845405/1001223012/14/pro_service_icon_3.png?v=351"
+                    alt=""
+                  />
+                </div>
+                <div>Miễn phí vận chuyển cho tất cả Đơn hàng</div>
+              </div>
+
+              <div className="flex my-5 align-items-center">
+                <div className="mr-3">
+                  <img
+                    src="https://theme.hstatic.net/200000845405/1001223012/14/pro_service_icon_5.png?v=351"
+                    alt=""
+                  />
+                </div>
+                <div>Hotline: 1900 6401</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ margin: "20px 0px" }}>
           <ProductComment book_id={id} />
         </div>
         {Cookies.get("isAdmin") || books.length == 0 ? (
           <></>
         ) : (
-          <Products books={books} title="Các sản phẩm liên quan"></Products>
+          <>
+            <Banner>Các sản phẩm liên quan</Banner>
+            <Products books={books} hasBanner={false}></Products>
+          </>
         )}
       </Container>
     </div>
