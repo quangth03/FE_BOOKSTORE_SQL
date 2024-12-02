@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { endpoint } from "../../data";
 import Cookies from "js-cookie";
 import moment from "moment/moment";
-import Modal from "../Modal/Modal"
+import Modal from "../Modal/Modal";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function ProductComment({ book_id }) {
@@ -15,8 +15,8 @@ export default function ProductComment({ book_id }) {
   // Kiểm tra xem người dùng đã bình luận về sách này chưa
   const openDeleteModal = (id) => {
     setCurrentDeleteId(id); // Đặt ID hiện tại
-    setIsModalOpen(true);   // Mở modal
-  };;
+    setIsModalOpen(true); // Mở modal
+  };
 
   const getReview = () => {
     if (book_id) {
@@ -99,8 +99,8 @@ export default function ProductComment({ book_id }) {
         return response.json();
       })
       .then(() => {
-        toast.success("Xóa bình luận thành công.",{
-          autoClose: 3000, 
+        toast.success("Xóa bình luận thành công.", {
+          autoClose: 2000,
         });
         // Loại bỏ bình luận khỏi danh sách reviews
         setReviews((prevReviews) =>
@@ -112,9 +112,8 @@ export default function ProductComment({ book_id }) {
   };
 
   return (
-    
     <div>
-    <ToastContainer />
+      <ToastContainer />
       <Modal
         isOpen={isModalOpen}
         title="Xác nhận xóa"
@@ -125,8 +124,8 @@ export default function ProductComment({ book_id }) {
         commentRole ? (
           <div
             style={{
-              maxWidth: "90%",
-              margin: "20px auto",
+              maxWidth: "100%",
+              margin: "20px 0",
               padding: "20px",
               border: "1px solid #ccc",
               borderRadius: "8px",
@@ -194,19 +193,19 @@ export default function ProductComment({ book_id }) {
         <>
           <div
             style={{
-              maxWidth: "90%",
+              maxWidth: "100%",
               margin: "20px auto",
               paddingLeft: "20px",
             }}
           >
-            <h2 style={{ fontSize: "24px" }}>Bình luận</h2>
+            <h2 style={{ fontSize: "30px" }}>Bình luận</h2>
           </div>
 
           {reviews.map((item, index) => (
             <div
               key={index}
               style={{
-                maxWidth: "90%",
+                maxWidth: "100%",
                 margin: "10px auto",
                 padding: "20px",
                 border: "1px solid #ccc",
@@ -219,7 +218,7 @@ export default function ProductComment({ book_id }) {
               <div>
                 <h3 style={{ fontSize: "20px" }}>{item.user.full_name}</h3>
                 <p style={{ color: "gray", padding: "5px 0px" }}>
-                  {moment(item.createdAt).format("HH:mm    DD-MM-YYYY ")}
+                  {moment(item.createdAt).format("HH:mm DD-MM-YYYY ")}
                 </p>
                 <div>
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -243,22 +242,21 @@ export default function ProductComment({ book_id }) {
               <div>
                 {Cookies.get("isAdmin") ? (
                   <div>
-                  <button
-                    onClick={() => openDeleteModal(item.id)} // Gọi hàm xóa khi nhấn
-                    style={{
-                      backgroundColor: "red",
-                      color: "white",
-                      border: "none",
-                      padding: "10px 25px",
-                      marginTop: "10px",
-                      cursor: "pointer",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    Xóa
-                  </button>
-
-      </div>
+                    <button
+                      onClick={() => openDeleteModal(item.id)} // Gọi hàm xóa khi nhấn
+                      style={{
+                        backgroundColor: "red",
+                        color: "white",
+                        border: "none",
+                        padding: "10px 25px",
+                        marginTop: "10px",
+                        cursor: "pointer",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      Xóa
+                    </button>
+                  </div>
                 ) : null}
               </div>
             </div>

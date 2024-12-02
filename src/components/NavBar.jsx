@@ -6,19 +6,15 @@ import { Search, ShoppingCartCheckoutOutlined } from "@mui/icons-material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-import "primeflex/primeflex.css";
-import "primeicons/primeicons.css";
-import "primereact/resources/primereact.min.css";
-import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 import { AutoComplete } from "primereact/autocomplete";
 import { Button } from "primereact/button";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 import { mobile } from "../responsive";
 import icon from "../assets/img-2.png";
 import CustomNavLink from "./CustomNavLink";
+import Banner from "./Banner";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
@@ -26,7 +22,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding: 10px 20px;
+  padding: 10px 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,7 +30,7 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
-  flex: 8;
+  flex: 75%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,7 +45,7 @@ const Brand = styled.h1`
 `;
 
 const Right = styled.div`
-  flex: 2;
+  flex: 25%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -58,8 +54,8 @@ const Right = styled.div`
 
 const MenuPopup = styled.div`
   position: absolute;
-  top: 60px;
-  right: 20px;
+  top: 100px;
+  right: 250px;
   background-color: white;
   z-index: 1;
   padding: 10px;
@@ -106,9 +102,7 @@ const Navbar = () => {
   const [query, setQuery] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const [items, setItems] = useState([]);
-  // const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
- 
 
   // Gọi API lấy dữ liệu danh sách sách
   useEffect(() => {
@@ -133,7 +127,8 @@ const Navbar = () => {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
 
-  recognition.lang = "vi-VN"; // Đặt ngôn ngữ là tiếng Việt
+  // recognition.lang = "vi-VN" ; // Đặt ngôn ngữ là tiếng Việt
+  recognition.lang = "en-US"; // Đặt ngôn ngữ là tiếng Anh
 
   // Hàm bắt đầu nhận diện giọng nói
   const startSpeechRecognition = () => {
@@ -143,8 +138,9 @@ const Navbar = () => {
   // Lắng nghe sự kiện khi nhận diện xong
   recognition.onresult = (e) => {
     const transcript = e.results[0][0].transcript;
-    setQuery(transcript); // Cập nhật kết quả nhận diện giọng nói vào query
-    triggerSearch(transcript); // Tự động gọi hàm tìm kiếm sau khi nhận diện
+    const cleanedTranscript = transcript.replace(/[.,]/g, ""); // Xóa dấu chấm, phẩy
+    setQuery(cleanedTranscript); // Cập nhật kết quả nhận diện giọng nói vào query
+    triggerSearch(cleanedTranscript); // Tự động gọi hàm tìm kiếm sau khi nhận diện
   };
 
   // Hàm tìm kiếm (giống như khi nhấn nút Tìm kiếm)
@@ -153,7 +149,6 @@ const Navbar = () => {
     setQuery(""); // Sau khi tìm kiếm xong, reset query
   };
 
-
   const searchItems = (event) => {
     const query = event.query.toLowerCase();
     const results = items.filter((item) =>
@@ -161,9 +156,6 @@ const Navbar = () => {
     );
     setFilteredItems(results);
   };
-
-  //   // Function to handle showing only 5 items and the rest
-  // const displayedItems = showAll ? filteredItems : filteredItems.slice(0, 5);
 
   // Custom item template for AutoComplete
   const itemTemplate = (item) => {
@@ -183,7 +175,7 @@ const Navbar = () => {
     }
     return (
       <Link to={`/books/${item.id}`} className="link no-underline text-color">
-        <div className="flex align-items-center">
+        <div className="flex align-items-center" onClick={() => setQuery("")}>
           <img src={item.image} alt={item.title} width="50" className="mr-2" />
           <div className="flex flex-column w-13rem">
             <span className="font-bold mb-2">{item.title}</span>
@@ -217,7 +209,8 @@ const Navbar = () => {
 
   return (
     <Container>
-      <Wrapper>
+      <Banner />
+      <Wrapper className="container mx-auto">
         <Left>
           {!isAdmin ? (
             <NavLink
@@ -246,18 +239,8 @@ const Navbar = () => {
               <Brand>Book Store</Brand>
             </NavLink>
           )}
-          {/* {!isAdmin ? (
-            <NavLink to={"/"} style={{ textDecoration: "none" }}>
-              <Brand>Book Store</Brand>
-            </NavLink>
-          ) : (
-            <NavLink to={"/admin/dashboard"} style={{ textDecoration: "none" }}>
-              <Brand>Book Store</Brand>
-            </NavLink>
-          )} */}
-
           {!isAdmin && (
-            <div className="p-inputgroup w-8">
+            <div className="p-inputgroup w-7">
               <AutoComplete
                 value={query}
                 suggestions={[
@@ -278,9 +261,9 @@ const Navbar = () => {
                   }
                 }}
                 panelStyle={{ maxHeight: "auto" }}
-                // onFocus={() => setValue("")}
+                onFocus={() => setQuery("")}
               />
-              <Button 
+              <Button
                 label="Tìm kiếm"
                 className="p-button-warning border-round-right"
                 onClick={() => {
@@ -288,13 +271,13 @@ const Navbar = () => {
                   setQuery("");
                 }}
               />
-              <Button style={{ marginLeft: "10px", borderRadius: "50px" }}
-            icon="pi pi-microphone"
-            className="p-button-warning p-ml-2"
-            onClick={startSpeechRecognition}
-          />
+              <Button
+                style={{ marginLeft: "10px", borderRadius: "50px" }}
+                icon="pi pi-microphone"
+                className="p-button-warning p-ml-2"
+                onClick={startSpeechRecognition}
+              />
             </div>
-            
           )}
         </Left>
 
@@ -302,13 +285,6 @@ const Navbar = () => {
           {/* Ẩn thông báo và giỏ hàng nếu là admin */}
           {!isAdmin && (
             <>
-              {/* <CustomNavLink>
-                <MenuItem>
-                  <NotificationsOutlinedIcon color="action" />
-                  <span>Thông báo</span>
-                </MenuItem>
-              </CustomNavLink> */}
-
               <CustomNavLink to={"/cart"}>
                 <MenuItem>
                   <div
@@ -389,4 +365,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

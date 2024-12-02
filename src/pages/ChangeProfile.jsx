@@ -109,14 +109,16 @@ const ChangeProfile = () => {
       <Container>
         <Wrapper>
           <ProfileLeft index={2} />
-          <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
+          <Right
+            style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
+          >
             <Title>Chỉnh sửa thông tin cá nhân</Title>
             <ErrorMessage
               errorMessage={errorMessage}
               display={errorMessage === "" ? "none" : "flex"}
             />
             <Form>
-              <InfoItem>
+              {/* <InfoItem>
                 <InfoItemLabel>Username</InfoItemLabel>
                 <FormInput
                   placeholder={"Username"}
@@ -128,7 +130,7 @@ const ChangeProfile = () => {
                     }))
                   }
                 />
-              </InfoItem>
+              </InfoItem> */}
               <InfoItem>
                 <InfoItemLabel>Họ tên</InfoItemLabel>
                 <FormInput

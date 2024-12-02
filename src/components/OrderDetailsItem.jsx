@@ -104,7 +104,10 @@ const OrderDetailsItem = ({ book }) => {
   return (
     <Product>
       <ProductDetail>
-        <Image src={book.image} style={{ marginRight: "10px" }} />
+        <CustomNavLink to={`/books/${book.id}`}>
+          <Image src={book.image} style={{ marginRight: "10px" }} />
+        </CustomNavLink>
+
         <ProductName>
           <CustomNavLink to={`/books/${book.id}`}>{book.title}</CustomNavLink>
         </ProductName>

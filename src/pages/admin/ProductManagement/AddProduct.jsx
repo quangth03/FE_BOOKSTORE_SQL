@@ -53,7 +53,7 @@ const AddProduct = () => {
 
   const validateInput = () => {
     const currentDate = new Date().toISOString().split("T")[0];
-  
+
     if (
       !data.title ||
       !data.author ||
@@ -61,69 +61,68 @@ const AddProduct = () => {
       !data.quantity ||
       !data.image ||
       !data.description ||
-      !data.publication_date
+      !data.publication_date ||
+      !data.discount
     ) {
       setErrorMessage("Vui lòng điền đầy đủ thông tin.");
       return false;
     }
-  
-    if (isNaN(data.quantity) || data.quantity < 0) {
-      setErrorMessage("Số lượng phải là số hơn hoặc bằng 0.");
+
+    if (isNaN(data.quantity) || data.quantity <= 0) {
+      setErrorMessage("Số lượng phải là số lớn hơn 0.");
       return false;
     }
-  
+
     if (isNaN(data.price) || data.price <= 0) {
       setErrorMessage("Giá tiền phải là số lớn hơn 0.");
       return false;
     }
-  
+
     if (isNaN(data.discount) || data.discount < 0 || data.discount >= 100) {
       setErrorMessage("Khuyến mãi phải là số từ 0 đến dưới 100 (%)");
       return false;
     }
-  
+
     if (data.publication_date >= currentDate) {
       setErrorMessage("Ngày xuất bản phải trước ngày hiện tại.");
       return false;
     }
-  
+
     setErrorMessage(""); // Xóa lỗi nếu tất cả hợp lệ
     return true;
   };
-  
 
   const handleCreateBook = () => {
-  if (!validateInput()) {
-    return;
-  }
+    if (!validateInput()) {
+      return;
+    }
 
-  // Tiến hành gửi dữ liệu
-  fetch(`${endpoint}/admin/books/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: Cookies.get("authToken"),
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        toast.success("Thêm sản phẩm thành công",{
-          autoClose: 3000, 
-        });
-        setTimeout(() => {
-          navigate("/admin/books");
-        }, 3000);
-      } else {
-        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
-      }
+    // Tiến hành gửi dữ liệu
+    fetch(`${endpoint}/admin/books/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: Cookies.get("authToken"),
+      },
+      body: JSON.stringify(data),
     })
-    .catch(() => {
-      setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
-    });
-};
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("Thêm sản phẩm thành công", {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/admin/books");
+          }, 2100);
+        } else {
+          setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
+        }
+      })
+      .catch(() => {
+        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
+      });
+  };
 
-  
   return (
     <div className="list">
       <Sidebar />

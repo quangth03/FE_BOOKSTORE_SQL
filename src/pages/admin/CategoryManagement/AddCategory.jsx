@@ -49,7 +49,6 @@ const AddCategory = () => {
   useEffect(() => {}, [errorMessage]);
 
   const handleCreateCategory = () => {
-
     if (!data.image || !data.name || !data.description) {
       setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
       return;
@@ -65,18 +64,18 @@ const AddCategory = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Thêm thể loại thành công",{
-            autoClose: 3000, 
+          toast.success("Thêm thể loại thành công", {
+            autoClose: 2000,
           });
           setTimeout(() => {
             navigate("/admin/categories");
-          }, 3000);
+          }, 2100);
         } else setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       })
       .catch((error) => {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       });
-      setErrorMessage("");
+    setErrorMessage("");
   };
 
   return (

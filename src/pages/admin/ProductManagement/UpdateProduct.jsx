@@ -74,7 +74,9 @@ const UpdateProduct = () => {
       .then((response) => response.json())
       .then((data) => {
         // Format the date to ensure it's in the correct format
-        const formattedDate = new Date(data.publication_date).toISOString().split("T")[0];
+        const formattedDate = new Date(data.publication_date)
+          .toISOString()
+          .split("T")[0];
         setData({ ...data, publication_date: formattedDate });
       })
       .catch((error) => {
@@ -86,7 +88,7 @@ const UpdateProduct = () => {
   // Validate the input fields
   const validateInput = () => {
     const currentDate = new Date().toISOString().split("T")[0];
-  
+
     if (
       !data.title ||
       !data.author ||
@@ -94,32 +96,33 @@ const UpdateProduct = () => {
       !data.quantity ||
       !data.image ||
       !data.description ||
-      !data.publication_date
+      !data.publication_date ||
+      !data.discount
     ) {
       setErrorMessage("Vui lòng điền đầy đủ thông tin.");
       return false;
     }
-  
+
     if (isNaN(data.quantity) || data.quantity < 0) {
       setErrorMessage("Số lượng phải là số hơn hoặc bằng 0.");
       return false;
     }
-  
+
     if (isNaN(data.price) || data.price <= 0) {
       setErrorMessage("Giá tiền phải là số lớn hơn 0.");
       return false;
     }
-  
+
     if (isNaN(data.discount) || data.discount < 0 || data.discount >= 100) {
       setErrorMessage("Khuyến mãi phải là số từ 0 đến dưới 100 (%)");
       return false;
     }
-  
+
     if (data.publication_date >= currentDate) {
       setErrorMessage("Ngày xuất bản phải trước ngày hiện tại.");
       return false;
     }
-  
+
     setErrorMessage(""); // Xóa lỗi nếu tất cả hợp lệ
     return true;
   };
@@ -141,12 +144,12 @@ const UpdateProduct = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Cập nhật sản phẩm thành công",{
-            autoClose: 3000, 
+          toast.success("Cập nhật sản phẩm thành công", {
+            autoClose: 2000,
           });
           setTimeout(() => {
             navigate("/admin/books");
-          }, 3000);
+          }, 2100);
         } else {
           setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
         }
@@ -282,7 +285,9 @@ const UpdateProduct = () => {
             <InfoItemLabel>Thể loại</InfoItemLabel>
             <CategoriesInfo>
               {data.categories && data.categories.length > 0
-                ? data.categories.map((item, index) => <p key={index}>- {item.name} </p>)
+                ? data.categories.map((item, index) => (
+                    <p key={index}>- {item.name} </p>
+                  ))
                 : ""}
             </CategoriesInfo>
             <CategoriesButtonWrapper>

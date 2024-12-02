@@ -212,7 +212,9 @@ const CartItem = ({ cartItem, updateCart }) => {
     <div>
       <Product>
         <ProductDetail>
-          <Image src={cartItem.image} />
+          <CustomNavLink to={`/books/${cartItem.id}`}>
+            <Image src={cartItem.image} />
+          </CustomNavLink>
           <ProductName>
             <CustomNavLink to={`/books/${cartItem.id}`}>
               {cartItem.title}{" "}

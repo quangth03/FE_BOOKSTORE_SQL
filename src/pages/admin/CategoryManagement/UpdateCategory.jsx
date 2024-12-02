@@ -44,61 +44,57 @@ export const Button = styled.div`
 const UpdateCategory = () => {
   const [data, setData] = useState({});
 
-  
   const navigate = useNavigate();
 
   const { id } = useParams();
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => { }, [errorMessage]);
+  useEffect(() => {}, [errorMessage]);
 
   useEffect(() => {
     fetch(`${endpoint}/admin/categories/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data[0]);
-        
       })
       .catch((error) => console.error(error));
   }, [id]);
-  
-    const handleUpdateCategory = () => {
-      if (!data.image || !data.name || !data.description) {
-        setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
-        return;
-      }
-      fetch(`${endpoint}/admin/categories/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: Cookies.get("authToken"),
-        },
-        body: JSON.stringify(data),
+
+  const handleUpdateCategory = () => {
+    if (!data.image || !data.name || !data.description) {
+      setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+    fetch(`${endpoint}/admin/categories/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: Cookies.get("authToken"),
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("Cập nhật thể loại thành công", {
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/admin/categories");
+          }, 2100);
+        }
       })
-        .then((response) => {
-          if (response.status === 200) {
-            toast.success("Cập nhật thể loại thành công",{
-              autoClose: 3000, 
-            });
-            setTimeout(() => {
-              navigate("/admin/categories");
-            }, 3000);
-          }
-        })
-        .catch((error) => {
-          setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
-        });
-      setErrorMessage("");
-    };
+      .catch((error) => {
+        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
+      });
+    setErrorMessage("");
+  };
 
   return (
     <div className="list">
       <Sidebar />
       <ToastContainer />
-      <Right
-        style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
-      >
+      <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Chỉnh Sửa Thông Tin Thể loại</Title>
         <ErrorMessage
           errorMessage={errorMessage}
@@ -146,11 +142,7 @@ const UpdateCategory = () => {
             />
           </InfoItem>
           <ButtonWrapper>
-            <Button
-             onClick={handleUpdateCategory}
-            >
-              Cập nhật thông tin
-            </Button>
+            <Button onClick={handleUpdateCategory}>Cập nhật thông tin</Button>
           </ButtonWrapper>
         </Form>
       </Right>

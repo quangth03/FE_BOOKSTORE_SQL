@@ -1,7 +1,9 @@
-import slider_1 from "./assets/slider1.jpg";
-import slider_2 from "./assets/slider2.jpg";
-import slider_3 from "./assets/slider3.jpg";
-import slider_4 from "./assets/slider4.jpg";
+import slider_1 from "./assets/slider1.png";
+import slider_2 from "./assets/slider2.png";
+import slider_3 from "./assets/slider3.png";
+import slider_4 from "./assets/slider4.png";
+import slider_5 from "./assets/slider5.png";
+import slider_6 from "./assets/slider6.png";
 
 export const endpoint = "http://localhost:8080";
 // export const endpoint = "http://mathsolvervn.com:4002";
@@ -15,4 +17,11 @@ export const colors = {
   color2Light: "#aed9ea",
 };
 
-export const sliderItems = [slider_1, slider_2, slider_3, slider_4];
+export const sliderItems = [
+  slider_1,
+  slider_2,
+  slider_3,
+  slider_4,
+  slider_5,
+  slider_6,
+];

@@ -159,13 +159,12 @@ const Cart = () => {
     }
 
     if (isValid && cartItems.length > 0) {
-      
-      const temp = selectedDiscount ??{};
+      const temp = selectedDiscount ?? {};
       fetch(`${endpoint}/user/order`, {
         method: "POST",
         headers: {
           authorization: Cookies.get("authToken"),
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(temp),
       })
@@ -209,7 +208,7 @@ const Cart = () => {
               </Products>
             </Info>
             <Total>
-              <TotalTitle>TỔNG ĐƠN HÀNG</TotalTitle>
+              <TotalTitle>THÔNG TIN ĐƠN HÀNG</TotalTitle>
               <TotalItem>
                 <TotalText>Tổng tiền các sản phẩm</TotalText>
                 <TotalPrice>
@@ -242,19 +241,20 @@ const Cart = () => {
                         value={JSON.stringify(discount)}
                         disabled={isDisabled} // Disable nếu không đủ giá trị đơn hàng
                       >
-                        {discount.description} - {discount.value}{" "}
+                        {discount.description} -{" "}
+                        {Number(discount.value).toLocaleString()}{" "}
                         {isDisabled && "(Không áp dụng)"}
                       </option>
                     );
                   })}
                 </DiscountSelect>
               </TotalItem>
-              <TotalItem type="total">
+              {/* <TotalItem type="total">
                 <TotalText>Tổng cộng</TotalText>
                 <TotalPrice>
                   {Number(totalAmount).toLocaleString()} VND
                 </TotalPrice>
-              </TotalItem>
+              </TotalItem> */}
               <TotalItem type="total">
                 <TotalText>Tổng thanh toán</TotalText>
                 <TotalPrice>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { endpoint } from "../data";
-import PageNavigation from "../components/PageNavigation";
+// import PageNavigation from "../components/PageNavigation";
 import ProductsList from "../components/ProductsList";
+import { Banner } from "./Search";
 
 const CategiryBooks = () => {
   const { id } = useParams();
@@ -35,8 +36,9 @@ const CategiryBooks = () => {
       .catch((error) => console.error(error));
   }, [current]);
   return (
-    <div>
-      <ProductsList books={books} title={title} />
+    <div className="container mx-auto">
+      <Banner>{title}</Banner>
+      <ProductsList books={books} hasBanner={false} />
       {/* <PageNavigation
         current={Number(current)}
         total={5}

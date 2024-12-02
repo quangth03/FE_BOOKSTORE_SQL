@@ -245,7 +245,6 @@ export const listOrderStatus = [
   { id: 3, name: "Đã xác nhận" },
   { id: 4, name: "Đang giao hàng" },
   { id: 5, name: "Đã giao hàng" },
-  { id: 6, name: "Hoàn thành" },
 ];
 export const categoryColumns = [
   { field: "id", headerName: "ID", width: 70 },
@@ -269,7 +268,14 @@ export const categoryColumns = [
   {
     field: "description",
     headerName: "Mô tả",
-    width: 300,
+    width: 500,
+    renderCell: (params) => {
+      return (
+        <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
+          {params.row.description}
+        </div>
+      );
+    },
   },
 
   {

@@ -15,7 +15,8 @@
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 250px;
+    width: 300px;
+    height: 140px;
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   }
@@ -24,16 +25,19 @@
     margin-top: 5px;
     display: flex;
     justify-content: space-around;
+    margin-top: 30px;
+    align-items: center;
   }
   
   .confirmButton {
-    margin-left:12px;
+    // margin-left:12px;
     background: #d33;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    // margin-left: -15px;
   }
   
   .cancelButton {

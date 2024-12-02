@@ -29,10 +29,10 @@ const Datatable = () => {
       })
       .catch((error) => console.error(error));
   };
-  
+
   const handleBlockUser = async () => {
     if (!blockReason) {
-      setErrorMessage("Vui lòng nhập lý do chặn.");  // Hiển thị thông báo lỗi
+      setErrorMessage("Vui lòng nhập lý do chặn."); // Hiển thị thông báo lỗi
       return;
     }
 
@@ -44,24 +44,22 @@ const Datatable = () => {
         authorization: Cookies.get("authToken"),
       },
       body: JSON.stringify({
-        userId: userIdToBlock,  // ID người dùng cần chặn
-        blockReason: blockReason,  // Lý do chặn
+        userId: userIdToBlock, // ID người dùng cần chặn
+        blockReason: blockReason, // Lý do chặn
       }),
     });
-  
+
     if (response.status === 200) {
-      toast.success("Chặn người dùng thành công",{
-        autoClose: 3000, 
+      toast.success("Chặn người dùng thành công", {
+        autoClose: 2000,
       });
-      handleGetUsers();  // Cập nhật lại danh sách người dùng
-      setIsModalOpen(false);  // Đóng modal sau khi chặn thành công
-      setBlockReason("");  // Reset lý do chặn
+      handleGetUsers(); // Cập nhật lại danh sách người dùng
+      setIsModalOpen(false); // Đóng modal sau khi chặn thành công
+      setBlockReason(""); // Reset lý do chặn
       setErrorMessage("");
     } else {
-      alert("Đã xảy ra lỗi khi xử lý yêu cầu của bạn.");  // Hiển thị lỗi nếu có
+      alert("Đã xảy ra lỗi khi xử lý yêu cầu của bạn."); // Hiển thị lỗi nếu có
     }
-    
-   
   };
 
   // const handleDelete = (id) => {
@@ -76,7 +74,7 @@ const Datatable = () => {
   //       if (response.status === 200) {
   //         handleGetUsers();
   //         setIsModalOpen(false); // Đóng modal sau khi chặn thành công
-  //         setBlockReason(""); 
+  //         setBlockReason("");
   //       }
   //     })
   //     .catch((error) => {
@@ -96,8 +94,8 @@ const Datatable = () => {
       .then((response) => {
         if (response.status === 200) {
           handleGetUsers();
-          toast.success("Bỏ chặn người dùng thành công",{
-            autoClose: 3000, 
+          toast.success("Bỏ chặn người dùng thành công", {
+            autoClose: 2000,
           });
         }
       })
@@ -140,7 +138,7 @@ const Datatable = () => {
 
   return (
     <div className="datatable">
-    <ToastContainer />
+      <ToastContainer />
       <div className="datatableTitle">Danh Sách Người Dùng</div>
       <DataGrid
         className="datagrid"
@@ -162,20 +160,53 @@ const Datatable = () => {
               </div>
             )}
             <textarea
+              style={{ width: "100%", height: "100px", marginTop: "10px" }}
               value={blockReason}
               onChange={(e) => setBlockReason(e.target.value)}
               placeholder="Nhập lý do chặn..."
             ></textarea>
-            
-            <button style={{color: "white", backgroundColor:"#d33"}}
-              onClick={() => {
-                handleBlockUser(userIdToBlock); // Gọi hàm chặn với ID người dùng
-              }}
-            >
-              Chặn
-            </button>
-            <button style={{backgroundColor: "#3085d6", color: "white"}}
-            onClick={() => {setIsModalOpen(false);setBlockReason("");setErrorMessage("")}}>Hủy</button>
+            <div className="flex justify-content-end">
+              <button
+                style={{
+                  color: "white",
+                  backgroundColor: "#d33",
+                  marginRight: "15px",
+                  marginTop: "10px",
+                  cursor: "pointer",
+                  padding: "8px 16px",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+                onClick={() => {
+                  handleBlockUser(userIdToBlock); // Gọi hàm chặn với ID người dùng
+                }}
+              >
+                Chặn
+              </button>
+              <button
+                style={{
+                  backgroundColor: "#3085d6",
+                  color: "white",
+                  // marginRight: "15px",
+                  marginTop: "10px",
+                  cursor: "pointer",
+                  padding: "8px 16px",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  border: "none",
+                  borderRadius: "5px",
+                }}
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setBlockReason("");
+                  setErrorMessage("");
+                }}
+              >
+                Hủy
+              </button>
+            </div>
           </div>
         </div>
       )}
