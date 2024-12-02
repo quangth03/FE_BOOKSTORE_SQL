@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Cookies from "js-cookie";
 import { Search, ShoppingCartCheckoutOutlined } from "@mui/icons-material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
@@ -319,6 +320,21 @@ const Navbar = () => {
                   >
                     <ShoppingCartCheckoutOutlined color="" />
                     <span>Giỏ hàng</span>
+                  </div>
+                </MenuItem>
+              </CustomNavLink>
+
+              <CustomNavLink to={"/wishList"}>
+                <MenuItem>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FavoriteBorderIcon color="" />
+                    <span>Yêu thích</span>
                   </div>
                 </MenuItem>
               </CustomNavLink>

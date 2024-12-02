@@ -38,6 +38,7 @@ import AdminUpdateDiscount from "./pages/admin/DiscountManagement/UpdateDiscount
 
 import "./App.css";
 import Comment from "./pages/admin/Comment/Comment";
+import WishList from "./pages/WishList";
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
     return <Navigate to={"/login"} replace />;
@@ -66,7 +67,6 @@ const App = () => {
         <Route exact path="/books" Component={ProductsPage} />
         <Route exact path="/books/:id" Component={ProductDetail} />
         <Route exact path="/category/:id" Component={CategiryBooks} />
-
         <Route exact path="/forgotPassword" Component={ForgotPassword} />
 
         <Route
@@ -282,6 +282,17 @@ const App = () => {
             </UserAuthentication>
           }
         />
+
+        <Route
+          exact
+          path="/wishList"
+          element={
+            <UserAuthentication>
+              <WishList />
+            </UserAuthentication>
+          }
+        />
+
         <Route
           exact
           path="/admin/comments"

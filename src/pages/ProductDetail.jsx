@@ -171,6 +171,25 @@ const ProductDetail = () => {
       .catch((error) => console.error(error));
     toast.success("Thêm vào giỏ hàng thành công");
   };
+  
+  const handleAddToWishList = () => {
+    if (Cookies.get("authToken") === undefined) {
+      // If no authToken, redirect to the login page
+      navigate("/login");
+    }
+    fetch(`${endpoint}/user/wishList`, {
+      method: "POST",
+      headers: {
+        authorization: Cookies.get("authToken"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {})
+      .catch((error) => console.error(error));
+    toast.success("Thêm vào yêu thích thành công");
+  };
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -241,6 +260,9 @@ const ProductDetail = () => {
                 </AmountContainer>
                 <AddButton onClick={handleAddToCart}>
                   THÊM VÀO GIỎ HÀNG
+                </AddButton>
+                <AddButton onClick={handleAddToWishList}>
+                  Yêu thích
                 </AddButton>
                 <ToastContainer />
               </AddContainer>
