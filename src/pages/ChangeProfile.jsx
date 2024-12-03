@@ -6,6 +6,7 @@ import { colors, endpoint } from "../data";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../components/ErrorMessage";
+import { toast } from "react-toastify";
 
 // Styled components
 export const Title = styled.span`
@@ -94,7 +95,10 @@ const ChangeProfile = () => {
       })
         .then((response) => {
           if (response.status === 200) {
-            navigate("/profile");
+            toast.success("Cập nhật thông tin thành công", { autoClose: 2000 });
+            setTimeout(() => {
+              navigate("/profile");
+            }, 2100);
             return;
           }
         })

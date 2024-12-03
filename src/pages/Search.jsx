@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { endpoint } from "../data";
 import styled from "styled-components";
 import { colors } from "../data";
+import Cookies from "js-cookie";
 
 export const Banner = styled.div`
   display: flex;
@@ -30,10 +31,30 @@ const Search = () => {
       })
       .catch((error) => console.error(error));
   }, [title]);
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+        setWishlist(data);
+      })
+      console.log("Wishlist in WishList component:", wishlist);
+  };
   return (
     <div className="container mx-auto">
       <Banner>{title}</Banner>
-      <ProductsList books={books} hasBanner={false} />
+      <ProductsList books={books} hasBanner={false} wishlist={wishlist} fetchWishlist={fetchWishlist}/>
       {/* <PageNavigation current={Number(current)} total={5} urlPattern="/books" /> */}
     </div>
   );

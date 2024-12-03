@@ -4,7 +4,7 @@ import { userColumns } from "../../datatablesource";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { endpoint } from "../../data";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const Datatable = () => {
   const [data, setData] = useState([]);
@@ -94,7 +94,7 @@ const Datatable = () => {
       .then((response) => {
         if (response.status === 200) {
           handleGetUsers();
-          toast.success("Bỏ chặn người dùng thành công", {
+          toast.info("Bỏ chặn người dùng thành công", {
             autoClose: 2000,
           });
         }
@@ -138,7 +138,6 @@ const Datatable = () => {
 
   return (
     <div className="datatable">
-      <ToastContainer />
       <div className="datatableTitle">Danh Sách Người Dùng</div>
       <DataGrid
         className="datagrid"

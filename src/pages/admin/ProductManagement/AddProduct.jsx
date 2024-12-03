@@ -6,7 +6,7 @@ import { colors, endpoint } from "../../../data";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import ErrorMessage from "../../../components/ErrorMessage";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
 export const Title = styled.span`
@@ -126,8 +126,6 @@ const AddProduct = () => {
   return (
     <div className="list">
       <Sidebar />
-      <ToastContainer />
-
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Thêm Sản Phẩm Mới</Title>
         <ErrorMessage

@@ -1,37 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import Cookies from "js-cookie";
 import { endpoint } from "../data";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductsList from "../components/ProductsList";
+import { Banner } from "./Search";
+
+import { MyContext } from "../context/wishListContext";
 
 const Container = styled.div``;
 
-const Wrapper = styled.div`
-  padding: 20px;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
-const EmptyMessage = styled.p`
-  text-align: center;
-  font-size: 18px;
-  color: #888;
-`;
-
 const WishList = () => {
+  const { setSharedData } = useContext(MyContext);
   const [wishlist, setWishlist] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchWishlist();
   }, []);
 
-  // Lấy danh sách yêu thích từ API
   const fetchWishlist = () => {
     fetch(`${endpoint}/user/wishList`, {
       headers: {
@@ -40,42 +27,27 @@ const WishList = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (Array.isArray(data)) {
-          setWishlist(data);
-        } else {
-          toast.error("Dữ liệu không hợp lệ");
-        }
+        console.log("Data from API:", data);
+        setWishlist(data);
+        setSharedData(data); // Update shared data for other components (e.g., Header) when wishlist changes
       })
-      .catch((error) => toast.error("Lỗi khi lấy wishlist: " + error))
-      .finally(() => setLoading(false));
-  };
-
-  // Xóa sản phẩm khỏi danh sách yêu thích
-  const handleRemoveItem = (bookId) => {
-    fetch(`${endpoint}/user/wishList/${bookId}`, {
-      method: "DELETE",
-      headers: {
-        authorization: Cookies.get("authToken"),
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          fetchWishlist(); // Re-fetch the wishlist after removing an item
-          toast.success("Sách đã được xóa khỏi danh sách yêu thích");
-        } else {
-          toast.error("Lỗi khi xóa sách");
-        }
-      })
-      .catch((error) => toast.error("Lỗi khi xóa sách: " + error));
+      .catch((error) => toast.error("Lỗi khi lấy wishlist: " + error));
+    console.log("Wishlist in WishList component:", wishlist);
   };
 
   return (
-    <Container>
-          <ProductsList
-            books={wishlist} title="Danh sách yêu thích"// Truyền danh sách sản phẩm yêu thích vào ProductsList
-            onRemove={handleRemoveItem} // Truyền hàm xóa vào ProductsList
-          />
-        <ToastContainer />
+    <Container className="container mx-auto">
+      {wishlist.length > 0 ? (
+        <Banner>Danh sách yêu thích</Banner>
+      ) : (
+        <Banner>Danh sách yêu thích trống</Banner>
+      )}
+      <ProductsList
+        books={wishlist}
+        hasBanner={false}
+        fetchWishlist={fetchWishlist}
+        wishlist={wishlist}
+      />
     </Container>
   );
 };

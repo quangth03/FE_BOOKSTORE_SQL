@@ -4,6 +4,7 @@ import { endpoint } from "../data";
 // import PageNavigation from "../components/PageNavigation";
 import ProductsList from "../components/ProductsList";
 import { Banner } from "./Search";
+import Cookies from "js-cookie";
 
 const CategiryBooks = () => {
   const { id } = useParams();
@@ -35,10 +36,33 @@ const CategiryBooks = () => {
       })
       .catch((error) => console.error(error));
   }, [current]);
+
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+        setWishlist(data);
+      })
+      console.log("Wishlist in WishList component:", wishlist);
+  };
+
+
   return (
     <div className="container mx-auto">
       <Banner>{title}</Banner>
-      <ProductsList books={books} hasBanner={false} />
+      <ProductsList books={books} hasBanner={false} wishlist={wishlist} fetchWishlist={fetchWishlist}/>
       {/* <PageNavigation
         current={Number(current)}
         total={5}

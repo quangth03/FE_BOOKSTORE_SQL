@@ -5,7 +5,7 @@ import CustomNavLink from "../components/CustomNavLink";
 import CartItem from "../components/CartItem";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Container = styled.div``;
@@ -191,7 +191,8 @@ const Cart = () => {
             <TopButton type="filled" onClick={handleCheckout}>
               THANH TOÁN
             </TopButton>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
+            <div style={{ width: "10px" }}></div>
           </Top>
           <Bottom>
             <Info>

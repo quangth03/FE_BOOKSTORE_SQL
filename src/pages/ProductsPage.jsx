@@ -9,6 +9,7 @@ import { formatMoney } from "../utils/table-pagination";
 import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
 import { Banner } from "./Search";
+import Cookies from "js-cookie";
 
 const ProductsPage = () => {
   const fild = [
@@ -77,6 +78,26 @@ const ProductsPage = () => {
         ? prev.filter((item) => item !== category)
         : [...prev, category]
     );
+  };
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+        setWishlist(data);
+      })
+      console.log("Wishlist in WishList component:", wishlist);
   };
   return (
     <>
@@ -172,7 +193,7 @@ const ProductsPage = () => {
 
         <div style={{ width: "85%" }}>
           <Banner>Tất cả sản phẩm</Banner>
-          <ProductsList books={books} hasBanner={false} />
+          <ProductsList books={books} hasBanner={false} wishlist={wishlist}  fetchWishlist={fetchWishlist}/>
           <PageNavigation
             current={Number(current)}
             total={100}

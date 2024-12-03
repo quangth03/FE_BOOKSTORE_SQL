@@ -6,7 +6,7 @@ import { colors, endpoint } from "../../../data";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -125,8 +125,6 @@ const UpdateDiscount = () => {
   return (
     <div className="list">
       <Sidebar />
-      <ToastContainer />
-
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Chỉnh Sửa Thông Tin Mã Giảm Giá</Title>
         {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}

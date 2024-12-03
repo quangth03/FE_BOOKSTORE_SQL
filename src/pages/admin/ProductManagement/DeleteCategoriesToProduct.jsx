@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { MultiSelect } from "primereact/multiselect";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const DeleteCategoriesToProduct = () => {
   const [book, setBook] = useState({});
@@ -68,8 +68,6 @@ const DeleteCategoriesToProduct = () => {
   return (
     <div className="list">
       <Sidebar />
-      <ToastContainer />
-
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Xóa Thể Loại Khỏi Sản Phẩm "{book.title}"</Title>
         <Form>
