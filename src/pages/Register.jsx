@@ -8,7 +8,7 @@ import { endpoint } from "../data";
 import CustomNavLink from "../components/CustomNavLink";
 import Logo from "../components/Logo";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Styled Components
@@ -243,7 +243,6 @@ const Register = () => {
             <b>Chính sách quyền riêng tư</b> của chúng tôi
           </Agreement>
           <Button onClick={handleCreateAccount}>Tạo tài khoản</Button>
-          <ToastContainer />
           <AlreadyAccount>
             Bạn đã có tài khoản?{" "}
             <CustomNavLink to={"/login"}>

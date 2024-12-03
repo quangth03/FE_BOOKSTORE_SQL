@@ -7,7 +7,7 @@ const TabOption = styled.button`
   color: #888888;
   color: ${(props) => (props.disabled ? "white" : "whitegrey")};
   cursor: pointer;
-  padding: 25px;
+  padding: 18px 25px;
   width: 100%;
   background-color: ${(props) => (props.disabled ? colors.color1 : "white")};
   transition: all 0.5s ease;
@@ -83,7 +83,12 @@ const TabProductDetail = ({ book }) => {
             {currentTab === "2" && (
               <div>
                 <DetailItem>Tác giả: {book.author}</DetailItem>
-                <DetailItem>Thể loại: { book.categories && book.categories.length > 0 ? book.categories.map((item) => <p>- {item.name} </p>) : ""}</DetailItem>
+                <DetailItem>
+                  Thể loại:{" "}
+                  {book.categories && book.categories.length > 0
+                    ? book.categories.map((item) => <p>- {item.name} </p>)
+                    : ""}
+                </DetailItem>
                 <DetailItem>Ngày xuất bản: {publication_date}</DetailItem>
               </div>
             )}

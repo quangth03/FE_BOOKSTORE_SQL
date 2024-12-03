@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -93,59 +93,62 @@ const UpdateCategory = () => {
   return (
     <div className="list">
       <Sidebar />
-      <ToastContainer />
-      <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
-        <Title>Chỉnh Sửa Thông Tin Thể loại</Title>
-        <ErrorMessage
-          errorMessage={errorMessage}
-          display={errorMessage === "" ? "none" : "flex"}
-        />
+      <div className="listContainer">
+        <Right
+          style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
+        >
+          <Title>Chỉnh Sửa Thông Tin Thể loại</Title>
+          <ErrorMessage
+            errorMessage={errorMessage}
+            display={errorMessage === "" ? "none" : "flex"}
+          />
 
-        <Form>
-          <InfoItem>
-            <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
-            <FormInput
-              placeholder="http://"
-              value={data.image}
-              onChange={(e) =>
-                setData((prevData) => ({
-                  ...prevData,
-                  image: e.target.value,
-                }))
-              }
-            />
-          </InfoItem>
-          <InfoItem>
-            <InfoItemLabel>Tên thể loại</InfoItemLabel>
-            <FormInput
-              placeholder={"Thể loại"}
-              value={data.name}
-              onChange={(e) =>
-                setData((prevData) => ({
-                  ...prevData,
-                  name: e.target.value,
-                }))
-              }
-            />
-          </InfoItem>
-          <InfoItem>
-            <InfoItemLabel>Mô tả</InfoItemLabel>
-            <FormInput
-              placeholder={"Thể loại hay"}
-              value={data.description}
-              onChange={(e) =>
-                setData((prevData) => ({
-                  ...prevData,
-                  description: e.target.value,
-                }))
-              }
-            />
-          </InfoItem>
-          <ButtonWrapper>
-            <Button onClick={handleUpdateCategory}>Cập nhật thông tin</Button>
-          </ButtonWrapper>
-        </Form>
-      </Right>
+          <Form>
+            <InfoItem>
+              <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
+              <FormInput
+                placeholder="http://"
+                value={data.image}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    image: e.target.value,
+                  }))
+                }
+              />
+            </InfoItem>
+            <InfoItem>
+              <InfoItemLabel>Tên thể loại</InfoItemLabel>
+              <FormInput
+                placeholder={"Thể loại"}
+                value={data.name}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    name: e.target.value,
+                  }))
+                }
+              />
+            </InfoItem>
+            <InfoItem>
+              <InfoItemLabel>Mô tả</InfoItemLabel>
+              <FormInput
+                placeholder={"Thể loại hay"}
+                value={data.description}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    description: e.target.value,
+                  }))
+                }
+              />
+            </InfoItem>
+            <ButtonWrapper>
+              <Button onClick={handleUpdateCategory}>Cập nhật thông tin</Button>
+            </ButtonWrapper>
+          </Form>
+        </Right>
+      </div>
     </div>
   );
 };

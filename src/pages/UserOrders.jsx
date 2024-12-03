@@ -38,7 +38,11 @@ const UserOrders = () => {
         <Right
           style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
         >
-          <Title>Đơn hàng của bạn</Title>
+          {orders.length > 0 ? (
+            <Title>Đơn hàng của bạn</Title>
+          ) : (
+            <Title>Bạn chưa có đơn hàng nào</Title>
+          )}
           <Orders>
             {orders.map((orderItem, index) => {
               return <OrderItem key={`order-item-${index}`} data={orderItem} />;

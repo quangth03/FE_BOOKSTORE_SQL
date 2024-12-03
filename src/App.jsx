@@ -44,6 +44,10 @@ import "primeflex/primeflex.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/primereact.min.css";
 import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { MyContextProvider } from "./context/wishListContext";
 
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
@@ -66,265 +70,268 @@ const App = () => {
     return <div style={{ backgroundColor: "floralwhite" }}>{children}</div>;
   };
   return (
-    <div>
-      <ScrollTop />
-      <NavBar />
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
+    <MyContextProvider>
+      <div>
+        <ScrollTop />
+        <NavBar />
+        <ToastContainer />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <Layout>
+                <Home />
+              </Layout>
+            }
+          />
 
-        <Route exact path="/login" Component={Login} />
-        <Route exact path="/register" Component={Register} />
-        <Route exact path="/search/:title" Component={Search} />
-        <Route exact path="/books" Component={ProductsPage} />
-        <Route exact path="/books/:id" Component={ProductDetail} />
-        <Route exact path="/category/:id" Component={CategoryBooks} />
+          <Route exact path="/login" Component={Login} />
+          <Route exact path="/register" Component={Register} />
+          <Route exact path="/search/:title" Component={Search} />
+          <Route exact path="/books" Component={ProductsPage} />
+          <Route exact path="/books/:id" Component={ProductDetail} />
+          <Route exact path="/category/:id" Component={CategoryBooks} />
 
-        <Route exact path="/forgotPassword" Component={ForgotPassword} />
+          <Route exact path="/forgotPassword" Component={ForgotPassword} />
 
-        <Route
-          exact
-          path="/admin/discounts"
-          element={
-            <AdminAuthentication>
-              <AdminDiscounts />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/discount/add"
-          element={
-            <AdminAuthentication>
-              <AdminAddDiscount />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/discount/update/:id"
-          element={
-            <AdminAuthentication>
-              <AdminUpdateDiscount />
-            </AdminAuthentication>
-          }
-        />
+          <Route
+            exact
+            path="/admin/discounts"
+            element={
+              <AdminAuthentication>
+                <AdminDiscounts />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/discount/add"
+            element={
+              <AdminAuthentication>
+                <AdminAddDiscount />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/discount/update/:id"
+            element={
+              <AdminAuthentication>
+                <AdminUpdateDiscount />
+              </AdminAuthentication>
+            }
+          />
 
-        <Route
-          exact
-          path="/admin/dashboard"
-          element={
-            <AdminAuthentication>
-              <Dashboard />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/users"
-          element={
-            <AdminAuthentication>
-              <AdminUsers />
-            </AdminAuthentication>
-          }
-        />
+          <Route
+            exact
+            path="/admin/dashboard"
+            element={
+              <AdminAuthentication>
+                <Dashboard />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/users"
+            element={
+              <AdminAuthentication>
+                <AdminUsers />
+              </AdminAuthentication>
+            }
+          />
 
-        <Route
-          exact
-          path="/admin/books"
-          element={
-            <AdminAuthentication>
-              <AdminProducts />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/order/all"
-          element={
-            <AdminAuthentication>
-              <AdminOrders />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/order/:orderIdParam"
-          element={
-            <AdminAuthentication>
-              <AdminOrderDetails />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/categories"
-          element={
-            <AdminAuthentication>
-              <AdminCategories />
-            </AdminAuthentication>
-          }
-        />
+          <Route
+            exact
+            path="/admin/books"
+            element={
+              <AdminAuthentication>
+                <AdminProducts />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/order/all"
+            element={
+              <AdminAuthentication>
+                <AdminOrders />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/order/:orderIdParam"
+            element={
+              <AdminAuthentication>
+                <AdminOrderDetails />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/categories"
+            element={
+              <AdminAuthentication>
+                <AdminCategories />
+              </AdminAuthentication>
+            }
+          />
 
-        <Route
-          exact
-          path="/admin/category/update/:id"
-          element={
-            <AdminAuthentication>
-              <AdminUpdateCategory />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/book/update/:id"
-          element={
-            <AdminAuthentication>
-              <AdminUpdateProduct />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/book/add"
-          element={
-            <AdminAuthentication>
-              <AdminAddProduct />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/category/add"
-          element={
-            <AdminAuthentication>
-              <AdminAddCategory />
-            </AdminAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/admin/books/:id/categories/add"
-          element={
-            <AdminAuthentication>
-              <AddCategoryBook />
-            </AdminAuthentication>
-          }
-        />
+          <Route
+            exact
+            path="/admin/category/update/:id"
+            element={
+              <AdminAuthentication>
+                <AdminUpdateCategory />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/book/update/:id"
+            element={
+              <AdminAuthentication>
+                <AdminUpdateProduct />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/book/add"
+            element={
+              <AdminAuthentication>
+                <AdminAddProduct />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/category/add"
+            element={
+              <AdminAuthentication>
+                <AdminAddCategory />
+              </AdminAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/admin/books/:id/categories/add"
+            element={
+              <AdminAuthentication>
+                <AddCategoryBook />
+              </AdminAuthentication>
+            }
+          />
 
-        <Route
-          exact
-          path="/admin/books/:id/categories/delete"
-          element={
-            <AdminAuthentication>
-              <DeleteCategoryBook />
-            </AdminAuthentication>
-          }
-        />
+          <Route
+            exact
+            path="/admin/books/:id/categories/delete"
+            element={
+              <AdminAuthentication>
+                <DeleteCategoryBook />
+              </AdminAuthentication>
+            }
+          />
 
-        <Route exact path="/" Component={Home} />
-        <Route
-          exact
-          path="/profile"
-          element={
-            <UserAuthentication>
-              <Profile />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/change-password"
-          element={
-            <UserAuthentication>
-              <ChangePassword />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/orders"
-          element={
-            <UserAuthentication>
-              <UserOrders />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/orders/:orderIdParam"
-          element={
-            <UserAuthentication>
-              <OrderDetails />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/update-profile"
-          element={
-            <UserAuthentication>
-              <ChangeProfile />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/logout"
-          element={
-            <UserAuthentication>
-              <Logout />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/payment-successful"
-          element={
-            <UserAuthentication>
-              <PaymentSuccessful />
-            </UserAuthentication>
-          }
-        />
-        <Route
-          exact
-          path="/cart"
-          element={
-            <UserAuthentication>
-              <Cart />
-            </UserAuthentication>
-          }
-        />
+          <Route exact path="/" Component={Home} />
+          <Route
+            exact
+            path="/profile"
+            element={
+              <UserAuthentication>
+                <Profile />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/change-password"
+            element={
+              <UserAuthentication>
+                <ChangePassword />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/orders"
+            element={
+              <UserAuthentication>
+                <UserOrders />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/orders/:orderIdParam"
+            element={
+              <UserAuthentication>
+                <OrderDetails />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/update-profile"
+            element={
+              <UserAuthentication>
+                <ChangeProfile />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/logout"
+            element={
+              <UserAuthentication>
+                <Logout />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/payment-successful"
+            element={
+              <UserAuthentication>
+                <PaymentSuccessful />
+              </UserAuthentication>
+            }
+          />
+          <Route
+            exact
+            path="/cart"
+            element={
+              <UserAuthentication>
+                <Cart />
+              </UserAuthentication>
+            }
+          />
 
-        <Route
-          exact
-          path="/wishList"
-          element={
-            <UserAuthentication>
-              <WishList />
-            </UserAuthentication>
-          }
-        />
+          <Route
+            exact
+            path="/wishlist"
+            element={
+              <UserAuthentication>
+                <WishList />
+              </UserAuthentication>
+            }
+          />
 
-        <Route
-          exact
-          path="/admin/comments"
-          element={
-            <AdminAuthentication>
-              <Comment />
-            </AdminAuthentication>
-          }
-        />
-      </Routes>
-      <Footer />
-    </div>
+          <Route
+            exact
+            path="/admin/comments"
+            element={
+              <AdminAuthentication>
+                <Comment />
+              </AdminAuthentication>
+            }
+          />
+        </Routes>
+        <Footer />
+      </div>
+    </MyContextProvider>
   );
 };
 

@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { colors, endpoint } from "../data";
-import CustomNavLink from "./CustomNavLink";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
@@ -56,6 +58,11 @@ const ProductName = styled.div`
   text-overflow: ellipsis;
   width: 200px;
 `;
+const ActionButtons = styled.div`
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center;
+`;
 
 const Price = styled.p`
   font-weight: 500;
@@ -73,7 +80,7 @@ export const CartButton = styled.div`
   display: inline-block;
   font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 2.5;
   outline: transparent;
@@ -101,6 +108,30 @@ export const CartButton = styled.div`
   }
 `;
 
+export const ReWishList = styled(FavoriteBorderIcon)`
+  margin-left: 5px;
+  cursor: pointer;
+  color: #f96058; /* Màu trung gian giữa gradient */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+`;
+
+export const WishList = styled(FavoriteIcon)`
+  margin-left: 5px;
+  cursor: pointer;
+  color: #f96058; /* Màu trung gian giữa gradient */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+`;
+
 const DiscountBadge = styled.div`
   position: absolute;
   top: 20px;
@@ -116,12 +147,16 @@ const DiscountBadge = styled.div`
   border: 1px solid white;
 `;
 
-const ProductItem = ({ item }) => {
+const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
   const data = {
     book_id: Number(item.id),
     quantity: 1,
   };
+  const [wishlistState, setWishlistState] = useState(isWishListed);
 
+  useEffect(() => {
+    setWishlistState(isWishListed); // Cập nhật khi isWishListed thay đổi
+  }, [isWishListed]);
   const navigate = useNavigate();
   const handleAddToCart = () => {
     if (Cookies.get("authToken") === undefined) {
@@ -139,16 +174,64 @@ const ProductItem = ({ item }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Handle success or update cart state as needed
+        toast.success("Thêm vào giỏ hàng thành công", { autoClose: 2000 });
       })
       .catch((error) => console.error(error));
-    toast.success("Thêm vào giỏ hàng thành công", { autoClose: 2000 });
   };
 
   const calculatePrice = (price, discount) => {
     return Math.round(price * (1 - discount / 100));
   };
   const sellPrice = calculatePrice(item.price, item.discount);
+
+  const handleAddToWishList = () => {
+    if (Cookies.get("authToken") === undefined) {
+      // Nếu không có authToken, chuyển hướng tới trang đăng nhập
+      navigate("/login");
+    } else {
+      fetch(`${endpoint}/user/wishList`, {
+        method: "POST",
+        headers: {
+          authorization: Cookies.get("authToken"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            toast.success("Thêm vào yêu thích thành công", { autoClose: 2000 });
+            setWishlistState(true);
+            fetchWishlist();
+          } else {
+            toast.error("Lỗi khi thêm sách vào danh sách yêu thích", {
+              autoClose: 2000,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  const handleRemoveItem = (bookId) => {
+    fetch(`${endpoint}/user/wishList/${bookId}`, {
+      method: "DELETE",
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          toast.info("Đã xóa khỏi danh sách yêu thích", { autoClose: 2000 });
+          fetchWishlist();
+          setWishlistState(false);
+        } else {
+          toast.error("Lỗi khi xóa sách");
+        }
+      })
+      .catch((error) => toast.error("Lỗi khi xóa sách: " + error));
+  };
 
   return (
     <Container>
@@ -190,8 +273,20 @@ const ProductItem = ({ item }) => {
         ""
       ) : (
         <>
-          <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
-          <ToastContainer />
+          <ActionButtons>
+            <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
+            {!wishlistState ? (
+              <ReWishList
+                style={{ fontSize: "35px" }}
+                onClick={handleAddToWishList}
+              />
+            ) : (
+              <WishList
+                style={{ fontSize: "35px" }}
+                onClick={() => handleRemoveItem(item.id)}
+              />
+            )}
+          </ActionButtons>
         </>
       )}
     </Container>

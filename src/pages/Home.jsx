@@ -6,6 +6,7 @@ import { endpoint } from "../data";
 import { Button } from "primereact/button";
 import Partner from "../components/Partner";
 import CustomNavLink from "../components/CustomNavLink";
+import Cookies from "js-cookie";
 
 const Home = () => {
   const [books, setPopularProducts] = useState([]);
@@ -23,6 +24,26 @@ const Home = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
   console.log("categories", categories);
+  const [wishlist, setWishlist] = useState([]);
+
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+        setWishlist(data);
+      })
+      console.log("Wishlist in WishList component:", wishlist);
+  };
 
   // useEffect(() => {
   //   fetch(`${endpoint}/user/books?limit=100`)
@@ -126,6 +147,8 @@ const Home = () => {
                 hasButton={true}
                 title={"Sách " + category.name}
                 categorie_id={category.id}
+                wishlist={wishlist}
+                fetchWishlist={fetchWishlist}
               />
             </section>
           ))}

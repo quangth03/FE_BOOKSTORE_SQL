@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { MultiSelect } from "primereact/multiselect";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
 const AddCategoriesToProduct = () => {
@@ -85,7 +85,6 @@ const AddCategoriesToProduct = () => {
   return (
     <div className="list">
       <Sidebar />
-
       <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
         <Title>Thêm Thể Loại Cho Sản Phẩm "{book.title}"</Title>
         <Form>
@@ -112,8 +111,6 @@ const AddCategoriesToProduct = () => {
           </InfoItem>
 
           <ButtonWrapper>
-            <ToastContainer />
-
             <Button onClick={handleAddCateBook}>Thêm thể loại vào sách</Button>
           </ButtonWrapper>
         </Form>

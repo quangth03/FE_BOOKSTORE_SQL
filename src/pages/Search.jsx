@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { endpoint } from "../data";
 import styled from "styled-components";
 import { colors } from "../data";
+<<<<<<< HEAD
 import { Card } from "primereact/card";
 import { Checkbox } from "primereact/checkbox";
 import { Slider } from "primereact/slider";
@@ -11,6 +12,9 @@ import { formatMoney } from "../utils/table-pagination";
 import { SelectButton } from "primereact/selectbutton";
 import { Button } from "primereact/button";
 import PageNavigation from "../components/PageNavigation";
+=======
+import Cookies from "js-cookie";
+>>>>>>> ca19953d6acd1d8019c9aad24f2ed93660893711
 
 export const Banner = styled.div`
   display: flex;

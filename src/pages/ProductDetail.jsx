@@ -1,15 +1,19 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import TabProductDetail from "../components/TabProductDetail";
 import { colors, endpoint } from "../data";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import ProductComment from "../components/comment/ProductComment";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Products from "../components/ProductsList";
 import { Banner } from "../pages/Search";
+
+import { MyContext } from "../context/wishListContext";
+import { ReWishList } from "../components/ProductItem";
+import { WishList } from "../components/ProductItem";
 
 const Container = styled.div`
   margin: 50px 0px;
@@ -137,6 +141,9 @@ const ProductDetail = () => {
   const [books, setBooks] = useState([]);
   const { id } = useParams();
 
+  const { sharedData } = useContext(MyContext);
+  console.log("sharedata", sharedData);
+
   useEffect(() => {
     fetch(`${endpoint}/user/books/id/${id}`)
       .then((response) => response.json())
@@ -176,25 +183,25 @@ const ProductDetail = () => {
       .catch((error) => console.error(error));
     toast.success("Thêm vào giỏ hàng thành công", { autoClose: 2000 });
   };
-  
-  const handleAddToWishList = () => {
-    if (Cookies.get("authToken") === undefined) {
-      // If no authToken, redirect to the login page
-      navigate("/login");
-    }
-    fetch(`${endpoint}/user/wishList`, {
-      method: "POST",
-      headers: {
-        authorization: Cookies.get("authToken"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {})
-      .catch((error) => console.error(error));
-    toast.success("Thêm vào yêu thích thành công");
-  };
+
+  // const handleAddToWishList = () => {
+  //   if (Cookies.get("authToken") === undefined) {
+  //     // If no authToken, redirect to the login page
+  //     navigate("/login");
+  //   }
+  //   fetch(`${endpoint}/user/wishList`, {
+  //     method: "POST",
+  //     headers: {
+  //       authorization: Cookies.get("authToken"),
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {})
+  //     .catch((error) => console.error(error));
+  //   toast.success("Thêm vào yêu thích thành công");
+  // };
 
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -216,6 +223,81 @@ const ProductDetail = () => {
     return Math.round(price * (1 - discount / 100));
   };
   const sellPrice = calculatePrice(book.price, book.discount);
+
+  const isWishListed =
+    Array.isArray(sharedData) &&
+    sharedData.some((wishlistItem) => wishlistItem.id === book.id);
+
+  const [wishlistState, setWishlistState] = useState(isWishListed);
+
+  useEffect(() => {
+    setWishlistState(isWishListed); // Cập nhật khi isWishListed thay đổi
+  }, [isWishListed]);
+
+  const handleAddToWishList = () => {
+    if (Cookies.get("authToken") === undefined) {
+      // Nếu không có authToken, chuyển hướng tới trang đăng nhập
+      navigate("/login");
+    } else {
+      fetch(`${endpoint}/user/wishList`, {
+        method: "POST",
+        headers: {
+          authorization: Cookies.get("authToken"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            toast.success("Thêm vào yêu thích thành công", { autoClose: 2000 });
+            setWishlistState(true);
+            //fetchWishlist();
+          } else {
+            toast.error("Lỗi khi thêm sách vào danh sách yêu thích", {
+              autoClose: 2000,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  const handleRemoveItem = (bookId) => {
+    fetch(`${endpoint}/user/wishList/${bookId}`, {
+      method: "DELETE",
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          toast.success("Đã xóa khỏi danh sách yêu thích", { autoClose: 2000 });
+          //fetchWishlist();
+          setWishlistState(false);
+        } else {
+          toast.error("Lỗi khi xóa sách");
+        }
+      })
+      .catch((error) => toast.error("Lỗi khi xóa sách: " + error));
+  };
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+      })
+      .catch((error) => toast.error("Lỗi khi lấy wishlist: " + error));
+  };
 
   return (
     <div>
@@ -267,11 +349,21 @@ const ProductDetail = () => {
                       +
                     </AmountButton>
                   </AmountContainer>
+                  {!wishlistState ? (
+                    <ReWishList
+                      style={{ fontSize: "50px" }}
+                      onClick={handleAddToWishList}
+                    />
+                  ) : (
+                    <WishList
+                      style={{ fontSize: "50px" }}
+                      onClick={() => handleRemoveItem(book.id)}
+                    />
+                  )}
                   <AddButton onClick={handleAddToCart}>
                     {/* <i className="pi pi-cart-plus"></i> */}
                     Thêm vào giỏ hàng
                   </AddButton>
-                  <ToastContainer />
                 </AddContainer>
               )}
               <TabProductDetail book={book} />
@@ -335,7 +427,14 @@ const ProductDetail = () => {
         ) : (
           <>
             <Banner>Các sản phẩm liên quan</Banner>
-            <Products books={books} hasBanner={false}></Products>
+            <Products
+              books={books}
+              hasBanner={false}
+              wishlist={sharedData}
+              fetchWishlist={fetchWishlist}
+            >
+              {" "}
+            </Products>
           </>
         )}
       </Container>

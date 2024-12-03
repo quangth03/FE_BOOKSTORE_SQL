@@ -3,7 +3,7 @@ import { endpoint } from "../../data";
 import Cookies from "js-cookie";
 import moment from "moment/moment";
 import Modal from "../Modal/Modal";
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 
 export default function ProductComment({ book_id }) {
   const [commentRole, setCommentRole] = useState(false); // Kiểm tra người dùng có quyền bình luận hay không
@@ -113,7 +113,6 @@ export default function ProductComment({ book_id }) {
 
   return (
     <div>
-      <ToastContainer />
       <Modal
         isOpen={isModalOpen}
         title="Xác nhận xóa"

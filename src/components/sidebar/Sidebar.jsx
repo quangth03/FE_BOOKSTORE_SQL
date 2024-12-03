@@ -10,7 +10,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
+    <div className="sidebar mt-1">
       <div className="center">
         <ul>
           <p className="title">DANH SÁCH</p>
@@ -32,11 +32,11 @@ const Sidebar = () => {
               <span>Sản phẩm</span>
             </li>
             <Link to="/admin/discounts" style={{ textDecoration: "none" }}>
-            <li>
-              <LocalOfferIcon className="icon" />
-              <span>Giảm giá</span>
-            </li>
-          </Link>
+              <li>
+                <LocalOfferIcon className="icon" />
+                <span>Giảm giá</span>
+              </li>
+            </Link>
           </Link>
           <Link to="/admin/order/all" style={{ textDecoration: "none" }}>
             <li>

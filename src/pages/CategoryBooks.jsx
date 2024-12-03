@@ -9,7 +9,11 @@ import { formatMoney } from "../utils/table-pagination";
 import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
 import { Banner } from "./Search";
+<<<<<<< HEAD
 import { useParams } from "react-router-dom";
+=======
+import Cookies from "js-cookie";
+>>>>>>> ca19953d6acd1d8019c9aad24f2ed93660893711
 
 const CategiryBooks = () => {
   const fild = [

@@ -94,7 +94,6 @@ const OrderDetailsItem = ({ book }) => {
       .then((response) => response.json())
       .then((data) => {})
       .catch((error) => console.error(error));
-    // toast.success("Thêm vào giỏ hàng thành công");
   };
   const handleReBuyAndNavigate = async () => {
     reBuyHandle(); // Thực hiện hàm

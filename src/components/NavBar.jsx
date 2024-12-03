@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Cookies from "js-cookie";
 import { Search, ShoppingCartCheckoutOutlined } from "@mui/icons-material";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import { AutoComplete } from "primereact/autocomplete";
 import { Button } from "primereact/button";
@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 `;
 
 const Left = styled.div`
-  flex: 75%;
+  flex: 69.5%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -41,11 +41,11 @@ const Brand = styled.h1`
   font-weight: bold;
   color: black;
   ${mobile({ fontSize: "24px" })}
-  margin-right: 100px;
 `;
 
 const Right = styled.div`
-  flex: 25%;
+  flex: 30.5%;
+  margin-left: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -66,14 +66,14 @@ const MenuPopup = styled.div`
 `;
 
 const MenuItem = styled.div`
-  padding: 6px 20px;
+  padding: 6px 16px;
   background-color: #ffff99;
   border-color: #ffff99;
   border-style: solid;
   border-radius: 30px;
   font-size: 14px;
   cursor: pointer;
-  margin-left: 25px;
+  margin-left: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -127,8 +127,8 @@ const Navbar = () => {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
 
-  // recognition.lang = "vi-VN" ; // Đặt ngôn ngữ là tiếng Việt
-  recognition.lang = "en-US"; // Đặt ngôn ngữ là tiếng Anh
+  recognition.lang = "vi-VN"; // Đặt ngôn ngữ là tiếng Việt
+  // recognition.lang = "en-US"; // Đặt ngôn ngữ là tiếng Anh
 
   // Hàm bắt đầu nhận diện giọng nói
   const startSpeechRecognition = () => {
@@ -240,7 +240,7 @@ const Navbar = () => {
             </NavLink>
           )}
           {!isAdmin && (
-            <div className="p-inputgroup w-7">
+            <div className="p-inputgroup" style={{ width: "550px" }}>
               <AutoComplete
                 value={query}
                 suggestions={[
@@ -300,7 +300,7 @@ const Navbar = () => {
                 </MenuItem>
               </CustomNavLink>
 
-              <CustomNavLink to={"/wishList"}>
+              <CustomNavLink to={"/wishlist"}>
                 <MenuItem>
                   <div
                     style={{
