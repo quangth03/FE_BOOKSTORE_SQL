@@ -77,8 +77,6 @@ const Products = ({
       <Container className="bg-white pt-3 mb-3">
         {books != null && books.length > 0
           ? books.map((item) => {
-              console.log("wishlist", wishlist);
-              // Kiểm tra sản phẩm có trong wishlist hay không
               const isWishListed =
                 Array.isArray(wishlist) &&
                 wishlist.some((wishlistItem) => wishlistItem.id === item.id);

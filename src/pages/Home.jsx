@@ -2,15 +2,41 @@ import React, { useEffect, useState } from "react";
 import Slider from "../components/Slider";
 import Categories from "../components/Categories";
 import ProductsList from "../components/ProductsList";
-import { endpoint } from "../data";
-import { Button } from "primereact/button";
+import { colors, endpoint } from "../data";
 import Partner from "../components/Partner";
 import CustomNavLink from "../components/CustomNavLink";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const TopButton = styled.button`
+  background-color: ${colors.color2}; /* Màu nền xanh nhạt */
+  color: #fff; /* Màu chữ trắng */
+  font-size: 18px; /* Kích thước chữ */
+  font-weight: bold; /* Chữ đậm */
+  padding: 10px 20px; /* Khoảng cách trong nút */
+  border: none; /* Loại bỏ viền mặc định */
+  border-radius: 5px; /* Góc bo tròn */
+  cursor: pointer; /* Con trỏ chuột chuyển thành tay khi hover */
+  transition: all 0.3s ease; /* Hiệu ứng mượt khi hover */
+
+  &:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng khi hover */
+    transform: translateY(-2px); /* Hiệu ứng nhấn */
+  }
+
+  &:active {
+    background-color: #004494; /* Màu nền khi click */
+    transform: translateY(0px); /* Trả lại vị trí */
+  }
+`;
 
 const Home = () => {
   const [books, setPopularProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [topBooks, setTopBooks] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -23,9 +49,6 @@ const Home = () => {
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
-  console.log("categories", categories);
-  const [wishlist, setWishlist] = useState([]);
-
 
   useEffect(() => {
     fetchWishlist();
@@ -39,29 +62,26 @@ const Home = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Data from API:", data);
         setWishlist(data);
-      })
-      console.log("Wishlist in WishList component:", wishlist);
+      });
   };
 
-  // useEffect(() => {
-  //   fetch(`${endpoint}/user/books?limit=100`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setPopularProducts(data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, []);
+  useEffect(() => {
+    fetchTopBooks();
+  }, []);
 
-  // useEffect(() => {
-  //   fetch(`${endpoint}/admin/categories`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setCategories(data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, []);
+  const fetchTopBooks = () => {
+    fetch(`${endpoint}/user/topBooks`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTopBooks(data);
+        console.log("Data topBooks:", data);
+      });
+  };
 
   return (
     <div
@@ -84,20 +104,58 @@ const Home = () => {
             </a>
           </div>
 
+          {/* Hiển thị các sách bán chạy */}
           <div className="sachmoibanchay p-3">
-            <h3 className="">Sách mới bán chạy</h3>
-            <div>
-              <div className="h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-              <div className="w-6 h-6rem border-900 border-3 bg-pink-100"></div>
-            </div>
+            <h3 className="mt-5 mb-2">Sách mới bán chạy</h3>
+            {topBooks.length > 0 ? (
+              topBooks.map((item) => (
+                <Link
+                  to={`/books/${item.id}`}
+                  className="link no-underline text-color"
+                >
+                  <div key={item.title}>
+                    <div className="flex align-items-center my-4">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        width="50"
+                        className="mr-2"
+                      />
+                      <div className="flex flex-column w-13rem">
+                        <span className="font-bold mb-2">{item.title}</span>
+                        <div className="flex justify-content-between align-items-center">
+                          {item.discount > 0 ? (
+                            <div>
+                              <span className="text-red-500 font-semibold text-sm mr-3">
+                                {Number(
+                                  (
+                                    item.price *
+                                    (1 - item.discount / 100)
+                                  ).toFixed(0)
+                                ).toLocaleString()}
+                                đ
+                              </span>
+                              <del className="text-sm mr-4">
+                                {Number(item.price).toLocaleString()}đ
+                              </del>
+                              <span className="bg-red-400 p-1 border-round text-white text-sm">
+                                -{item.discount}%
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-red-500 font-semibold text-sm">
+                              {Number(item.price).toLocaleString()}đ
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p>Không có sách bán chạy.</p>
+            )}
           </div>
         </div>
       </div>
@@ -128,9 +186,9 @@ const Home = () => {
         </section>
 
         <section>
-          <div className="button flex gap-5">
+          <div className="button flex justify-content-center">
             <CustomNavLink to={"/books"}>
-              <Button className=" p-3" label="Xem Tất Cả"></Button>
+              <TopButton>Xem Tất Cả</TopButton>
             </CustomNavLink>
           </div>
         </section>
