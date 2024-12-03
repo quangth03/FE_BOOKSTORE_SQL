@@ -90,7 +90,6 @@ const ProductsPage = () => {
             height: "100vh",
             display: "flex",
             flexDirection: "column",
-            // justifyContent: "center",sawps
             marginTop: "125px",
             alignItems: "center",
           }}
