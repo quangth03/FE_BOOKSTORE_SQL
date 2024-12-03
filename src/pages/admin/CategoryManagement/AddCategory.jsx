@@ -81,62 +81,58 @@ const AddCategory = () => {
   return (
     <div className="list">
       <Sidebar />
-      <div className="listContainer">
-        <Right
-          style={{ alignItems: "flex-start", justifyContent: "flex-start" }}
-        >
-          <Title>Thêm Thể loại Mới</Title>
-          <ErrorMessage
-            errorMessage={errorMessage}
-            display={errorMessage === "" ? "none" : "flex"}
-          />
+      <Right style={{ alignItems: "flex-start", justifyContent: "flex-start" }}>
+        <Title>Thêm Thể loại Mới</Title>
+        <ErrorMessage
+          errorMessage={errorMessage}
+          display={errorMessage === "" ? "none" : "flex"}
+        />
 
-          <Form>
-            <InfoItem>
-              <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
-              <FormInput
-                placeholder="http://"
-                value={data.image}
-                onChange={(e) =>
-                  setData((prevData) => ({
-                    ...prevData,
-                    image: e.target.value,
-                  }))
-                }
-              />
-            </InfoItem>
-            <InfoItem>
-              <InfoItemLabel>Tên thể loại</InfoItemLabel>
-              <FormInput
-                placeholder={"Thể loại"}
-                value={data.name}
-                onChange={(e) =>
-                  setData((prevData) => ({
-                    ...prevData,
-                    name: e.target.value,
-                  }))
-                }
-              />
-            </InfoItem>
-            <InfoItem>
-              <InfoItemLabel>Mô tả</InfoItemLabel>
-              <FormInput
-                placeholder={"Thể loại hay"}
-                value={data.description}
-                onChange={(e) =>
-                  setData((prevData) => ({
-                    ...prevData,
-                    description: e.target.value,
-                  }))
-                }
-              />
-            </InfoItem>
-            <ButtonWrapper>
-              <Button onClick={handleCreateCategory}>Thêm thể loại</Button>
-            </ButtonWrapper>
-          </Form>
-        </Right>
-      </div>
+        <Form>
+          <InfoItem>
+            <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
+            <FormInput
+              placeholder="http://"
+              value={data.image}
+              onChange={(e) =>
+                setData((prevData) => ({
+                  ...prevData,
+                  image: e.target.value,
+                }))
+              }
+            />
+          </InfoItem>
+          <InfoItem>
+            <InfoItemLabel>Tên thể loại</InfoItemLabel>
+            <FormInput
+              placeholder={"Thể loại"}
+              value={data.name}
+              onChange={(e) =>
+                setData((prevData) => ({
+                  ...prevData,
+                  name: e.target.value,
+                }))
+              }
+            />
+          </InfoItem>
+          <InfoItem>
+            <InfoItemLabel>Mô tả</InfoItemLabel>
+            <FormInput
+              placeholder={"Thể loại hay"}
+              value={data.description}
+              onChange={(e) =>
+                setData((prevData) => ({
+                  ...prevData,
+                  description: e.target.value,
+                }))
+              }
+            />
+          </InfoItem>
+          <ButtonWrapper>
+            <Button onClick={handleCreateCategory}>Thêm thể loại</Button>
+          </ButtonWrapper>
+        </Form>
+      </Right>
     </div>
   );
 };

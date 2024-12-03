@@ -273,7 +273,7 @@ const ProductDetail = () => {
     })
       .then((response) => {
         if (response.ok) {
-          toast.success("Đã xóa khỏi danh sách yêu thích", { autoClose: 2000 });
+          toast.info("Đã xóa khỏi danh sách yêu thích", { autoClose: 2000 });
           //fetchWishlist();
           setWishlistState(false);
         } else {

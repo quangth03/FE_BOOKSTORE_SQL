@@ -10,6 +10,7 @@ import { Button } from "primereact/button";
 import { SelectButton } from "primereact/selectbutton";
 import { Banner } from "./Search";
 import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const CategiryBooks = () => {
   const fild = [
@@ -43,9 +44,9 @@ const CategiryBooks = () => {
 
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books/categories/${id}?limit=16&page=${Number(current) + 1}&from=${priceRange[0]
-      }&to=${priceRange[1]
-      }&sort=${sortBy}&sortD=${sort}`
+      `${endpoint}/user/books/categories/${id}?limit=16&page=${
+        Number(current) + 1
+      }&from=${priceRange[0]}&to=${priceRange[1]}&sort=${sortBy}&sortD=${sort}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -54,15 +55,13 @@ const CategiryBooks = () => {
       .catch((error) => console.error(error));
   };
   const updateCategory = () => {
-    fetch(
-      `${endpoint}/user/categories/${id}`
-    )
+    fetch(`${endpoint}/user/categories/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setCategory(data);
       })
       .catch((error) => console.error(error));
-  }
+  };
 
   useEffect(() => {
     updateBook();
@@ -71,6 +70,26 @@ const CategiryBooks = () => {
   useEffect(() => {
     updateCategory();
   }, []);
+
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+        setWishlist(data);
+      });
+    console.log("Wishlist in WishList component:", wishlist);
+  };
   return (
     <>
       <div
@@ -145,12 +164,19 @@ const CategiryBooks = () => {
         </div>
 
         <div style={{ width: "85%" }}>
-          <Banner>{category ? category[0].name :"Danh sách "}</Banner>
-          <ProductsList books={books} hasBanner={false} />
+          <Banner>{category ? category[0].name : "Danh sách "}</Banner>
+          <ProductsList
+            books={books}
+            hasBanner={false}
+            wishlist={wishlist}
+            fetchWishlist={fetchWishlist}
+          />
           <PageNavigation
             current={Number(current)}
             total={100}
-            urlPattern={category ? `/category/${category[0].id}` :`/category/1`}
+            urlPattern={
+              category ? `/category/${category[0].id}` : `/category/1`
+            }
           />
         </div>
       </div>

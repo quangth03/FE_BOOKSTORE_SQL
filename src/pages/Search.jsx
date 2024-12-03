@@ -11,6 +11,7 @@ import { formatMoney } from "../utils/table-pagination";
 import { SelectButton } from "primereact/selectbutton";
 import { Button } from "primereact/button";
 import PageNavigation from "../components/PageNavigation";
+import Cookies from "js-cookie";
 
 export const Banner = styled.div`
   display: flex;
@@ -36,7 +37,7 @@ const Search = () => {
     //     setBooks(data);
     //   })
     //   .catch((error) => console.error(error));
-    updateBook()
+    updateBook();
   }, [title]);
   const fild = [
     {
@@ -68,9 +69,9 @@ const Search = () => {
 
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books?limit=16&page=${Number(current) + 1}&title=${title}&from=${
-        priceRange[0]
-      }&to=${
+      `${endpoint}/user/books?limit=16&page=${
+        Number(current) + 1
+      }&title=${title}&from=${priceRange[0]}&to=${
         priceRange[1]
       }&sort=${sortBy}&sortD=${sort}&cat=${selectedCategories.join("-")}`
     )
@@ -103,6 +104,26 @@ const Search = () => {
         ? prev.filter((item) => item !== category)
         : [...prev, category]
     );
+  };
+
+  const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data from API:", data);
+        setWishlist(data);
+      });
+    console.log("Wishlist in WishList component:", wishlist);
   };
   return (
     <>
@@ -197,7 +218,12 @@ const Search = () => {
 
         <div style={{ width: "85%" }}>
           <Banner>{title}</Banner>
-          <ProductsList books={books} hasBanner={false} />
+          <ProductsList
+            books={books}
+            hasBanner={false}
+            wishlist={wishlist}
+            fetchWishlist={fetchWishlist}
+          />
           <PageNavigation
             current={Number(current)}
             total={100}
