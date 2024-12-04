@@ -169,6 +169,7 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
     if (Cookies.get("authToken") === undefined) {
       // If no authToken, redirect to the login page
       navigate("/login");
+      return;
     }
     //Otherwise, proceed to add item to cart
     fetch(`${endpoint}/user/cart`, {
