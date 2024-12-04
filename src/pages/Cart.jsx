@@ -153,7 +153,8 @@ const Cart = () => {
       if (cartItem.cart_details.quantity > cartItem.quantity) {
         isValid = false;
         toast.error(
-          `Số lượng của sản phẩm "${cartItem.title}" không đủ để thanh toán.`
+          `Số lượng của sản phẩm "${cartItem.title}" không đủ để thanh toán.`,
+          { autoClose: 2000 }
         );
       }
     }

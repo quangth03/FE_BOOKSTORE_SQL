@@ -155,6 +155,7 @@ const CartItem = ({ cartItem, updateCart }) => {
   };
 
   useEffect(() => {
+    console.log("Amount:", amount);
     setTimeout(() => {
       updateCart();
     }, 100);
@@ -199,7 +200,7 @@ const CartItem = ({ cartItem, updateCart }) => {
     //   setAmount(max);
     // }
     else {
-      setAmount(newValue);
+      setAmount(parseInt(newValue));
     }
   };
 

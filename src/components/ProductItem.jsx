@@ -43,6 +43,13 @@ const Image = styled.img`
   width: 100%;
   object-fit: fill;
   border: 1px solid #d3d3d3;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    // filter: brightness(1.2); /* Làm sáng ảnh 20% */
+  }
 `;
 
 const ProductName = styled.div`

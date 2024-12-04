@@ -33,6 +33,15 @@ const InfoWrapper = styled.div`
   margin-top: 15px;
   padding: 0px 40px;
 `;
+
+const QuantityWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid gray;
+  margin-top: 15px;
+  padding: 0px 40px;
+`;
 const Info = styled.div`
   display: flex;
   flex-direction: row;
@@ -40,16 +49,16 @@ const Info = styled.div`
 `;
 
 const InfoLabel = styled.div`
-  flex: 8;
+  flex: 4;
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   font-weight: bold;
 `;
 
 const InfoContent = styled.div`
-  flex: 2;
+  flex: 6;
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
 `;
 const OrderDetails = ({ orderId }) => {
   const { orderIdParam } = useParams();
@@ -59,6 +68,11 @@ const OrderDetails = ({ orderId }) => {
 
   const [books, setBooks] = useState([]);
   const [order, setOrder] = useState({});
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    console.log("Updated order:", order);
+  }, [order]); // This will log whenever 'order' state is updated
 
   useEffect(() => {
     fetch(`${endpoint}/user/order/${id}`, {
@@ -70,6 +84,7 @@ const OrderDetails = ({ orderId }) => {
       .then((data) => {
         setOrder(data);
         setBooks(data.books);
+        setUser(data.user);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -93,44 +108,61 @@ const OrderDetails = ({ orderId }) => {
             <OrderDetailsItem key={`book-${index}`} book={book} />
           ))}
         </Products>
-        <InfoWrapper>
-          <Info>
-            <InfoLabel>Tổng số sản phẩm:</InfoLabel>
-            <InfoContent>{order.total_quantity}</InfoContent>
-          </Info>
-          <Info>
-            <InfoLabel>Trạng thái đơn hàng:</InfoLabel>
-            <InfoContent>
-              {listOrderStatus.find((item) => item.id == order.status)?.name}
-            </InfoContent>
-          </Info>
+        <div className="flex justify-content-end">
+          <InfoWrapper>
+            <Info>
+              <InfoLabel>Tên người mua:</InfoLabel>
+              <InfoContent>{user.full_name}</InfoContent>
+            </Info>
+            <Info>
+              <InfoLabel>Số điện thoại:</InfoLabel>
+              <InfoContent>{user.phone_number}</InfoContent>
+            </Info>
+            <Info>
+              <InfoLabel>Địa chỉ:</InfoLabel>
+              <InfoContent>{user.address}</InfoContent>
+            </Info>
+          </InfoWrapper>
 
-          {order.discount > 0 ? (
-            <>
-              <Info>
-                <InfoLabel>Tổng tiền các sản phẩm:</InfoLabel>
-                <InfoContent>
-                  {Number(order.total + order.discount).toLocaleString()} VND
-                </InfoContent>
-              </Info>
-              <Info>
-                <InfoLabel>Giảm giá:</InfoLabel>
-                <InfoContent>
-                  {Number(order.discount).toLocaleString()} VND
-                </InfoContent>
-              </Info>
-            </>
-          ) : (
-            <></>
-          )}
+          <QuantityWrapper>
+            <Info>
+              <InfoLabel>Tổng số sản phẩm:</InfoLabel>
+              <InfoContent>{order.total_quantity}</InfoContent>
+            </Info>
+            <Info>
+              <InfoLabel>Trạng thái đơn hàng:</InfoLabel>
+              <InfoContent>
+                {listOrderStatus.find((item) => item.id == order.status)?.name}
+              </InfoContent>
+            </Info>
 
-          <Info style={{ fontSize: "24px", color: "red" }}>
-            <InfoLabel>Tổng thanh toán:</InfoLabel>
-            <InfoContent>
-              {Number(order.total).toLocaleString()} VND
-            </InfoContent>
-          </Info>
-        </InfoWrapper>
+            {order.discount > 0 ? (
+              <>
+                <Info>
+                  <InfoLabel>Tổng tiền các sản phẩm:</InfoLabel>
+                  <InfoContent>
+                    {Number(order.total + order.discount).toLocaleString()} VND
+                  </InfoContent>
+                </Info>
+                <Info>
+                  <InfoLabel>Giảm giá:</InfoLabel>
+                  <InfoContent>
+                    {Number(order.discount).toLocaleString()} VND
+                  </InfoContent>
+                </Info>
+              </>
+            ) : (
+              <></>
+            )}
+
+            <Info style={{ fontSize: "24px", color: "red" }}>
+              <InfoLabel>Tổng thanh toán:</InfoLabel>
+              <InfoContent>
+                {Number(order.total).toLocaleString()} VND
+              </InfoContent>
+            </Info>
+          </QuantityWrapper>
+        </div>
       </Wrapper>
     </Container>
   );

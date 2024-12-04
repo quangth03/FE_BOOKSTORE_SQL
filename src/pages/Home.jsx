@@ -32,6 +32,16 @@ const TopButton = styled.button`
   }
 `;
 
+const Img = styled.img`
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2); /* Làm sáng ảnh 20% */
+  }
+`;
+
 const Home = () => {
   const [books, setPopularProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -95,13 +105,11 @@ const Home = () => {
           </div>
 
           <div className="poster pt-3">
-            <a href="">
-              <img
-                className="px-3 w-full "
-                src="https://theme.hstatic.net/200000845405/1001223012/14/widget_banner.jpg?v=335"
-                alt="poster"
-              />
-            </a>
+            <Img
+              className="px-3 w-full "
+              src="https://theme.hstatic.net/200000845405/1001223012/14/widget_banner.jpg?v=335"
+              alt="poster"
+            />
           </div>
 
           {/* Hiển thị các sách bán chạy */}
@@ -111,15 +119,15 @@ const Home = () => {
               topBooks.map((item) => (
                 <Link
                   to={`/books/${item.id}`}
-                  className="link no-underline text-color"
+                  className="link no-underline text-color "
                 >
                   <div key={item.title}>
-                    <div className="flex align-items-center my-4">
+                    <div className="flex align-items-center my-4 relative">
                       <img
                         src={item.image}
                         alt={item.title}
                         width="50"
-                        className="mr-2"
+                        className="mr-2 "
                       />
                       <div className="flex flex-column w-13rem">
                         <span className="font-bold mb-2">{item.title}</span>
@@ -138,7 +146,10 @@ const Home = () => {
                               <del className="text-sm mr-4">
                                 {Number(item.price).toLocaleString()}đ
                               </del>
-                              <span className="bg-red-400 p-1 border-round text-white text-sm">
+                              <span
+                                className="bg-red-400 p-1 border-round text-white text-sm absolute"
+                                style={{ top: "-10px", left: "-10px" }}
+                              >
                                 -{item.discount}%
                               </span>
                             </div>
@@ -150,6 +161,7 @@ const Home = () => {
                         </div>
                       </div>
                     </div>
+                    <hr></hr>
                   </div>
                 </Link>
               ))
@@ -168,7 +180,7 @@ const Home = () => {
         <section className="two-img">
           <div className="grid my-5 gap-3">
             <div className="flex-1 col-6  ">
-              <img
+              <Img
                 className="w-full"
                 src="https://theme.hstatic.net/200000845405/1001223012/14/htb_img_1.jpg?v=335"
                 alt=""
@@ -176,7 +188,7 @@ const Home = () => {
             </div>
 
             <div className="flex-1 col-6 ">
-              <img
+              <Img
                 className="w-full"
                 src="https://theme.hstatic.net/200000845405/1001223012/14/htb_img_2.jpg?v=335"
                 alt=""

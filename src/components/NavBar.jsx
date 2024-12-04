@@ -54,8 +54,8 @@ const Right = styled.div`
 
 const MenuPopup = styled.div`
   position: absolute;
-  top: 100px;
-  right: 250px;
+  top: 110px;
+  right: 100px;
   background-color: white;
   z-index: 1;
   padding: 10px;
@@ -177,7 +177,7 @@ const Navbar = () => {
       <Link to={`/books/${item.id}`} className="link no-underline text-color">
         <div className="flex align-items-center" onClick={() => setQuery("")}>
           <img src={item.image} alt={item.title} width="50" className="mr-2" />
-          <div className="flex flex-column w-13rem">
+          <div className="flex flex-column w-19rem">
             <span
               className="font-bold mb-2"
               style={{
