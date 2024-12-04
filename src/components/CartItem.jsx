@@ -92,21 +92,31 @@ const AmountButton = styled.button`
   }
 `;
 
-const Amount = styled.input.attrs({ type: "number" })`
-  width: 70px;
-  height: 30px;
-  border: 1px solid ${colors.color2};
-  border-radius: 8%;
-  text-align: center;
-  font-size: 16px;
-  margin: 0px 5px;
-  appearance: textfield; /* Hide default styling for all browsers */
+// const Amount = styled.input.attrs({ type: "number" })`
+//   width: 70px;
+//   height: 30px;
+//   border: 1px solid ${colors.color2};
+//   border-radius: 8%;
+//   text-align: center;
+//   font-size: 16px;
+//   margin: 0px 5px;
+//   appearance: textfield; /* Hide default styling for all browsers */
 
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    appearance: none; /* Hide spin buttons for WebKit browsers */
-    margin: 0;
-  }
+//   &::-webkit-outer-spin-button,
+//   &::-webkit-inner-spin-button {
+//     appearance: none; /* Hide spin buttons for WebKit browsers */
+//     margin: 0;
+//   }
+// `;
+
+const Amount = styled.span`
+  width: 30px;
+  height: 30px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
 `;
 
 const DeleteButton = styled.button`
@@ -226,7 +236,8 @@ const CartItem = ({ cartItem, updateCart }) => {
           </ProductName>
           <AmountContainer>
             <AmountButton onClick={handleDescrease}>-</AmountButton>
-            <Amount value={amount} onChange={handleChange}></Amount>
+            <Amount>{amount}</Amount>
+            {/* <Amount value={amount} onChange={handleChange}></Amount> */}
             <AmountButton onClick={handleIncrease}>+</AmountButton>
           </AmountContainer>
           <PriceContainer>
