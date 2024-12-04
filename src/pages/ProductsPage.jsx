@@ -43,7 +43,7 @@ const ProductsPage = () => {
 
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books?limit=16&page=${Number(current) + 1}&from=${
+      `${endpoint}/user/books?limit=15&page=${Number(current) + 1}&from=${
         priceRange[0]
       }&to=${
         priceRange[1]
@@ -85,7 +85,6 @@ const ProductsPage = () => {
     fetchWishlist();
   }, []);
 
-
   const fetchWishlist = () => {
     fetch(`${endpoint}/user/wishList`, {
       headers: {
@@ -96,8 +95,8 @@ const ProductsPage = () => {
       .then((data) => {
         console.log("Data from API:", data);
         setWishlist(data);
-      })
-      console.log("Wishlist in WishList component:", wishlist);
+      });
+    console.log("Wishlist in WishList component:", wishlist);
   };
   return (
     <>
@@ -108,14 +107,14 @@ const ProductsPage = () => {
         <div
           style={{
             width: "30%",
-            height: "100vh",
+            height: "113vh",
             display: "flex",
             flexDirection: "column",
             marginTop: "125px",
             alignItems: "center",
           }}
         >
-          <Card title="Tùy chọn" style={{ width: "80%" }}>
+          <Card title="Tùy chọn" style={{ width: "81%" }}>
             <div style={{ margin: "25px 5px" }}>
               <h4 style={{ alignItems: "center", marginBottom: "15px" }}>
                 Thể loại
@@ -160,14 +159,14 @@ const ProductsPage = () => {
                 onChange={(e) => setSortBy(e.value)}
                 optionLabel="name"
                 options={fild}
-                style={{ margin: "15px 4px" }}
+                style={{ margin: "15px 14px" }}
               />
               <SelectButton
                 value={sort}
                 onChange={(e) => setSort(e.value)}
                 optionLabel="name"
                 options={contrain}
-                style={{ margin: "10px 8px" }}
+                style={{ margin: "10px 19px" }}
               />
             </div>
             <div
@@ -190,9 +189,14 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        <div style={{ width: "85%" }}>
+        <div style={{ width: "97%" }}>
           <Banner>Tất cả sản phẩm</Banner>
-          <ProductsList books={books} hasBanner={false} wishlist={wishlist}  fetchWishlist={fetchWishlist}/>
+          <ProductsList
+            books={books}
+            hasBanner={false}
+            wishlist={wishlist}
+            fetchWishlist={fetchWishlist}
+          />
           <PageNavigation
             current={Number(current)}
             total={100}

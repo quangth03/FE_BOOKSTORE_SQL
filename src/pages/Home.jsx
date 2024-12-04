@@ -26,7 +26,6 @@ const Home = () => {
   console.log("categories", categories);
   const [wishlist, setWishlist] = useState([]);
 
-
   useEffect(() => {
     fetchWishlist();
   }, []);
@@ -41,34 +40,16 @@ const Home = () => {
       .then((data) => {
         console.log("Data from API:", data);
         setWishlist(data);
-      })
-      console.log("Wishlist in WishList component:", wishlist);
+      });
+    console.log("Wishlist in WishList component:", wishlist);
   };
-
-  // useEffect(() => {
-  //   fetch(`${endpoint}/user/books?limit=100`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setPopularProducts(data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch(`${endpoint}/admin/categories`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setCategories(data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // }, []);
 
   return (
     <div
       className="container grid mx-auto mt-2"
       style={{ backgroundColor: "floralwhite" }}
     >
-      <div className="col-3  ">
+      <div className="" style={{ width: "18.5%" }}>
         <div className="sidebar">
           <div className="category px-3">
             <Categories categories={categories} />
@@ -102,7 +83,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="col-9 ">
+      <div className="" style={{ width: "79%", marginLeft: "2rem" }}>
         <div className="slider mt-3">
           <Slider />
         </div>
@@ -143,7 +124,7 @@ const Home = () => {
                   .filter((book) =>
                     book.categories.some((cat) => cat.name === category.name)
                   )
-                  .slice(0, 8)}
+                  .slice(0, 10)}
                 hasButton={true}
                 title={"Sách " + category.name}
                 categorie_id={category.id}

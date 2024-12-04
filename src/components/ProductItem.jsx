@@ -13,7 +13,7 @@ import { Tooltip } from "primereact/tooltip";
 
 const Container = styled.div`
   margin: 0rem 1rem 3rem 1rem;
-  width: 20%;
+  width: 17%;
   height: auto;
   display: flex;
   align-items: center;

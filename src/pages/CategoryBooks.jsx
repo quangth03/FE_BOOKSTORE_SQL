@@ -44,7 +44,7 @@ const CategiryBooks = () => {
 
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books/categories/${id}?limit=16&page=${
+      `${endpoint}/user/books/categories/${id}?limit=15&page=${
         Number(current) + 1
       }&from=${priceRange[0]}&to=${priceRange[1]}&sort=${sortBy}&sortD=${sort}`
     )
@@ -99,14 +99,14 @@ const CategiryBooks = () => {
         <div
           style={{
             width: "30%",
-            height: "100vh",
+            height: "113vh",
             display: "flex",
             flexDirection: "column",
             marginTop: "125px",
             alignItems: "center",
           }}
         >
-          <Card title="Tùy chọn" style={{ width: "80%" }}>
+          <Card title="Tùy chọn" style={{ width: "81%" }}>
             <div style={{ margin: "25px 5px" }}>
               <h4 style={{ alignItems: "center", marginBottom: "15px" }}>
                 Khoảng giá
@@ -133,14 +133,14 @@ const CategiryBooks = () => {
                 onChange={(e) => setSortBy(e.value)}
                 optionLabel="name"
                 options={fild}
-                style={{ margin: "15px 4px" }}
+                style={{ margin: "15px 14px" }}
               />
               <SelectButton
                 value={sort}
                 onChange={(e) => setSort(e.value)}
                 optionLabel="name"
                 options={contrain}
-                style={{ margin: "10px 8px" }}
+                style={{ margin: "10px 19px" }}
               />
             </div>
             <div
@@ -163,7 +163,7 @@ const CategiryBooks = () => {
           </div>
         </div>
 
-        <div style={{ width: "85%" }}>
+        <div style={{ width: "97%" }}>
           <Banner>{category ? category[0].name : "Danh sách "}</Banner>
           <ProductsList
             books={books}

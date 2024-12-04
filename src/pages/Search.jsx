@@ -31,12 +31,6 @@ const Search = () => {
   const { title } = useParams();
   const [books, setBooks] = useState([]);
   useEffect(() => {
-    // fetch(`${endpoint}/user/books?title=${title}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setBooks(data);
-    //   })
-    //   .catch((error) => console.error(error));
     updateBook();
   }, [title]);
   const fild = [
@@ -69,7 +63,7 @@ const Search = () => {
 
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books?limit=16&page=${
+      `${endpoint}/user/books?limit=15&page=${
         Number(current) + 1
       }&title=${title}&from=${priceRange[0]}&to=${
         priceRange[1]
@@ -134,14 +128,14 @@ const Search = () => {
         <div
           style={{
             width: "30%",
-            height: "100vh",
+            height: "113vh",
             display: "flex",
             flexDirection: "column",
             marginTop: "125px",
             alignItems: "center",
           }}
         >
-          <Card title="Tùy chọn" style={{ width: "80%" }}>
+          <Card title="Tùy chọn" style={{ width: "81%" }}>
             <div style={{ margin: "25px 5px" }}>
               <h4 style={{ alignItems: "center", marginBottom: "15px" }}>
                 Thể loại
@@ -186,14 +180,14 @@ const Search = () => {
                 onChange={(e) => setSortBy(e.value)}
                 optionLabel="name"
                 options={fild}
-                style={{ margin: "15px 4px" }}
+                style={{ margin: "15px 14px" }}
               />
               <SelectButton
                 value={sort}
                 onChange={(e) => setSort(e.value)}
                 optionLabel="name"
                 options={contrain}
-                style={{ margin: "10px 8px" }}
+                style={{ margin: "10px 19px" }}
               />
             </div>
             <div
@@ -216,7 +210,7 @@ const Search = () => {
           </div>
         </div>
 
-        <div style={{ width: "85%" }}>
+        <div style={{ width: "97%" }}>
           <Banner>{title}</Banner>
           <ProductsList
             books={books}
