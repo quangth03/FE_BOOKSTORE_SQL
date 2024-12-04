@@ -169,6 +169,7 @@ const ProductDetail = () => {
     if (Cookies.get("authToken") === undefined) {
       // If no authToken, redirect to the login page
       navigate("/login");
+      return;
     }
     fetch(`${endpoint}/user/cart`, {
       method: "POST",

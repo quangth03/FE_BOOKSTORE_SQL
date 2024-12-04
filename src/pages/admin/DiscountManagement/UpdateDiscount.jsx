@@ -43,7 +43,7 @@ export const Button = styled.div`
 
 const UpdateDiscount = () => {
   const [data, setData] = useState({
-    value: "",
+    value: 0,
     description: "",
     minimumOrderValue: 0,
     expiredAt: "",
@@ -83,7 +83,7 @@ const UpdateDiscount = () => {
       return;
     }
 
-    if (data.minimumOrderValue <= data.value) {
+    if (parseInt(data.minimumOrderValue) <= parseInt(data.value)) {
       setErrorMessage("Đơn hàng tối thiểu phải lớn hơn giá trị giảm giá");
       return;
     }
