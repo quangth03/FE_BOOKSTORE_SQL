@@ -109,6 +109,16 @@ const Amount = styled.input.attrs({ type: "number" })`
   }
 `;
 
+// const Amount = styled.span`
+//   width: 30px;
+//   height: 30px;
+//   border: none;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 0px 5px;
+// `;
+
 const DeleteButton = styled.button`
   height: 40px;
   width: 40px;
@@ -125,6 +135,12 @@ const DeleteButton = styled.button`
 
 const CartItem = ({ cartItem, updateCart }) => {
   const [amount, setAmount] = useState(cartItem.cart_details.quantity);
+  console.log(
+    "cartItem.cart_details.quantity:",
+    cartItem.cart_details.quantity
+  );
+
+  console.log("cartItem:", cartItem);
 
   const data = {
     book_id: cartItem.id,
@@ -186,6 +202,40 @@ const CartItem = ({ cartItem, updateCart }) => {
     }
   };
 
+  // const handleChange = (e) => {
+  //   const newValue = e.target.value;
+  //   const min = 1;
+  //   const max = cartItem.quantity;
+
+  //   if (newValue === "") {
+  //     setAmount("");
+  //   } else if (parseInt(newValue) < min) {
+  //     setAmount(min);
+  //   }
+  //   // else if (parseInt(newValue) > max) {
+  //   //   setAmount(max);
+  //   // }
+  //   else {
+  //     setAmount(parseInt(newValue));
+  //     const data = {
+  //       book_id: cartItem.id,
+  //       quantity: parseInt(amount),
+  //     };
+  //     handleRequest("POST", data);
+  //     // cartItem.cart_details.quantity = parseInt(newValue);
+  //   }
+  // };
+  const [totalPrice, setTotalPrice] = useState(cartItem.cart_details.total);
+  const calculatePrice = (price, discount) => {
+    return parseInt(price * (1 - discount / 100));
+  };
+  const sellPrice = calculatePrice(cartItem.price, cartItem.discount);
+
+  useEffect(() => {
+    const updatedPrice = amount * sellPrice; // Giá trị mới dựa trên số lượng
+    setTotalPrice(updatedPrice);
+  }, [amount, sellPrice]);
+
   const handleChange = (e) => {
     const newValue = e.target.value;
     const min = 1;
@@ -195,19 +245,21 @@ const CartItem = ({ cartItem, updateCart }) => {
       setAmount("");
     } else if (parseInt(newValue) < min) {
       setAmount(min);
-    }
-    // else if (parseInt(newValue) > max) {
-    //   setAmount(max);
-    // }
-    else {
-      setAmount(parseInt(newValue));
+      // } else if (parseInt(newValue) > max) {
+      //   setAmount(max);
+    } else {
+      const quantity = parseInt(newValue);
+      setAmount(quantity);
+      const data = {
+        book_id: cartItem.id,
+        quantity: quantity - cartItem.cart_details.quantity, // Tính chênh lệch số lượng
+      };
+      handleRequest("POST", data);
+      setTimeout(() => {
+        updateCart();
+      }, 1000);
     }
   };
-
-  const calculatePrice = (price, discount) => {
-    return Math.round(price * (1 - discount / 100));
-  };
-  const sellPrice = calculatePrice(cartItem.price, cartItem.discount);
 
   return (
     <div>
@@ -226,20 +278,24 @@ const CartItem = ({ cartItem, updateCart }) => {
           </ProductName>
           <AmountContainer>
             <AmountButton onClick={handleDescrease}>-</AmountButton>
+            {/* <Amount>{amount}</Amount> */}
             <Amount value={amount} onChange={handleChange}></Amount>
             <AmountButton onClick={handleIncrease}>+</AmountButton>
           </AmountContainer>
           <PriceContainer>
-            <FinalPrice>{Number(sellPrice).toLocaleString()} VND</FinalPrice>
+            <FinalPrice>
+              {Number(parseInt(sellPrice)).toLocaleString()} VND
+            </FinalPrice>
             {cartItem.discount > 0 && (
               <DiscountPrice>
                 {Number(cartItem.price).toLocaleString()} VND
               </DiscountPrice>
             )}
           </PriceContainer>
-          <Price>
+          {/* <Price>
             {Number(cartItem.cart_details.total).toLocaleString()} VND
-          </Price>
+          </Price> */}
+          <Price>{Number(parseInt(totalPrice)).toLocaleString()} VND</Price>
         </ProductDetail>
         <DeleteButton onClick={handleDelete}>
           <DeleteOutline />
