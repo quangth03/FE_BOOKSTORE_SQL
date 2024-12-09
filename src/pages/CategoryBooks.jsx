@@ -99,7 +99,7 @@ const CategiryBooks = () => {
         <div
           style={{
             width: "30%",
-            height: "113vh",
+            height: "120vh",
             display: "flex",
             flexDirection: "column",
             marginTop: "125px",

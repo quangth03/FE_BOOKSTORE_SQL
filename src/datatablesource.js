@@ -25,7 +25,7 @@ export const userColumns = [
   // },
   {
     field: "username",
-    headerName: "Tên người dùng",
+    headerName: "Tài khoản",
     width: 125,
   },
   {
@@ -333,7 +333,7 @@ export const commentColumns = [
   {
     field: "book_mane",
     headerName: "Tựa sách",
-    width: 150,
+    width: 250,
     renderCell: (params) => {
       return (
         <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
@@ -343,16 +343,16 @@ export const commentColumns = [
     },
   },
   {
-    field: "user_id",
-    headerName: "ID Người dùng",
-    width: 150,
+    field: "userame",
+    headerName: "Tài khoản",
+    width: 100,
     renderCell: (params) => {
-      return params.row.user.id;
+      return params.row.user.username;
     },
   },
   {
     field: "name",
-    headerName: "Người dùng",
+    headerName: "Họ và tên",
     width: 150,
     renderCell: (params) => {
       return params.row.user.full_name;
