@@ -9,6 +9,9 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import AOS from "aos";
+import "aos/dist/aos.css"; // Import file CSS của AOS
+
 const TopButton = styled.button`
   background-color: ${colors.color2}; /* Màu nền xanh nhạt */
   color: #fff; /* Màu chữ trắng */
@@ -47,6 +50,14 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [topBooks, setTopBooks] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+
+  // ⚙️ Khởi tạo AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Thời gian hiệu ứng (ms)
+      once: true, // Chỉ chạy 1 lần khi cuộn
+    });
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -100,11 +111,11 @@ const Home = () => {
     >
       <div className="" style={{ width: "18.5%" }}>
         <div className="sidebar">
-          <div className="category px-3">
+          <div className="category px-3" data-aos="fade-right">
             <Categories categories={categories} />
           </div>
 
-          <div className="poster pt-3">
+          <div className="poster pt-3" data-aos="zoom-in">
             <Img
               className="px-3 w-full "
               src="https://theme.hstatic.net/200000845405/1001223012/14/widget_banner.jpg?v=335"
@@ -113,13 +124,14 @@ const Home = () => {
           </div>
 
           {/* Hiển thị các sách bán chạy */}
-          <div className="sachmoibanchay p-3">
+          <div className="sachmoibanchay p-3" data-aos="fade-left">
             <h3 className="mt-5 mb-2">Sách mới bán chạy</h3>
             {topBooks.length > 0 ? (
               topBooks.map((item) => (
                 <Link
                   to={`/books/${item.id}`}
-                  className="link no-underline text-color "
+                  className="link no-underline text-color"
+                  data-aos="fade-up"
                 >
                   <div key={item.title}>
                     <div className="flex align-items-center my-4 relative">
@@ -173,13 +185,13 @@ const Home = () => {
       </div>
 
       <div className="" style={{ width: "79%", marginLeft: "2rem" }}>
-        <div className="slider mt-3">
+        <div className="slider mt-3" data-aos="fade-down">
           <Slider />
         </div>
 
         <section className="two-img">
           <div className="grid my-5 gap-3">
-            <div className="flex-1 col-6  ">
+            <div className="flex-1 col-6" data-aos="zoom-in">
               <Img
                 className="w-full"
                 src="https://theme.hstatic.net/200000845405/1001223012/14/htb_img_1.jpg?v=335"
@@ -187,7 +199,7 @@ const Home = () => {
               />
             </div>
 
-            <div className="flex-1 col-6 ">
+            <div className="flex-1 col-6" data-aos="zoom-in">
               <Img
                 className="w-full"
                 src="https://theme.hstatic.net/200000845405/1001223012/14/htb_img_2.jpg?v=335"
@@ -197,7 +209,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section>
+        <section data-aos="fade-up">
           <div className="button flex justify-content-center">
             <CustomNavLink to={"/books"}>
               <TopButton>Xem Tất Cả</TopButton>
@@ -207,7 +219,7 @@ const Home = () => {
 
         <section>
           {categories.map((category) => (
-            <section key={category.id}>
+            <section key={category.id} data-aos="fade-up">
               <ProductsList
                 books={books
                   .filter((book) =>
@@ -224,7 +236,7 @@ const Home = () => {
           ))}
         </section>
 
-        <section>
+        <section data-aos="fade-right">
           <Partner />
         </section>
       </div>

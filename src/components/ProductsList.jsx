@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { colors } from "../data";
 import ProductItem from "./ProductItem";
 import CustomNavLink from "./CustomNavLink";
+import AOS from "aos";
+import { useEffect } from "react";
 
 const Container = styled.div`
   width: 100%;
@@ -54,6 +56,13 @@ const Products = ({
   fetchWishlist,
   wishlist,
 }) => {
+  // ⚙️ Khởi tạo AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Thời gian hiệu ứng (ms)
+      once: true, // Chỉ chạy 1 lần khi cuộn
+    });
+  }, []);
   return (
     <>
       {hasBanner ? (
@@ -74,7 +83,7 @@ const Products = ({
         ""
       )}
 
-      <Container className="bg-white pt-3 mb-3">
+      <Container className="bg-white pt-3 mb-3" data-aos="fade-up">
         {books != null && books.length > 0
           ? books.map((item) => {
               const isWishListed =

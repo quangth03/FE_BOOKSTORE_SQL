@@ -133,6 +133,29 @@ const AddButton = styled.button`
     background-color: ${colors.color2};
     color: white;
   }
+  &:disabled {
+    font-weight: 700;
+    background-color: #ccc; /* Màu nền khi disabled */
+    color: black; /* Màu chữ khi disabled */
+    border-color: #ccc; /* Màu viền khi disabled */
+    cursor: not-allowed; /* Con trỏ chuột khi disabled */
+    opacity: 0.8; /* Hiệu ứng làm mờ */
+  }
+`;
+
+const DisableAddButton = styled.button`
+  // margin-left: 100px;
+  padding: 10px;
+  border: 2px solid ${colors.color2};
+  background-color: white;
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: ${colors.color2};
+    color: white;
+  }
 `;
 
 const ProductDetail = () => {
@@ -361,10 +384,14 @@ const ProductDetail = () => {
                       onClick={() => handleRemoveItem(book.id)}
                     />
                   )}
-                  <AddButton onClick={handleAddToCart}>
-                    {/* <i className="pi pi-cart-plus"></i> */}
-                    Thêm vào giỏ hàng
-                  </AddButton>
+                  {book.quantity > 0 ? (
+                    <AddButton onClick={handleAddToCart}>
+                      {/* <i className="pi pi-cart-plus"></i> */}
+                      Thêm vào giỏ hàng
+                    </AddButton>
+                  ) : (
+                    <AddButton disabled>Thêm vào giỏ hàng</AddButton>
+                  )}
                 </AddContainer>
               )}
               <TabProductDetail book={book} />

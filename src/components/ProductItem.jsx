@@ -11,7 +11,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Tooltip } from "primereact/tooltip";
 
-const Container = styled.div`
+const Container = styled.div.attrs(() => ({
+  "data-aos": "fade-up", // Thêm thuộc tính data-aos
+}))`
   margin: 0rem 1rem 3rem 1rem;
   width: 17%;
   height: auto;
@@ -115,6 +117,31 @@ export const CartButton = styled.div`
   }
 `;
 
+export const DisableCartButton = styled.button`
+  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
+  border: 0;
+  border-radius: 12px;
+  color: #ffffff;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  font-size: 14px;
+  cursor: not-allowed;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  border-radius: 20px;
+  margin: 5px 0px;
+`;
+
 export const ReWishList = styled(FavoriteBorderIcon)`
   margin-left: 5px;
   cursor: pointer;
@@ -152,6 +179,22 @@ const DiscountBadge = styled.div`
   z-index: 3;
   text-align: center;
   border: 1px solid white;
+`;
+
+const SoldOutBadge = styled.div`
+  position: absolute;
+  top: 7rem;
+  left: 59px;
+  background: linear-gradient(135deg, #7e7e7e, #a9a9a9);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 8px 12px;
+  // border-radius: 10px;
+  z-index: 3;
+  text-align: center;
+  border: 1px solid white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
@@ -247,6 +290,7 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
       {item.discount > 0 && (
         <DiscountBadge>{`-${item.discount}%`}</DiscountBadge>
       )}
+      {item.quantity === 0 && <SoldOutBadge>Hết hàng</SoldOutBadge>}
       <Link
         to={`/books/${item.id}`}
         className="link no-underline text-color"
@@ -259,9 +303,6 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
         <ProductName>{item.title}</ProductName>
       </Link>
 
-      {/* <CustomNavLink to={`/books/${item.id}`}>
-        <ProductName>{item.title}</ProductName>
-      </CustomNavLink> */}
       <div
         style={{
           display: "flex",
@@ -282,7 +323,13 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
       ) : (
         <>
           <ActionButtons>
-            <CartButton onClick={handleAddToCart}>Thêm vào giỏ hàng</CartButton>
+            {item.quantity === 0 ? (
+              <DisableCartButton>Thêm vào giỏ hàng</DisableCartButton>
+            ) : (
+              <CartButton onClick={handleAddToCart}>
+                Thêm vào giỏ hàng
+              </CartButton>
+            )}
             {!wishlistState ? (
               <ReWishList
                 style={{ fontSize: "35px" }}

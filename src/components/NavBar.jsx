@@ -177,7 +177,7 @@ const Navbar = () => {
       <Link to={`/books/${item.id}`} className="link no-underline text-color">
         <div className="flex align-items-center" onClick={() => setQuery("")}>
           <img src={item.image} alt={item.title} width="50" className="mr-2" />
-          <div className="flex flex-column w-19rem">
+          <div className="flex flex-column w-21rem">
             <span
               className="font-bold mb-2"
               style={{
@@ -248,7 +248,7 @@ const Navbar = () => {
             </NavLink>
           )}
           {!isAdmin && (
-            <div className="p-inputgroup" style={{ width: "550px" }}>
+            <div className="p-inputgroup" style={{ width: "650px" }}>
               <AutoComplete
                 value={query}
                 suggestions={[
