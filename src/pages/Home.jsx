@@ -65,7 +65,7 @@ const Home = () => {
       fetch(`${endpoint}/admin/categories`).then((res) => res.json()),
     ])
       .then(([booksData, categoriesData]) => {
-        setPopularProducts(booksData);
+        setPopularProducts(booksData.books);
         setCategories(categoriesData);
       })
       .catch((error) => console.error("Error fetching data:", error));

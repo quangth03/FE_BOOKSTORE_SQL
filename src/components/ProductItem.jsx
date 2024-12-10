@@ -184,7 +184,8 @@ const DiscountBadge = styled.div`
 const SoldOutBadge = styled.div`
   position: absolute;
   top: 7rem;
-  left: 59px;
+  left: 49px;
+  right: 49px;
   background: linear-gradient(135deg, #7e7e7e, #a9a9a9);
   color: #ffffff;
   font-size: 15px;

@@ -109,7 +109,7 @@ const Navbar = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get("http://localhost:8080/user/books");
-        setItems(response.data); // Lưu dữ liệu vào state
+        setItems(response.data.books); // Lưu dữ liệu vào state
       } catch (error) {
         console.error("Error fetching data:", error);
       }

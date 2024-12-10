@@ -30,13 +30,13 @@ const PageNumberItem = styled.div`
 `;
 
 const PageNavigation = ({
-  current = 0,
+  current = 1,
   total = 10,
   urlPattern,
   padding = "0px 75px",
 }) => {
-  var min = current - 2 >= 0 ? current - 2 : 0;
-  var max = current + 2 >= total ? total - 1 : current + 2;
+  var min = current - 2 > 0 ? current - 2 : 1;
+  var max = current + 2 >= total ? total : current + 1;
 
   var pageNumberItems = [];
   for (let index = min; index <= max; index++) {
@@ -45,7 +45,7 @@ const PageNavigation = ({
         to={`${urlPattern}?page=${index}`}
         key={`page-navigation-${index}`}
       >
-        <PageNumberItem active={current === index}>{index + 1}</PageNumberItem>
+        <PageNumberItem active={current === index}>{index}</PageNumberItem>
       </CustomNavLink>
     );
   }

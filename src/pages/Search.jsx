@@ -54,30 +54,34 @@ const Search = () => {
     },
   ];
   const query = new URLSearchParams(window.location.search);
-  var current = query.get("page");
+  // var current = query.get("page");
+  var current = query.get("page") ? Number(query.get("page")) : 1;
+
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [sortBy, setSortBy] = useState("price");
   const [sort, setSort] = useState("ASC");
-
+  const [totalCount, setTotalCount] = useState(0); // Lưu tổng số sách
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books?limit=15&page=${
-        Number(current) + 1
-      }&title=${title}&from=${priceRange[0]}&to=${
+      `${endpoint}/user/books?limit=15&page=${Number(
+        current
+      )}&title=${title}&from=${priceRange[0]}&to=${
         priceRange[1]
       }&sort=${sortBy}&sortD=${sort}&cat=${selectedCategories.join("-")}`
     )
       .then((response) => response.json())
       .then((data) => {
-        setBooks(data);
+        setBooks(data.books);
+        setTotalCount(data.totalCount); // Lưu tổng số sách
       })
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
     updateBook();
+    console.log("totalCount:", totalCount);
   }, [current]);
 
   useEffect(() => {
@@ -104,6 +108,7 @@ const Search = () => {
 
   useEffect(() => {
     fetchWishlist();
+    console.log("totalCount:", totalCount);
   }, []);
 
   const fetchWishlist = () => {
@@ -212,17 +217,23 @@ const Search = () => {
 
         <div style={{ width: "97%" }}>
           <Banner>{title}</Banner>
-          <ProductsList
-            books={books}
-            hasBanner={false}
-            wishlist={wishlist}
-            fetchWishlist={fetchWishlist}
-          />
-          <PageNavigation
-            current={Number(current)}
-            total={100}
-            urlPattern={`/search/${title}`}
-          />
+          {books.length > 0 ? (
+            <>
+              <ProductsList
+                books={books}
+                hasBanner={false}
+                wishlist={wishlist}
+                fetchWishlist={fetchWishlist}
+              />
+              <PageNavigation
+                current={Number(current) || 1}
+                total={Math.ceil(totalCount / 15)}
+                urlPattern={`/search/${title}`}
+              />
+            </>
+          ) : (
+            <h2 style={{ textAlign: "center" }}>Không tìm thấy sản phẩm</h2>
+          )}
         </div>
       </div>
     </>

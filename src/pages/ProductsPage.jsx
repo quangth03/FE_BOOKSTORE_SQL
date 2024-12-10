@@ -33,17 +33,18 @@ const ProductsPage = () => {
     },
   ];
   const query = new URLSearchParams(window.location.search);
-  var current = query.get("page");
+  // var current = query.get("page");
+  var current = query.get("page") ? Number(query.get("page")) : 1;
   const [books, setPopularProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [sortBy, setSortBy] = useState("price");
   const [sort, setSort] = useState("ASC");
-
+  const [totalCount, setTotalCount] = useState(0); // Lưu tổng số sách
   const updateBook = () => {
     fetch(
-      `${endpoint}/user/books?limit=15&page=${Number(current) + 1}&from=${
+      `${endpoint}/user/books?limit=15&page=${Number(current)}&from=${
         priceRange[0]
       }&to=${
         priceRange[1]
@@ -51,7 +52,8 @@ const ProductsPage = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setPopularProducts(data);
+        setPopularProducts(data.books);
+        setTotalCount(data.totalCount); // Lưu tổng số sách
       })
       .catch((error) => console.error(error));
   };
@@ -198,8 +200,8 @@ const ProductsPage = () => {
             fetchWishlist={fetchWishlist}
           />
           <PageNavigation
-            current={Number(current)}
-            total={100}
+            current={Number(current) || 1}
+            total={Math.ceil(totalCount / 15)}
             urlPattern="/books"
           />
         </div>
