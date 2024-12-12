@@ -135,12 +135,6 @@ const DeleteButton = styled.button`
 
 const CartItem = ({ cartItem, updateCart }) => {
   const [amount, setAmount] = useState(cartItem.cart_details.quantity);
-  console.log(
-    "cartItem.cart_details.quantity:",
-    cartItem.cart_details.quantity
-  );
-
-  console.log("cartItem:", cartItem);
 
   const data = {
     book_id: cartItem.id,
@@ -165,16 +159,14 @@ const CartItem = ({ cartItem, updateCart }) => {
       book_id: cartItem.id,
     };
     handleRequest("DELETE", data);
-    setTimeout(() => {
-      updateCart();
-    }, 100);
+
+    updateCart();
   };
 
   useEffect(() => {
     console.log("Amount:", amount);
-    setTimeout(() => {
-      updateCart();
-    }, 100);
+
+    updateCart();
   }, [amount]);
 
   // useEffect(() => {
@@ -255,9 +247,8 @@ const CartItem = ({ cartItem, updateCart }) => {
         quantity: quantity - cartItem.cart_details.quantity, // Tính chênh lệch số lượng
       };
       handleRequest("POST", data);
-      setTimeout(() => {
-        updateCart();
-      }, 1000);
+
+      updateCart();
     }
   };
 
