@@ -221,25 +221,42 @@ export const orderColumns = [
       return moment(params.row.updatedAt).format("DD-MM-YYYY");
     },
   },
+  {
+    field: "payment_method",
+    headerName: "Thanh toán",
+    width: 150,
+    renderCell: (params) => {
+      const isCash = params.row.payment_method === "cash";
+      const style = {
+        color: isCash ? "green" : "blue",
+        fontWeight: "bold",
+        fontFamily: "Arial, sans-serif",
+      };
+      return <span style={style}>{isCash ? "Tiền mặt" : "Trực tuyến"}</span>;
+    },
+  },
 ];
 export const getColor = (id) => {
   switch (id) {
     case 1:
-      return "red"; // Red color for id 1
+      return "gray"; // Gray for "Chờ thanh toán"
     case 2:
-      return "orange"; // Orange color for id 2
+      return "orange"; // Orange for "Chờ xác nhận"
     case 3:
-      return "Magenta"; // Yellow color for id 3
+      return "blue"; // Blue for "Đã xác nhận"
     case 4:
-      return "blue"; // Blue color for id 4
+      return "purple"; // Purple for "Đang giao hàng"
     case 5:
-      return "green"; // Green color for id 5
+      return "green"; // Green for "Đã giao hàng"
+    case 6:
+      return "red"; // Red for "Đơn hàng đã hủy"
     default:
       return "black"; // Default color
   }
 };
 
 export const listOrderStatus = [
+  { id: 6, name: "Đơn hàng đã hủy" },
   { id: 1, name: "Chờ thanh toán" },
   { id: 2, name: "Chờ xác nhận" },
   { id: 3, name: "Đã xác nhận" },

@@ -48,6 +48,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { MyContextProvider } from "./context/wishListContext";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
@@ -88,6 +89,7 @@ const App = () => {
 
           <Route exact path="/login" Component={Login} />
           <Route exact path="/register" Component={Register} />
+          <Route exact path="/verify-email" Component={VerifyEmail} />
           <Route exact path="/search/:title" Component={Search} />
           <Route exact path="/books" Component={ProductsPage} />
           <Route exact path="/books/:id" Component={ProductDetail} />

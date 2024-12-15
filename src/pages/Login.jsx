@@ -159,13 +159,15 @@ const Login = () => {
             throw new Error("Tài khoản của bạn đã bị chặn.");
           } else if (response.status === 401) {
             throw new Error("Username hoặc mật khẩu không chính xác.");
+          } else if (response.status === 400) {
+            throw new Error("Vui lòng xác minh email của bạn.");
           } else {
             throw new Error("Đã xảy ra lỗi, vui lòng thử lại.");
           }
         })
         .then((data) => {
           Cookies.set("authToken", data.authToken);
-      
+
           fetch(`${endpoint}/user/profile`, {
             headers: { authorization: Cookies.get("authToken") },
           })

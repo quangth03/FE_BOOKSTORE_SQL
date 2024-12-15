@@ -6,6 +6,7 @@ import OrderDetailsItem from "../components/OrderDetailsItem";
 import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { listOrderStatus } from "../datatablesource";
+import Modal from "../components/Modal/Modal";
 
 const Title = styled.div`
   width: 100%;
@@ -47,7 +48,6 @@ const Info = styled.div`
   flex-direction: row;
   margin: 10px 0px;
 `;
-
 const InfoLabel = styled.div`
   flex: 4;
   display: flex;
@@ -60,6 +60,24 @@ const InfoContent = styled.div`
   display: flex;
   // justify-content: flex-end;
 `;
+
+const CancleButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 3;
+  cursor: pointer;
+
+  background-color: ${colors.color1};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  white-space: nowrap; /* Đảm bảo không xuống dòng */
+  margin-top: 100px;
+  margin-right: 40px;
+`;
+
 const OrderDetails = ({ orderId }) => {
   const { orderIdParam } = useParams();
   const [id, setId] = useState(orderIdParam);
@@ -69,6 +87,40 @@ const OrderDetails = ({ orderId }) => {
   const [books, setBooks] = useState([]);
   const [order, setOrder] = useState({});
   const [user, setUser] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const handleConfirmCancel = () => {
+    fetch(`${endpoint}/user/order/update`, {
+      method: "POST", // Phương thức PUT để cập nhật
+      headers: {
+        "Content-Type": "application/json", // Gửi dữ liệu JSON
+        authorization: Cookies.get("authToken"), // Thêm token xác thực
+      },
+      body: JSON.stringify({ id: id, status: 6 }), // Gửi ID đơn hàng và trạng thái mới
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // Nếu phản hồi không thành công, báo lỗi
+          throw new Error("Failed to cancel the order");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Order cancelled successfully:", data); // Log kết quả
+        setOrder((prevOrder) => ({
+          ...prevOrder,
+          status: 6, // Cập nhật trạng thái đơn hàng trong state
+        }));
+        closeModal(); // Đóng modal
+      })
+      .catch((error) => {
+        console.error("Error cancelling order:", error); // Xử lý lỗi
+        closeModal(); // Đóng modal ngay cả khi lỗi xảy ra
+      });
+  };
 
   useEffect(() => {
     console.log("Updated order:", order);
@@ -162,8 +214,25 @@ const OrderDetails = ({ orderId }) => {
               </InfoContent>
             </Info>
           </QuantityWrapper>
+          {!Cookies.get("isAdmin") ? (
+            <div>
+              {order.status !== 6 && order.status !== 5 ? (
+                <CancleButton onClick={openModal}>Hủy đơn hàng</CancleButton>
+              ) : (
+                <></>
+              )}{" "}
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </Wrapper>
+      <Modal
+        isOpen={isModalOpen}
+        title="Hủy đơn hàng"
+        onConfirm={handleConfirmCancel}
+        onCancel={closeModal}
+      />
     </Container>
   );
 };

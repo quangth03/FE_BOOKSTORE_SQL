@@ -97,6 +97,7 @@ const Cart = () => {
   const [numberOfBooks, setNumberOfBooks] = useState(0);
   const [discounts, setDiscounts] = useState([]);
   const [selectedDiscount, setSelectedDiscount] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -160,20 +161,32 @@ const Cart = () => {
     }
 
     if (isValid && cartItems.length > 0) {
-      const temp = selectedDiscount ?? {};
+      const orderData = {
+        value: selectedDiscount?.value ?? 0,
+        payment_method: paymentMethod, // Phương thức thanh toán
+        status: paymentMethod === "online" ? 1 : 2, // Trạng thái đơn hàng
+      };
+
       fetch(`${endpoint}/user/order`, {
         method: "POST",
         headers: {
           authorization: Cookies.get("authToken"),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(temp),
+        body: JSON.stringify(orderData),
       })
         .then((response) => {
           if (response.status === 200) return response.json();
         })
         .then((data) => {
-          window.location.href = data.payUrl;
+          if (paymentMethod === "online") {
+            window.location.href = data.payUrl; // Chuyển hướng nếu là thanh toán online
+          } else {
+            toast.success("Đặt hàng thành công!", { autoClose: 2000 });
+            setTimeout(() => {
+              navigate("/orders");
+            }, 2100);
+          }
         })
         .catch((error) => console.error(error));
     }
@@ -249,6 +262,16 @@ const Cart = () => {
                       </option>
                     );
                   })}
+                </DiscountSelect>
+              </TotalItem>
+              <TotalItem>
+                <TotalText>Thanh toán bằng</TotalText>
+                <DiscountSelect
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                >
+                  <option value="cash">Tiền mặt</option>
+                  <option value="online">Online</option>
                 </DiscountSelect>
               </TotalItem>
               {/* <TotalItem type="total">
