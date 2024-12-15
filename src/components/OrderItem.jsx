@@ -54,7 +54,7 @@ const DetailsButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex: 3;
-  flex-direction: column; 
+  flex-direction: column;
 `;
 
 const DetailsButton = styled.button`
@@ -72,8 +72,9 @@ const DetailsButton = styled.button`
 
 const OrderItem = ({ data }) => {
   const dateObject = new Date(data.createdAt);
-  const dateString = `${dateObject.getDate()}/${dateObject.getMonth() + 1
-    }/${dateObject.getFullYear()}`;
+  const dateString = `${dateObject.getDate()}/${
+    dateObject.getMonth() + 1
+  }/${dateObject.getFullYear()}`;
 
   const navigate = useNavigate();
 
@@ -81,7 +82,7 @@ const OrderItem = ({ data }) => {
     navigate(`/orders/${data.id}`);
   };
   const handlePay = () => {
-    window.location.href = data.pay_url
+    window.location.href = data.pay_url;
   };
   const statusColor = getColor(data.status);
 
@@ -119,7 +120,6 @@ const OrderItem = ({ data }) => {
           ) : null}
           <DetailsButton onClick={handleNavigate}>Xem chi tiết</DetailsButton>
         </DetailsButtonWrapper>
-
       </Wrapper>
     </Container>
   );

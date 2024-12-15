@@ -135,13 +135,6 @@ const DeleteButton = styled.button`
 
 const CartItem = ({ cartItem, updateCart }) => {
   const [amount, setAmount] = useState(cartItem.cart_details.quantity);
-  console.log(
-    "cartItem.cart_details.quantity:",
-    cartItem.cart_details.quantity
-  );
-
-  console.log("cartItem:", cartItem);
-
   const data = {
     book_id: cartItem.id,
     quantity: 1,
@@ -177,9 +170,9 @@ const CartItem = ({ cartItem, updateCart }) => {
     }, 100);
   }, [amount]);
 
-  // useEffect(() => {
-  //   setAmount(cartItem.cart_details.quantity);
-  // }, [cartItem]);
+  useEffect(() => {
+    setAmount(cartItem.cart_details.quantity);
+  }, [cartItem]);
 
   const handleDescrease = () => {
     if (amount >= 1) {
@@ -188,8 +181,7 @@ const CartItem = ({ cartItem, updateCart }) => {
         data.quantity = -1;
         handleRequest("POST", data);
       } else {
-        handleRequest("DELETE", data);
-        setAmount((prev) => prev - 1);
+        handleDelete();
       }
     }
   };
@@ -243,10 +235,31 @@ const CartItem = ({ cartItem, updateCart }) => {
 
     if (newValue === "") {
       setAmount("");
+      setTimeout(() => {
+        updateCart();
+      }, 100);
     } else if (parseInt(newValue) < min) {
       setAmount(min);
-      // } else if (parseInt(newValue) > max) {
-      //   setAmount(max);
+      const quantity = min;
+      const data = {
+        book_id: cartItem.id,
+        quantity: quantity - cartItem.cart_details.quantity, // Tính chênh lệch số lượng
+      };
+      handleRequest("POST", data);
+      setTimeout(() => {
+        updateCart();
+      }, 100);
+    } else if (parseInt(newValue) > max) {
+      setAmount(max);
+      const quantity = max;
+      const data = {
+        book_id: cartItem.id,
+        quantity: quantity - cartItem.cart_details.quantity, // Tính chênh lệch số lượng
+      };
+      handleRequest("POST", data);
+      setTimeout(() => {
+        updateCart();
+      }, 100);
     } else {
       const quantity = parseInt(newValue);
       setAmount(quantity);
@@ -257,7 +270,7 @@ const CartItem = ({ cartItem, updateCart }) => {
       handleRequest("POST", data);
       setTimeout(() => {
         updateCart();
-      }, 1000);
+      }, 100);
     }
   };
 

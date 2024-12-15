@@ -154,7 +154,7 @@ const Cart = () => {
       if (cartItem.cart_details.quantity > cartItem.quantity) {
         isValid = false;
         toast.error(
-          `Số lượng của sản phẩm "${cartItem.title}" không đủ để thanh toán.`,
+          `Số lượng của sản phẩm "${cartItem.title}" không đủ để đặt hàng.`,
           { autoClose: 2000 }
         );
       }
@@ -203,7 +203,7 @@ const Cart = () => {
             </CustomNavLink>
             <Quantity>{numberOfBooks} sản phẩm</Quantity>
             <TopButton type="filled" onClick={handleCheckout}>
-              THANH TOÁN
+              ĐẶT HÀNG
             </TopButton>
             {/* <ToastContainer /> */}
             <div style={{ width: "10px" }}></div>
