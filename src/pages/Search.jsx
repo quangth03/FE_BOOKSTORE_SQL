@@ -72,16 +72,28 @@ const Search = () => {
       }&sort=${sortBy}&sortD=${sort}&cat=${selectedCategories.join("-")}`
     )
       .then((response) => response.json())
+      // .then((data) => {
+      //   console.log("Data from API:", data);
+      //   setBooks(data.books);
+      //   setTotalCount(data.totalCount); // Lưu tổng số sách
+      //   console.log("totalCount:", totalCount);
+      //   console.log("books:", books);
+      // })
+      // .catch((error) => console.error(error));
       .then((data) => {
-        setBooks(data.books);
-        setTotalCount(data.totalCount); // Lưu tổng số sách
+        if (data && Array.isArray(data.books)) {
+          setBooks(data.books);
+          setTotalCount(data.totalCount || 0);
+        } else {
+          console.error("Invalid data from API:", data);
+          setBooks([]); // Giá trị mặc định nếu dữ liệu không hợp lệ
+        }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error("Error fetching books:", error));
   };
 
   useEffect(() => {
     updateBook();
-    console.log("totalCount:", totalCount);
   }, [current]);
 
   useEffect(() => {
@@ -108,7 +120,6 @@ const Search = () => {
 
   useEffect(() => {
     fetchWishlist();
-    console.log("totalCount:", totalCount);
   }, []);
 
   const fetchWishlist = () => {
