@@ -142,8 +142,8 @@ const Cart = () => {
       .catch((error) => console.error(error));
   };
 
-  const updateCart = async () => {
-    await handleGetCart();
+  const updateCart = () => {
+    handleGetCart();
   };
 
   const handleCheckout = () => {
