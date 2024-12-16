@@ -67,6 +67,8 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
+  const [imagePreview, setImagePreview] = useState(""); // To show the image preview
+  const [imageUrl, setImageUrl] = useState(null); // State để lưu URL của hình ảnh
 
   // Load product data on mount
   useEffect(() => {
@@ -78,6 +80,9 @@ const UpdateProduct = () => {
           .toISOString()
           .split("T")[0];
         setData({ ...data, publication_date: formattedDate });
+
+        // Set image preview if there's an existing image URL
+        setImagePreview(data.image);
       })
       .catch((error) => {
         setErrorMessage("Không thể tải thông tin sản phẩm.");
@@ -127,37 +132,80 @@ const UpdateProduct = () => {
     return true;
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setData((prevData) => ({
+      ...prevData,
+      image: file,
+    }));
+
+    // Tạo URL hình ảnh tạm thời
+    const imageUrl = URL.createObjectURL(file);
+    setImageUrl(imageUrl); // Cập nhật state để hiển thị ảnh
+    setImagePreview(imageUrl);
+  };
+
   // Handle the update request
-  const handleUpdateBook = () => {
+  const handleUpdateBook = async () => {
     if (!validateInput()) {
       return; // Dừng lại nếu có lỗi
     }
 
-    // Send update request
-    fetch(`${endpoint}/admin/books/id/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: Cookies.get("authToken"),
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          toast.success("Cập nhật sản phẩm thành công", {
-            autoClose: 2000,
-          });
-          setTimeout(() => {
-            navigate("/admin/books");
-          }, 2100);
-        } else {
-          setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
-        }
-      })
-      .catch((error) => {
-        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
-        console.error(error);
+    const formData = new FormData();
+    formData.append("image", data.image); // Thêm hình ảnh vào FormData
+
+    try {
+      const imageResponse = await fetch(`${endpoint}/admin/upload`, {
+        method: "POST",
+        headers: {
+          authorization: Cookies.get("authToken"),
+        },
+        body: formData,
       });
+
+      if (!imageResponse.ok) {
+        setErrorMessage("Đã có lỗi khi tải hình ảnh.");
+        return;
+      }
+
+      const imageData = await imageResponse.json();
+      console.log("imageData", imageData);
+      const imageUrl = imageData.imageUrl; // Giả sử server trả về URL hình ảnh
+      // Sau khi có link hình ảnh, tiến hành thêm sách
+      const bookData = {
+        title: data.title,
+        author: data.author,
+        price: data.price,
+        quantity: data.quantity,
+        discount: data.discount,
+        description: data.description,
+        publication_date: data.publication_date,
+        image: imageUrl, // Sử dụng link hình ảnh đã upload
+      };
+
+      // Send update request
+      const bookResponse = await fetch(`${endpoint}/admin/books/id/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: Cookies.get("authToken"),
+        },
+        body: JSON.stringify(bookData),
+      });
+      if (bookResponse.status === 200) {
+        toast.success("Cập nhật sản phẩm thành công", {
+          autoClose: 2000,
+        });
+        setTimeout(() => {
+          navigate("/admin/books");
+        }, 2100);
+      } else {
+        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
+      }
+    } catch (error) {
+      setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
+    }
+    setErrorMessage("");
   };
 
   const handleNavigateAddCate = () => {
@@ -168,6 +216,20 @@ const UpdateProduct = () => {
     navigate(`/admin/books/${id}/categories/delete`);
   };
 
+  // Handle image file input
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     // Create image preview and update data
+  //     const imageUrl = URL.createObjectURL(file);
+  //     setImagePreview(imageUrl);
+  //     setData((prevData) => ({
+  //       ...prevData,
+  //       image: imageUrl,
+  //     }));
+  //   }
+  // };
+
   return (
     <div className="list">
       <Sidebar />
@@ -177,17 +239,26 @@ const UpdateProduct = () => {
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <InfoItem>
             <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
+            <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
+              <Button style={{ marginRight: "595px" }}>Chọn hình ảnh</Button>
+            </label>
             <FormInput
-              placeholder="http://"
-              value={data.image || ""}
-              onChange={(e) =>
-                setData((prevData) => ({
-                  ...prevData,
-                  image: e.target.value,
-                }))
-              }
+              type="file"
+              id="file-upload"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }} // Hide the default file input
             />
           </InfoItem>
+          {imagePreview && (
+            <div style={{ marginLeft: "290px" }}>
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{ width: "150px", height: "200px" }}
+              />
+            </div>
+          )}
           <InfoItem>
             <InfoItemLabel>Tiêu đề</InfoItemLabel>
             <FormInput

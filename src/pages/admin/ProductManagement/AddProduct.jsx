@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { InfoItem, InfoItemLabel, Right } from "../../Profile";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import styled from "styled-components";
@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -41,15 +40,21 @@ export const Button = styled.div`
   border-radius: 10px;
   cursor: pointer;
 `;
+
 const AddProduct = () => {
   const [data, setData] = useState({
+    title: "",
+    author: "",
+    price: "",
+    quantity: "",
     discount: 0,
+    description: "",
+    publication_date: "",
+    image: null,
   });
-  const navigate = useNavigate();
-
+  const [imageUrl, setImageUrl] = useState(null); // State để lưu URL của hình ảnh
   const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {}, [errorMessage]);
+  const navigate = useNavigate();
 
   const validateInput = () => {
     const currentDate = new Date().toISOString().split("T")[0];
@@ -92,35 +97,79 @@ const AddProduct = () => {
     return true;
   };
 
-  const handleCreateBook = () => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setData((prevData) => ({
+      ...prevData,
+      image: file,
+    }));
+
+    // Tạo URL hình ảnh tạm thời
+    const imageUrl = URL.createObjectURL(file);
+    setImageUrl(imageUrl); // Cập nhật state để hiển thị ảnh
+  };
+
+  const handleCreateBook = async () => {
     if (!validateInput()) {
       return;
     }
+    // Upload hình ảnh lên server để lấy URL
+    const formData = new FormData();
+    formData.append("image", data.image); // Thêm hình ảnh vào FormData
 
-    // Tiến hành gửi dữ liệu
-    fetch(`${endpoint}/admin/books/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: Cookies.get("authToken"),
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          toast.success("Thêm sản phẩm thành công", {
-            autoClose: 2000,
-          });
-          setTimeout(() => {
-            navigate("/admin/books");
-          }, 2100);
-        } else {
-          setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
-        }
-      })
-      .catch(() => {
-        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
+    try {
+      const imageResponse = await fetch(`${endpoint}/admin/upload`, {
+        method: "POST",
+        headers: {
+          authorization: Cookies.get("authToken"),
+        },
+        body: formData,
       });
+
+      if (!imageResponse.ok) {
+        setErrorMessage("Đã có lỗi khi tải hình ảnh.");
+        return;
+      }
+
+      const imageData = await imageResponse.json();
+      console.log("imageData", imageData);
+      const imageUrl = imageData.imageUrl; // Giả sử server trả về URL hình ảnh
+      // Sau khi có link hình ảnh, tiến hành thêm sách
+      const bookData = {
+        title: data.title,
+        author: data.author,
+        price: data.price,
+        quantity: data.quantity,
+        discount: data.discount,
+        description: data.description,
+        publication_date: data.publication_date,
+        image: imageUrl, // Sử dụng link hình ảnh đã upload
+      };
+
+      // Gửi thông tin sách vào server
+      const bookResponse = await fetch(`${endpoint}/admin/books/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: Cookies.get("authToken"),
+        },
+        body: JSON.stringify(bookData),
+      });
+
+      if (bookResponse.status === 200) {
+        toast.success("Thêm sản phẩm thành công", {
+          autoClose: 2000,
+        });
+        setTimeout(() => {
+          navigate("/admin/books");
+        }, 2100);
+      } else {
+        setErrorMessage("Đã có lỗi xảy ra khi thêm sách.");
+      }
+    } catch (error) {
+      setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
+    }
+    setErrorMessage("");
   };
 
   return (
@@ -135,18 +184,28 @@ const AddProduct = () => {
 
         <Form>
           <InfoItem>
-            <InfoItemLabel>Đường dẫn hình ảnh</InfoItemLabel>
+            <InfoItemLabel>Chọn Hình Ảnh</InfoItemLabel>
+            <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
+              <Button style={{ marginRight: "595px" }}>Chọn hình ảnh</Button>
+            </label>
             <FormInput
-              placeholder="http://"
-              value={data.image}
-              onChange={(e) =>
-                setData((prevData) => ({
-                  ...prevData,
-                  image: e.target.value,
-                }))
-              }
+              type="file"
+              id="file-upload"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }} // Ẩn input file mặc định
             />
           </InfoItem>
+          {imageUrl && (
+            <div style={{ marginLeft: "290px" }}>
+              <img
+                src={imageUrl}
+                alt="Hình ảnh sản phẩm"
+                style={{ width: "150px", height: "200px" }}
+              />
+            </div>
+          )}
+          {/* Các trường khác */}
           <InfoItem>
             <InfoItemLabel>Tiêu đề</InfoItemLabel>
             <FormInput

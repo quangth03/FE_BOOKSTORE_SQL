@@ -164,8 +164,8 @@ const ProductDetail = () => {
   const [books, setBooks] = useState([]);
   const { id } = useParams();
 
-  const { sharedData } = useContext(MyContext);
-  console.log("sharedata", sharedData);
+  // const { sharedData } = useContext(MyContext);
+  // console.log("sharedata", sharedData);
 
   useEffect(() => {
     fetch(`${endpoint}/user/books/id/${id}`)
@@ -247,10 +247,23 @@ const ProductDetail = () => {
     return Math.round(price * (1 - discount / 100));
   };
   const sellPrice = calculatePrice(book.price, book.discount);
+  const [sharedataDetail, setSharedateDetail] = useState([]);
+  const fetchWishlist = () => {
+    fetch(`${endpoint}/user/wishList`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSharedateDetail(data);
+      })
+      .catch((error) => toast.error("Lỗi khi lấy wishlist: " + error));
+  };
 
   const isWishListed =
-    Array.isArray(sharedData) &&
-    sharedData.some((wishlistItem) => wishlistItem.id === book.id);
+    Array.isArray(sharedataDetail) &&
+    sharedataDetail.some((wishlistItem) => wishlistItem.id === book.id);
 
   const [wishlistState, setWishlistState] = useState(isWishListed);
 
@@ -309,19 +322,6 @@ const ProductDetail = () => {
   useEffect(() => {
     fetchWishlist();
   }, []);
-
-  const fetchWishlist = () => {
-    fetch(`${endpoint}/user/wishList`, {
-      headers: {
-        authorization: Cookies.get("authToken"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Data from API:", data);
-      })
-      .catch((error) => toast.error("Lỗi khi lấy wishlist: " + error));
-  };
 
   return (
     <div>
@@ -458,7 +458,7 @@ const ProductDetail = () => {
             <Products
               books={books}
               hasBanner={false}
-              wishlist={sharedData}
+              wishlist={sharedataDetail}
               fetchWishlist={fetchWishlist}
             >
               {" "}

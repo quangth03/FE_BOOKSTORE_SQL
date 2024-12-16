@@ -15,6 +15,7 @@ import { mobile } from "../responsive";
 import icon from "../assets/img-2.png";
 import CustomNavLink from "./CustomNavLink";
 import Banner from "./Banner";
+import { endpoint } from "../data";
 
 const Container = styled.div`
   ${mobile({ height: "50px" })}
@@ -108,7 +109,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/user/books");
+        const response = await axios.get(`${endpoint}/user/books`);
         setItems(response.data.books); // Lưu dữ liệu vào state
       } catch (error) {
         console.error("Error fetching data:", error);
