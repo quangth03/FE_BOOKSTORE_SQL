@@ -182,7 +182,7 @@ export const productColumns = [
 ];
 
 export const orderColumns = [
-  { field: "id", headerName: "ID", width: 250 },
+  { field: "id", headerName: "ID đơn hàng", width: 250 },
   {
     field: "user_id",
     headerName: "Tên người mua",
