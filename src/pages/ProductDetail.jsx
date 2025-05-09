@@ -208,25 +208,6 @@ const ProductDetail = () => {
     toast.success("Thêm vào giỏ hàng thành công", { autoClose: 2000 });
   };
 
-  // const handleAddToWishList = () => {
-  //   if (Cookies.get("authToken") === undefined) {
-  //     // If no authToken, redirect to the login page
-  //     navigate("/login");
-  //   }
-  //   fetch(`${endpoint}/user/wishList`, {
-  //     method: "POST",
-  //     headers: {
-  //       authorization: Cookies.get("authToken"),
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {})
-  //     .catch((error) => console.error(error));
-  //   toast.success("Thêm vào yêu thích thành công");
-  // };
-
   const handleChange = (e) => {
     const newValue = e.target.value;
     const min = 1;

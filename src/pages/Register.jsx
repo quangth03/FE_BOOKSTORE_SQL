@@ -102,7 +102,7 @@ const isValidPassword = (password) => {
 };
 // Component
 const Register = () => {
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -153,7 +153,7 @@ const Register = () => {
       })
         .then((response) => {
           if (response.status === 200) {
-            setIsSuccess(true);
+            // setIsSuccess(true);
             toast.success("Đăng ký thành công", { autoClose: 2000 });
             setTimeout(() => {
               navigate("/login");

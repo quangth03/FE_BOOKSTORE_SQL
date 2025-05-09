@@ -128,8 +128,8 @@ const Navbar = () => {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SpeechRecognition();
 
-  recognition.lang = "vi-VN"; // Đặt ngôn ngữ là tiếng Việt
-  // recognition.lang = "en-US"; // Đặt ngôn ngữ là tiếng Anh
+  // recognition.lang = "vi-VN"; // Đặt ngôn ngữ là tiếng Việt
+  recognition.lang = "en-US"; // Đặt ngôn ngữ là tiếng Anh
 
   // Hàm bắt đầu nhận diện giọng nói
   const startSpeechRecognition = () => {

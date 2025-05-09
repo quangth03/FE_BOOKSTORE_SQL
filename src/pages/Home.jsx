@@ -11,6 +11,7 @@ import styled from "styled-components";
 
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import file CSS của AOS
+import Chatbot from "../components/Chatbot/Chatbot";
 
 const TopButton = styled.button`
   background-color: ${colors.color2}; /* Màu nền xanh nhạt */
@@ -67,6 +68,8 @@ const Home = () => {
       .then(([booksData, categoriesData]) => {
         setPopularProducts(booksData.books);
         setCategories(categoriesData);
+        // console.log("booksData:", booksData);
+        // console.log("categoriesData:", categoriesData);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -100,7 +103,7 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         setTopBooks(data);
-        console.log("Data topBooks:", data);
+        // console.log("Data topBooks:", data);
       });
   };
 
@@ -127,8 +130,9 @@ const Home = () => {
           <div className="sachmoibanchay p-3" data-aos="fade-left">
             <h3 className="mt-5 mb-2">Sách mới bán chạy</h3>
             {topBooks.length > 0 ? (
-              topBooks.map((item) => (
+              topBooks.map((item, index) => (
                 <Link
+                  key={index}
                   to={`/books/${item.id}`}
                   className="link no-underline text-color"
                   data-aos="fade-up"
@@ -239,6 +243,8 @@ const Home = () => {
         <section data-aos="fade-right">
           <Partner />
         </section>
+
+        <Chatbot />
       </div>
     </div>
   );

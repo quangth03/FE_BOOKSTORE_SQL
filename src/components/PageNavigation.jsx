@@ -30,7 +30,7 @@ const PageNumberItem = styled.div`
 `;
 
 const PageNavigation = ({
-  current = 1,
+  current = 1, // neu ben kia khong truyen vao moi dung mac dinh la 1
   total = 10,
   urlPattern,
   padding = "0px 75px",

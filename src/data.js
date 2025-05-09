@@ -7,7 +7,7 @@ import slider_6 from "./assets/slider6.png";
 
 export const endpoint = "http://localhost:8080";
 // export const endpoint = "http://mathsolvervn.com:4002";
-// export const endpoint = "https://4fe8-113-185-78-108.ngrok-free.app";
+// export const endpoint = "https://20a8-116-96-78-23.ngrok-free.app";
 
 export const colors = {
   color1: "#f97316",

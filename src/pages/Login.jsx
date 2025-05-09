@@ -162,7 +162,7 @@ const Login = () => {
           } else if (response.status === 400) {
             throw new Error("Vui lòng xác minh email của bạn.");
           } else {
-            throw new Error("Đã xảy ra lỗi, vui lòng thử lại.");
+            throw new Error("Đã xảy ra lỗi, vui lòng thử lại."); // throw ném lỗi cho catch bắt
           }
         })
         .then((data) => {

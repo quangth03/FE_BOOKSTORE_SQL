@@ -65,12 +65,12 @@ const ChangeProfile = () => {
 
   // Hàm validate thông tin người dùng
   const validateForm = () => {
-    if (data.username.trim() === "") return "Vui lòng nhập username";
+    // if (data.username.trim() === "") return "Vui lòng nhập username";
     if (data.full_name.trim() === "") return "Vui lòng nhập họ tên";
-    if (data.email.trim() === "") return "Vui lòng nhập email";
-    if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(data.email)) {
-      return "Email không hợp lệ";
-    }
+    // if (data.email.trim() === "") return "Vui lòng nhập email";
+    // if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(data.email)) {
+    //   return "Email không hợp lệ";
+    // }
     if (data.phone_number.trim() === "") return "Vui lòng nhập số điện thoại";
     if (!/^\d{10}$/.test(data.phone_number)) {
       return "Số điện thoại không hợp lệ";
