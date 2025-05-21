@@ -80,7 +80,7 @@ const Datatable = () => {
         const getSelectableStatuses = (status) => {
           switch (status) {
             case 1:
-              return [1, 6]; // Khi status = 1 thì chỉ có thể chọn 1 và 6
+              return [1]; // Khi status = 1 thì chỉ có thể chọn 1 và 7
             case 2:
               return [2, 3]; // Khi status = 2 thì chỉ có thể chọn 2 và 3
             case 3:
@@ -88,9 +88,13 @@ const Datatable = () => {
             case 4:
               return [4, 5]; // Khi status = 4 thì chỉ có thể chọn 4 và 5
             case 5:
-              return [5]; // Khi status = 5 thì chỉ có thể chọn 5
+              return [5, 6]; // Khi status = 5 thì chỉ có thể chọn 5
             case 6:
               return [6]; // Khi status = 6 thì chỉ có thể chọn 6
+            case 7:
+              return [7]; // Khi status = 7 thì chỉ có thể chọn 7
+            case 8:
+              return [8]; // Khi status = 8 thì chỉ có thể chọn 8
             default:
               return []; // Nếu không khớp với các trường hợp trên, không có trạng thái có thể chọn
           }

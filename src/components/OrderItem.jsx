@@ -113,6 +113,14 @@ const OrderItem = ({ data }) => {
               {Number(data.total).toLocaleString()} VND
             </InfoItemContent>
           </InfoItem>
+          <InfoItem>
+            <InfoItemLabel>Hình thức thanh toán</InfoItemLabel>
+            <InfoItemContent>
+              {data.payment_method == "cash"
+                ? "Thanh toán khi nhận hàng"
+                : "Ví Momo"}
+            </InfoItemContent>
+          </InfoItem>
         </OrderItemInfo>
         <DetailsButtonWrapper>
           {data.status === 1 ? (
