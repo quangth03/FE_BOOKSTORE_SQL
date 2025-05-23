@@ -1,7 +1,3 @@
-// import styled from "styled-components";
-// import { mobile } from "../responsive";
-// import categoryIcon from "../assets/icon_category.png";
-// import CustomNavLink from "./CustomNavLink";
 import { Link } from "react-router-dom";
 
 // const Container = styled.div`
@@ -31,22 +27,6 @@ import { Link } from "react-router-dom";
 
 const CategoryItem = ({ item }) => {
   return (
-    // <Container>
-    //   <CategoryName>
-    //     <CustomNavLink to={`category/${item.id}`}>
-    //       <div
-    //         style={{
-    //           display: "flex",
-    //           flexDirection: "column",
-    //           alignItems: "center",
-    //         }}
-    //       >
-    //         <Image src={item.image ? item.image : categoryIcon} />
-    //         <span style={{ marginTop: "15px" }}>{item.name}</span>
-    //       </div>
-    //     </CustomNavLink>
-    //   </CategoryName>
-    // </Container>
     <div className="pb-3">
       <Link
         className="no-underline text-900 flex justify-content-between"

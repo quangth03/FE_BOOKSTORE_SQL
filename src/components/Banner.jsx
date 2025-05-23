@@ -29,7 +29,7 @@ export default function Banner() {
             className="flex gap-3 no-underline text-white font-semibold"
           >
             <i className="pi pi-map-marker"></i>Số 1 Võ Văn Ngân, Phường Linh
-            Trung, Quận Thủ Đức, TP. Thủ Đức TP. Hồ Chí Minh
+            Trung, Quận Thủ Đức, TP. Thủ Đức, TP. Hồ Chí Minh
           </Link>
         </div>
       </div>

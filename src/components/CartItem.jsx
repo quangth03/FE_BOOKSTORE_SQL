@@ -164,7 +164,7 @@ const CartItem = ({ cartItem, updateCart }) => {
   };
 
   useEffect(() => {
-    console.log("Amount:", amount);
+    // console.log("Amount:", amount);
     setTimeout(() => {
       updateCart();
     }, 100);

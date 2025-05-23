@@ -75,6 +75,8 @@ const ProductsPage = () => {
 
   const handleCategoryChange = (e) => {
     const category = e.value;
+    console.log("category", category);
+
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((item) => item !== category)
@@ -95,10 +97,9 @@ const ProductsPage = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Data from API:", data);
+        // console.log("Data from API:", data);
         setWishlist(data);
       });
-    console.log("Wishlist in WishList component:", wishlist);
   };
   return (
     <>
@@ -141,7 +142,10 @@ const ProductsPage = () => {
               </h4>
               <Slider
                 value={priceRange}
-                onChange={(e) => setPriceRange(e.value)}
+                onChange={(e) => {
+                  setPriceRange(e.value);
+                  console.log("priceRAnge", priceRange);
+                }}
                 range
                 min={0}
                 max={1000000}

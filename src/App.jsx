@@ -49,6 +49,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { MyContextProvider } from "./context/wishListContext";
 import VerifyEmail from "./pages/VerifyEmail";
+import Shipping from "./pages/Shipping";
 
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
@@ -328,6 +329,16 @@ const App = () => {
               <AdminAuthentication>
                 <Comment />
               </AdminAuthentication>
+            }
+          />
+
+          <Route
+            exact
+            path="/shipping"
+            element={
+              <UserAuthentication>
+                <Shipping />
+              </UserAuthentication>
             }
           />
         </Routes>

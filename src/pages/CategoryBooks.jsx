@@ -86,11 +86,7 @@ const CategiryBooks = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("Data from API:", data);
-        setWishlist(data);
-      });
-    console.log("Wishlist in WishList component:", wishlist);
+      .then((data) => {});
   };
   return (
     <>

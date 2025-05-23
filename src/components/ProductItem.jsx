@@ -256,7 +256,7 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
           if (response.ok) {
             toast.success("Thêm vào yêu thích thành công", { autoClose: 2000 });
             setWishlistState(true);
-            fetchWishlist();
+            // fetchWishlist();
           } else {
             toast.error("Lỗi khi thêm sách vào danh sách yêu thích", {
               autoClose: 2000,
@@ -279,7 +279,7 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
       .then((response) => {
         if (response.ok) {
           toast.info("Đã xóa khỏi danh sách yêu thích", { autoClose: 2000 });
-          fetchWishlist();
+          // fetchWishlist();
           setWishlistState(false);
         } else {
           toast.error("Lỗi khi xóa sách");

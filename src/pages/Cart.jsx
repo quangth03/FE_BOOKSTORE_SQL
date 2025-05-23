@@ -47,30 +47,26 @@ const Bottom = styled.div`
   justify-content: center;
 `;
 
-const Info = styled.div`
+export const Info = styled.div`
   flex: 5;
   border-right: 3px solid gray;
 `;
 
-const Products = styled.div`
+export const Products = styled.div`
   padding-right: 10px;
 `;
 
-const Total = styled.div`
+export const Total = styled.div`
   flex: 2;
   padding: 20px;
   height: 50vh;
 `;
 
-const Payment = styled.img`
-  width: 70%;
-`;
-
-const TotalTitle = styled.h1`
+export const TotalTitle = styled.h1`
   font-size: 25px;
 `;
 
-const TotalItem = styled.div`
+export const TotalItem = styled.div`
   margin: 30px 0px;
   display: flex;
   align-items: center;
@@ -79,30 +75,26 @@ const TotalItem = styled.div`
   font-size: ${(props) => props.type === "total" && "25px"};
 `;
 
-const TotalText = styled.span``;
+export const TotalText = styled.span``;
 
-const TotalPrice = styled.span``;
+export const TotalPrice = styled.span``;
 
-const DiscountSelect = styled.select`
-  width: 70%;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 10px;
+export const TotalPrices = styled.span`
+  color: red;
 `;
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [numberOfBooks, setNumberOfBooks] = useState(0);
-  const [discounts, setDiscounts] = useState([]);
+  // const [discounts, setDiscounts] = useState([]);
   const [selectedDiscount, setSelectedDiscount] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState("cash");
+  // const [paymentMethod, setPaymentMethod] = useState("cash");
   const navigate = useNavigate();
 
   useEffect(() => {
     handleGetCart();
-    handleGetDiscounts();
+    // handleGetDiscounts();
   }, []);
 
   const handleGetCart = () => {
@@ -127,22 +119,22 @@ const Cart = () => {
       .catch((error) => console.error(error));
   };
 
-  const handleGetDiscounts = () => {
-    fetch(`${endpoint}/user/discounts/valid`, {
-      headers: {
-        authorization: Cookies.get("authToken"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setDiscounts(data);
-        } else {
-          console.error("Dữ liệu mã giảm giá không hợp lệ");
-        }
-      })
-      .catch((error) => console.error(error));
-  };
+  // const handleGetDiscounts = () => {
+  //   fetch(`${endpoint}/user/discounts/valid`, {
+  //     headers: {
+  //       authorization: Cookies.get("authToken"),
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (Array.isArray(data)) {
+  //         setDiscounts(data);
+  //       } else {
+  //         console.error("Dữ liệu mã giảm giá không hợp lệ");
+  //       }
+  //     })
+  //     .catch((error) => console.error(error));
+  // };
 
   const updateCart = () => {
     handleGetCart();
@@ -162,36 +154,20 @@ const Cart = () => {
     }
 
     if (isValid && cartItems.length > 0) {
-      const orderData = {
-        value: selectedDiscount?.value ?? 0,
-        payment_method: paymentMethod, // Phương thức thanh toán
-        status: paymentMethod === "online" ? 1 : 2, // Trạng thái đơn hàng
-      };
-
-      fetch(`${endpoint}/user/order`, {
-        method: "POST",
-        headers: {
-          authorization: Cookies.get("authToken"),
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      })
-        .then((response) => {
-          if (response.status === 200) return response.json();
-        })
-        .then((data) => {
-          if (paymentMethod === "online") {
-            window.location.href = data.payUrl; // Chuyển hướng nếu là thanh toán online
-          } else {
-            toast.success("Đặt hàng thành công!", { autoClose: 2000 });
-            setTimeout(() => {
-              navigate("/orders");
-            }, 2100);
-          }
-        })
-        .catch((error) => console.error(error));
+      navigate("/shipping");
     }
   };
+
+  const discountedProduct = cartItems.reduce((total, item) => {
+    const itemDiscount =
+      (item.price * item.discount * item.cart_details.quantity) / 100;
+    return total + itemDiscount;
+  }, 0);
+
+  const priceProduct = cartItems.reduce((total, item) => {
+    const itemPrice = item.price * item.cart_details.quantity;
+    return total + itemPrice;
+  }, 0);
 
   return (
     <div>
@@ -213,13 +189,15 @@ const Cart = () => {
             <Info>
               <Products>
                 {cartItems
-                  ? cartItems.map((cartItem, index) => (
-                      <CartItem
-                        cartItem={cartItem}
-                        key={`cart-item-${index}`}
-                        updateCart={updateCart}
-                      />
-                    ))
+                  ? cartItems.map((cartItem, index) => {
+                      return (
+                        <CartItem
+                          cartItem={cartItem}
+                          key={`cart-item-${index}`}
+                          updateCart={updateCart}
+                        />
+                      );
+                    })
                   : ""}
               </Products>
             </Info>
@@ -228,62 +206,27 @@ const Cart = () => {
               <TotalItem>
                 <TotalText>Tổng tiền các sản phẩm</TotalText>
                 <TotalPrice>
-                  {Number(totalAmount).toLocaleString()} VND
+                  {/* {Number(totalAmount).toLocaleString()} VND */}
+                  {Number(priceProduct).toLocaleString()} VND
                 </TotalPrice>
               </TotalItem>
               <TotalItem>
-                <TotalText>Phí vận chuyển</TotalText>
-                <TotalPrice>{numberOfBooks === 0 ? 0 : "0"} VND</TotalPrice>
-              </TotalItem>
-              <TotalItem>
-                <TotalText>Chọn mã giảm giá</TotalText>
-                <DiscountSelect
-                  onChange={(e) => {
-                    const selectedValue = e.target.value;
-                    // Kiểm tra nếu không phải "null" thì mới parse
-                    if (selectedValue !== "null") {
-                      setSelectedDiscount(JSON.parse(selectedValue));
-                    } else {
-                      setSelectedDiscount(null); // Đặt lại selectedDiscount nếu chọn "Chọn mã giảm giá"
-                    }
-                  }}
-                >
-                  <option value="null">Chọn mã giảm giá</option>
-                  {discounts.map((discount) => {
-                    const isDisabled = totalAmount < discount.minimumOrderValue; // Kiểm tra điều kiện disable
-                    return (
-                      <option
-                        key={discount.id}
-                        value={JSON.stringify(discount)}
-                        disabled={isDisabled} // Disable nếu không đủ giá trị đơn hàng
-                      >
-                        {discount.description} -{" "}
-                        {Number(discount.value).toLocaleString()}{" "}
-                        {isDisabled && "(Không áp dụng)"}
-                      </option>
-                    );
-                  })}
-                </DiscountSelect>
-              </TotalItem>
-              <TotalItem>
-                <TotalText>Thanh toán bằng</TotalText>
-                <DiscountSelect
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value)}
-                >
-                  <option value="cash">Tiền mặt</option>
-                  <option value="online">Online</option>
-                </DiscountSelect>
-              </TotalItem>
-              {/* <TotalItem type="total">
-                <TotalText>Tổng cộng</TotalText>
+                <TotalText>Giảm giá sản phẩm</TotalText>
                 <TotalPrice>
-                  {Number(totalAmount).toLocaleString()} VND
+                  -{Number(parseInt(discountedProduct)).toLocaleString()} VND
                 </TotalPrice>
-              </TotalItem> */}
+              </TotalItem>
+              <hr />
+              <TotalItem>
+                <TotalText>Tiết kiệm</TotalText>
+                <TotalPrice>
+                  {Number(parseInt(discountedProduct)).toLocaleString()} VND
+                </TotalPrice>
+              </TotalItem>
+              <hr />
               <TotalItem type="total">
                 <TotalText>Tổng thanh toán</TotalText>
-                <TotalPrice>
+                <TotalPrices>
                   {selectedDiscount &&
                   totalAmount >= selectedDiscount.minimumOrderValue
                     ? Number(
@@ -291,9 +234,8 @@ const Cart = () => {
                       ).toLocaleString()
                     : Number(totalAmount).toLocaleString()}{" "}
                   VND
-                </TotalPrice>
+                </TotalPrices>
               </TotalItem>
-              <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
             </Total>
           </Bottom>
         </Wrapper>

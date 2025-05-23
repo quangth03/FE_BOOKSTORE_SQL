@@ -61,7 +61,7 @@ const InfoContent = styled.div`
   // justify-content: flex-end;
 `;
 
-const CancleButton = styled.div`
+const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,14 +92,14 @@ const OrderDetails = ({ orderId }) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleConfirmCancel = () => {
+  const handleConfirm = () => {
     fetch(`${endpoint}/user/order/update`, {
       method: "POST", // Phương thức PUT để cập nhật
       headers: {
         "Content-Type": "application/json", // Gửi dữ liệu JSON
         authorization: Cookies.get("authToken"), // Thêm token xác thực
       },
-      body: JSON.stringify({ id: id, status: 6 }), // Gửi ID đơn hàng và trạng thái mới
+      body: JSON.stringify({ id: id, status: 7 }), // Gửi ID đơn hàng và trạng thái mới
     })
       .then((response) => {
         if (!response.ok) {
@@ -112,7 +112,7 @@ const OrderDetails = ({ orderId }) => {
         console.log("Order cancelled successfully:", data); // Log kết quả
         setOrder((prevOrder) => ({
           ...prevOrder,
-          status: 6, // Cập nhật trạng thái đơn hàng trong state
+          status: 7, // Cập nhật trạng thái đơn hàng trong state để render UI, nếu không sẽ giữ trạng thái cũ và k render (tránh gọi lại api)
         }));
         closeModal(); // Đóng modal
       })
@@ -154,6 +154,8 @@ const OrderDetails = ({ orderId }) => {
       <Wrapper style={{ flexDirection: "column" }}>
         <Title>
           Đơn hàng {order.id} {`(${dateString})`}
+          {" - "}
+          Mã vận đơn: {order?.ghn_code}
         </Title>
         <Products>
           {books.map((book, index) => (
@@ -164,15 +166,15 @@ const OrderDetails = ({ orderId }) => {
           <InfoWrapper>
             <Info>
               <InfoLabel>Tên người mua:</InfoLabel>
-              <InfoContent>{user.full_name}</InfoContent>
+              <InfoContent>{order?.ghn_info?.to_name}</InfoContent>
             </Info>
             <Info>
               <InfoLabel>Số điện thoại:</InfoLabel>
-              <InfoContent>{user.phone_number}</InfoContent>
+              <InfoContent>{order?.ghn_info?.to_phone}</InfoContent>
             </Info>
             <Info>
               <InfoLabel>Địa chỉ:</InfoLabel>
-              <InfoContent>{user.address}</InfoContent>
+              <InfoContent>{order?.ghn_info?.to_address}</InfoContent>
             </Info>
           </InfoWrapper>
 
@@ -216,10 +218,21 @@ const OrderDetails = ({ orderId }) => {
           </QuantityWrapper>
           {!Cookies.get("isAdmin") ? (
             <div>
-              {order.status !== 6 && order.status !== 5 ? (
-                <CancleButton onClick={openModal}>Hủy đơn hàng</CancleButton>
+              {order.status == 1 || order.status == 2 ? (
+                <Button onClick={openModal}>Hủy đơn hàng</Button>
               ) : (
-                <></>
+                <>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `https://tracking.ghn.dev/?order_code=${order?.ghn_code}`,
+                        "_blank"
+                      )
+                    }
+                  >
+                    Tra cứu
+                  </Button>
+                </>
               )}{" "}
             </div>
           ) : (
@@ -229,8 +242,8 @@ const OrderDetails = ({ orderId }) => {
       </Wrapper>
       <Modal
         isOpen={isModalOpen}
-        title="Hủy đơn hàng"
-        onConfirm={handleConfirmCancel}
+        title="Hủy đơn hàng" // nếu hủy thì khôi phục lại số lượng sách và hủy luôn trên ghn, thêm nút tra cứu
+        onConfirm={handleConfirm}
         onCancel={closeModal}
       />
     </Container>

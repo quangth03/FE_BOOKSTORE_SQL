@@ -256,23 +256,29 @@ export const getColor = (id) => {
     case 3:
       return "blue"; // Blue for "Đã xác nhận"
     case 4:
-      return "purple"; // Purple for "Đang giao hàng"
+      return "purple"; // Purple for "Chờ lấy hàng"
     case 5:
-      return "green"; // Green for "Đã giao hàng"
+      return "brown"; //  for "Đang giao hàng"
     case 6:
-      return "red"; // Red for "Đơn hàng đã hủy"
+      return "green"; // Green for "Đã giao hàng"
+    case 7:
+      return "red"; //Red for Đơn hàng đã hủy
+    case 8:
+      return "Olive"; //Red for Đơn hàng đã hủy
     default:
       return "black"; // Default color
   }
 };
 
 export const listOrderStatus = [
-  { id: 6, name: "Đơn hàng đã hủy" },
   { id: 1, name: "Chờ thanh toán" },
   { id: 2, name: "Chờ xác nhận" },
   { id: 3, name: "Đã xác nhận" },
-  { id: 4, name: "Đang giao hàng" },
-  { id: 5, name: "Đã giao hàng" },
+  { id: 4, name: "Chờ lấy hàng" },
+  { id: 5, name: "Đang giao hàng" },
+  { id: 6, name: "Đã giao hàng" },
+  { id: 7, name: "Đơn hàng đã hủy" },
+  { id: 8, name: "Thanh toán không thành công do lỗi giao dịch" },
 ];
 export const categoryColumns = [
   { field: "id", headerName: "ID", width: 70 },
