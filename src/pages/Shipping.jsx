@@ -228,9 +228,12 @@ const Shipping = () => {
       .catch((error) => console.error(error));
   };
 
+  const isVip = Cookies.get("isVip");
+
   const discountedProduct = cartItems.reduce((total, item) => {
+    const discountRate = isVip ? item.discount * 2 : item.discount;
     const itemDiscount =
-      (item.price * item.discount * item.cart_details.quantity) / 100;
+      (item.price * discountRate * item.cart_details.quantity) / 100;
     return total + itemDiscount;
   }, 0);
 
