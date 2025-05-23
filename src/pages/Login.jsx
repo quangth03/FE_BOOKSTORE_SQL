@@ -182,6 +182,10 @@ const Login = () => {
                 Cookies.set("isAdmin", true);
                 window.location = "http://localhost:3000/admin/dashboard";
               } else window.location = "http://localhost:3000";
+              const isVip = data["isVip"];
+              if (isVip) {
+                Cookies.set("isVip", true);
+              }
             });
         })
         .catch((error) => {

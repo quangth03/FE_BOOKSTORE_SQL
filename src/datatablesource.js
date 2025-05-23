@@ -42,12 +42,12 @@ export const userColumns = [
   {
     field: "phone_number",
     headerName: "Số điện thoại",
-    width: 100,
+    width: 110,
   },
   {
     field: "address",
     headerName: "Địa chỉ",
-    width: 220,
+    width: 200,
     renderCell: (params) => {
       return (
         <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
@@ -55,6 +55,17 @@ export const userColumns = [
         </div>
       );
     },
+  },
+  {
+    field: "isVip",
+    headerName: "VIP",
+    width: 80,
+    renderCell: (params) =>
+      params.value ? (
+        <span style={{ color: "gold", fontWeight: "bold" }}>VIP</span>
+      ) : (
+        ""
+      ),
   },
   {
     field: "createdAt",

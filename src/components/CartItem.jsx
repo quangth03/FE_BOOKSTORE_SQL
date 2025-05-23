@@ -218,8 +218,12 @@ const CartItem = ({ cartItem, updateCart }) => {
   //   }
   // };
   const [totalPrice, setTotalPrice] = useState(cartItem.cart_details.total);
+  const isVip = Cookies.get("isVip");
   const calculatePrice = (price, discount) => {
-    return parseInt(price * (1 - discount / 100));
+    if (isVip) {
+      return Math.round(price * (1 - (2 * discount) / 100));
+    }
+    return Math.round(price * (1 - discount / 100));
   };
   const sellPrice = calculatePrice(cartItem.price, cartItem.discount);
 

@@ -82,6 +82,16 @@ const Profile = () => {
           <Right>
             <Avatar src={avatarIcon} />
             <Info>
+              {data.isVip && (
+                <InfoItem>
+                  <InfoItemLabel>Trạng thái</InfoItemLabel>
+                  <InfoItemContent
+                    style={{ color: "gold", fontWeight: "bold" }}
+                  >
+                    🌟 Tài khoản VIP 🌟
+                  </InfoItemContent>
+                </InfoItem>
+              )}
               <InfoItem>
                 <InfoItemLabel>Họ tên</InfoItemLabel>
                 <InfoItemContent>

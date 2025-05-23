@@ -230,8 +230,11 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
       })
       .catch((error) => console.error(error));
   };
-
+  const isVip = Cookies.get("isVip");
   const calculatePrice = (price, discount) => {
+    if (isVip) {
+      return Math.round(price * (1 - (2 * discount) / 100));
+    }
     return Math.round(price * (1 - discount / 100));
   };
   const sellPrice = calculatePrice(item.price, item.discount);
@@ -289,7 +292,9 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
     <Container>
       <Tooltip target=".link" />
       {item.discount > 0 && (
-        <DiscountBadge>{`-${item.discount}%`}</DiscountBadge>
+        <DiscountBadge>{`-${
+          isVip ? item.discount * 2 : item.discount
+        }%`}</DiscountBadge>
       )}
       {item.quantity === 0 && <SoldOutBadge>Hết hàng</SoldOutBadge>}
       <Link

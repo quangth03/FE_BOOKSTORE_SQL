@@ -152,8 +152,10 @@ const Navbar = () => {
 
   const searchItems = (event) => {
     const query = event.query.toLowerCase();
-    const results = items.filter((item) =>
-      item.title.toLowerCase().includes(query)
+    const results = items.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.author.toLowerCase().includes(query)
     );
     setFilteredItems(results);
   };

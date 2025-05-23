@@ -243,7 +243,11 @@ const ProductDetail = () => {
     }
   };
 
+  const isVip = Cookies.get("isVip");
   const calculatePrice = (price, discount) => {
+    if (isVip) {
+      return Math.round(price * (1 - (2 * discount) / 100));
+    }
     return Math.round(price * (1 - discount / 100));
   };
   const sellPrice = calculatePrice(book.price, book.discount);

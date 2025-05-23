@@ -100,7 +100,6 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         setTopBooks(data);
-        console.log("Data topBooks:", data);
       });
   };
 
@@ -129,6 +128,7 @@ const Home = () => {
             {topBooks.length > 0 ? (
               topBooks.map((item) => (
                 <Link
+                  key={item.id}
                   to={`/books/${item.id}`}
                   className="link no-underline text-color"
                   data-aos="fade-up"

@@ -122,6 +122,7 @@ const Cart = () => {
         setCartItems(sortedBooks);
         setNumberOfBooks(sortedBooks.length);
         setTotalAmount(data.total);
+        console.log("Total amount:", data);
       })
       .catch((error) => console.error(error));
   };
