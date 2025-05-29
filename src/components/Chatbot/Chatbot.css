@@ -9,7 +9,7 @@
 
 /* Nút mở chatbot */
 .chatbot-toggle {
-    background-color: #007bff;
+    background-color: #157347;
     border          : none;
     border-radius   : 50%;
     width           : 60px;
@@ -22,7 +22,7 @@
 }
 
 .chatbot-toggle:hover {
-    background-color: #0056b3;
+    background-color: #176340;
 }
 
 /* Hộp chat */
@@ -39,7 +39,7 @@
 
 /* Header */
 .chatbot-header {
-    background     : #007bff;
+    background     : #157347;
     color          : white;
     padding        : 10px 15px;
     display        : flex;
@@ -88,11 +88,11 @@
 
 /* Tin nhắn bot */
 .bot-message {
-    background-color      : #f1f1f1;
-    align-self            : flex-start;
-    text-align            : left;
-    border-top-left-radius: 0;
-    margin-right          : auto;
+    background-color         : #f1f1f1;
+    /* align-self            : stretch; */
+    text-align               : justify;
+    border-top-left-radius   : 0;
+    margin-right             : auto;
 }
 
 /* Ô nhập tin nhắn */
@@ -114,7 +114,7 @@
 
 .chatbot-input button {
     padding      : 8px 16px;
-    background   : #007bff;
+    background   : #157347;
     color        : white;
     border       : none;
     border-radius: 20px;
@@ -123,5 +123,5 @@
 }
 
 .chatbot-input button:hover {
-    background: #0056b3;
+    background: #145537;
 }

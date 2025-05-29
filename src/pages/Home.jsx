@@ -11,7 +11,6 @@ import styled from "styled-components";
 
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import file CSS của AOS
-import Chatbot from "../components/Chatbot/Chatbot";
 
 const TopButton = styled.button`
   background-color: ${colors.color2}; /* Màu nền xanh nhạt */
@@ -242,8 +241,6 @@ const Home = () => {
         <section data-aos="fade-right">
           <Partner />
         </section>
-
-        <Chatbot />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export default function Footer() {
         <Partner />
       </div> */}
 
-      <div className="input-email bg-orange-500 ">
+      <div className="input-email" style={{ backgroundColor: "#ffc107" }}>
         <div className="container flex justify-content-between align-items-center mx-auto py-3">
           <div className=" justify-content-between align-items-center text-100">
             <h2 className="mb-3">ĐĂNG KÝ NHẬN EMAIL</h2>

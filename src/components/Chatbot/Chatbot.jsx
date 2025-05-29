@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { endpoint } from "../../data";
 
-import "./Chatbot.css"; // Import CSS riêng nếu bạn tách file
+import "./Chatbot.css";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { sender: "bot", text: "Xin chào, tôi có thể giúp gì?" },
+  ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
