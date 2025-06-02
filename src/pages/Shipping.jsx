@@ -43,6 +43,7 @@ const Shipping = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [discounts, setDiscounts] = useState([]);
   const [selectedDiscount, setSelectedDiscount] = useState(null); //gop vo luon
+  const [fee, setFee] = useState(0);
 
   const [form, setForm] = useState({
     name: "",
@@ -92,6 +93,28 @@ const Shipping = () => {
     fetch(`${endpoint}/user/ward/${form.district}`)
       .then((res) => res.json())
       .then(setWards)
+      .catch(console.error);
+  }, [form.district]);
+
+  useEffect(() => {
+    if (!form.district) return;
+    fetch(`${endpoint}/user/shippingFee`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        weight: 2000,
+        to_district_id: form.district,
+        service_type_id: 2,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+        // console.log("total", data.data.total);
+        setFee(data.data.total);
+      })
       .catch(console.error);
   }, [form.district]);
 
@@ -166,8 +189,14 @@ const Shipping = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.ward || !form.addressDetail) {
-      toast.error("Vui lòng nhập địa chỉ!", { autoClose: 2000 });
+    if (
+      !form.name ||
+      !form.phone ||
+      !form.email ||
+      !form.ward ||
+      !form.addressDetail
+    ) {
+      toast.error("Vui lòng nhập đầy đủ thông tin!", { autoClose: 2000 });
       return;
     }
     const orderData = {
@@ -200,6 +229,7 @@ const Shipping = () => {
         quantity: item.cart_details.quantity,
         weight: 500,
       })),
+      ghn_fee: fee,
     };
 
     console.log(orderData);
@@ -218,7 +248,6 @@ const Shipping = () => {
           console.log(data);
           window.location.href = data.payUrl; // Chuyển hướng nếu là thanh toán online
         } else {
-          console.log(data);
           toast.success("Đặt hàng thành công!", { autoClose: 2000 });
           setTimeout(() => {
             navigate("/orders");
@@ -247,10 +276,10 @@ const Shipping = () => {
       <Info>
         <form className="mr-5">
           <h2 className="my-3">XÁC NHẬN THANH TOÁN</h2>
-          <div className="info">
+          <div className="info my-6">
             <h2>Địa chỉ nhận hàng</h2>
             <div className="flex my-4 gap-8">
-              <div className="flex flex-column gap-2 w-4">
+              <div className="flex flex-column gap-2 w-5">
                 <label htmlFor="name">Họ và tên</label>
                 <InputText
                   className="p-inputtext-lg"
@@ -262,7 +291,7 @@ const Shipping = () => {
                 />
               </div>
 
-              <div className="flex flex-column gap-2 w-4">
+              <div className="flex flex-column gap-2 w-5">
                 <label htmlFor="phone">Số điện thoại</label>
                 <InputText
                   className="p-inputtext-lg"
@@ -275,7 +304,7 @@ const Shipping = () => {
               </div>
             </div>
 
-            <div className="flex flex-column gap-2 w-9">
+            <div className="flex flex-column gap-2 w-11">
               <label htmlFor="email">Email</label>
               <InputText
                 className="p-inputtext-lg"
@@ -287,7 +316,7 @@ const Shipping = () => {
               />
             </div>
 
-            <div className="flex w-9 justify-content-between my-5 ">
+            <div className="flex w-11 justify-content-between my-5 ">
               <Dropdown
                 className="p-inputtext-lg"
                 value={form.province}
@@ -328,7 +357,7 @@ const Shipping = () => {
               />
             </div>
 
-            <div className="flex flex-column gap-2 w-9 mb-5">
+            <div className="flex flex-column gap-2 w-11 mb-5">
               <label htmlFor="address-details">
                 Địa chỉ chi tiết (Vui lòng nhập chính xác địa chỉ)
               </label>
@@ -341,7 +370,8 @@ const Shipping = () => {
                 }
               />
             </div>
-            <div className="flex flex-column gap-2 w-9 mb-5">
+
+            <div className="flex flex-column gap-2 w-11 mb-5">
               <label htmlFor="note">Ghi chú</label>
               <InputText
                 className="p-inputtext-lg"
@@ -354,8 +384,8 @@ const Shipping = () => {
             </div>
           </div>
 
-          <div className="products">
-            <h2>Sản phẩm</h2>
+          <div className="products my-7">
+            <h2 className="mb-5">Sản phẩm</h2>
             <Products>
               {cartItems
                 ? cartItems.map((cartItem, index) => {
@@ -364,13 +394,14 @@ const Shipping = () => {
                         cartItem={cartItem}
                         key={`cart-item-${index}`}
                         updateCart={updateCart}
+                        hidden={true}
                       />
                     );
                   })
                 : ""}
             </Products>
-            <h2>Đơn vị vận chuyển: GiaoHangNhanh</h2>
-            <h2>
+            <h3 className="mt-5">Đơn vị vận chuyển: GiaoHangNhanh</h3>
+            <h3>
               Vận chuyển từ{" "}
               <i className="text-yellow-500">Quận Thủ Đức, TP. Hồ Chí Minh</i>{" "}
               đến{" "}
@@ -385,10 +416,10 @@ const Shipping = () => {
                     ?.provinceName
                 }
               </i>
-            </h2>
+            </h3>
           </div>
 
-          <div className="payment my-5">
+          <div className="payment mt-7">
             <h2>Phương thức thanh toán</h2>
             <div className="flex flex-column gap-2">
               {paymentMethods.map((method) => (
@@ -409,7 +440,11 @@ const Shipping = () => {
                     htmlFor={method.value}
                     className="flex align-items-center"
                   >
-                    <img src={method.img} className="w-5rem h-5rem mr-3" />
+                    <img
+                      src={method.img}
+                      alt=""
+                      className="w-5rem h-5rem mr-3"
+                    />
                     {method.label}
                   </label>
                 </div>
@@ -445,7 +480,7 @@ const Shipping = () => {
         </TotalItem>
         <TotalItem>
           <TotalText>Phí vận chuyển</TotalText>
-          {/* <TotalPrice>{numberOfBooks === 0 ? 0 : "0"} VND</TotalPrice> */}
+          <TotalPrice>{!fee ? "0" : fee.toLocaleString()} VND</TotalPrice>
         </TotalItem>
         <hr />
         <TotalItem type="total">
@@ -453,8 +488,10 @@ const Shipping = () => {
           <TotalPrices>
             {selectedDiscount &&
             totalAmount >= selectedDiscount.minimumOrderValue
-              ? Number(totalAmount - selectedDiscount.value).toLocaleString()
-              : Number(totalAmount).toLocaleString()}{" "}
+              ? Number(
+                  fee + totalAmount - selectedDiscount.value
+                ).toLocaleString()
+              : Number(fee + totalAmount).toLocaleString()}{" "}
             VND
           </TotalPrices>
         </TotalItem>
@@ -489,9 +526,14 @@ const Shipping = () => {
           </DiscountSelect>
         </TotalItem>
         <Payment className="" src="https://i.ibb.co/Qfvn4z6/payment.png" />
-        <div className="flex justify-content-between mt-6">
-          <Button label="Giỏ hàng" severity="secondary" />
-          <Button label="Thanh toán" onClick={handleSubmit} />
+        <div className="flex justify-content-center mt-6">
+          {/* <Button label="Giỏ hàng" severity="secondary" /> */}
+          <Button
+            className="w-full"
+            label="Thanh toán"
+            severity="warning"
+            onClick={handleSubmit}
+          />
         </div>
       </Total>
     </div>

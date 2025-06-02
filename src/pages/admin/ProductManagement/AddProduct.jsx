@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import ErrorMessage from "../../../components/ErrorMessage";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export const Title = styled.span`
   font-weight: bold;
@@ -20,6 +21,12 @@ export const FormInput = styled.input`
   border-radius: 10px;
   font-size: 14pt;
   padding: 4px;
+
+  /* Riêng textarea thì tăng chiều cao */
+  textarea& {
+    height: 100px;
+    resize: vertical; /* Cho phép thay đổi chiều cao nếu muốn */
+  }
 `;
 
 export const Form = styled.form`
@@ -28,7 +35,7 @@ export const Form = styled.form`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-  width: 102%;
+  width: 101%;
   justify-content: flex-end;
 `;
 
@@ -172,6 +179,22 @@ const AddProduct = () => {
     setErrorMessage("");
   };
 
+  const generateDes = async (e) => {
+    e.preventDefault();
+    if (!data.title || !data.author) {
+      toast.warning("Vui lòng nhập tiêu đề và tên tác giả!", {
+        setTimeout: 1000,
+      });
+      return;
+    }
+    try {
+      const desc = await axios.post(`${endpoint}/user/ask`, {
+        message: `Tạo mô tả cho sách ${data.title} của tác giả ${data.author}`,
+      });
+      setData((prev) => ({ ...prev, description: desc.data.reply }));
+    } catch (error) {}
+  };
+
   return (
     <div className="list">
       <Sidebar />
@@ -186,7 +209,7 @@ const AddProduct = () => {
           <InfoItem>
             <InfoItemLabel>Chọn Hình Ảnh</InfoItemLabel>
             <label htmlFor="file-upload" style={{ cursor: "pointer" }}>
-              <Button style={{ marginRight: "595px" }}>Chọn hình ảnh</Button>
+              <Button style={{ marginRight: "575px" }}>Chọn hình ảnh</Button>
             </label>
             <FormInput
               type="file"
@@ -205,7 +228,6 @@ const AddProduct = () => {
               />
             </div>
           )}
-          {/* Các trường khác */}
           <InfoItem>
             <InfoItemLabel>Tiêu đề</InfoItemLabel>
             <FormInput
@@ -274,6 +296,7 @@ const AddProduct = () => {
           <InfoItem>
             <InfoItemLabel>Mô tả</InfoItemLabel>
             <FormInput
+              as="textarea"
               placeholder="Cuốn sách hay"
               value={data.description}
               onChange={(e) =>
@@ -284,6 +307,9 @@ const AddProduct = () => {
               }
             />
           </InfoItem>
+          <ButtonWrapper>
+            <Button onClick={generateDes}>Tự tạo mô tả</Button>
+          </ButtonWrapper>
           <InfoItem>
             <InfoItemLabel>Ngày xuất bản</InfoItemLabel>
             <FormInput

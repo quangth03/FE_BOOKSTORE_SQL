@@ -10,7 +10,7 @@ const Product = styled.div`
   border: 1px solid #eee;
   border-radius: 50px;
   margin-bottom: 20px;
-  width: 100%;
+  width: 92%;
   display: flex;
   align-items: center;
   flex: 2;
@@ -133,7 +133,7 @@ const DeleteButton = styled.button`
   }
 `;
 
-const CartItem = ({ cartItem, updateCart }) => {
+const CartItem = ({ cartItem, updateCart, hidden }) => {
   const [amount, setAmount] = useState(cartItem.cart_details.quantity);
   const data = {
     book_id: cartItem.id,
@@ -288,17 +288,27 @@ const CartItem = ({ cartItem, updateCart }) => {
           <ProductName>
             <CustomNavLink to={`/books/${cartItem.id}`}>
               {cartItem.title}{" "}
-              <div style={{ color: "red", marginTop: "15px" }}>
-                Số lượng: {cartItem.quantity}
-              </div>
+              {hidden ? (
+                <div style={{ color: "red", marginTop: "15px" }}>
+                  Số lượng: {cartItem.cart_details.quantity}
+                </div>
+              ) : (
+                <div style={{ color: "red", marginTop: "15px" }}>
+                  Số lượng: {cartItem.quantity}
+                </div>
+              )}
             </CustomNavLink>
           </ProductName>
-          <AmountContainer>
-            <AmountButton onClick={handleDescrease}>-</AmountButton>
-            {/* <Amount>{amount}</Amount> */}
-            <Amount value={amount} onChange={handleChange}></Amount>
-            <AmountButton onClick={handleIncrease}>+</AmountButton>
-          </AmountContainer>
+          {hidden ? (
+            ""
+          ) : (
+            <AmountContainer>
+              <AmountButton onClick={handleDescrease}>-</AmountButton>
+              {/* <Amount>{amount}</Amount> */}
+              <Amount value={amount} onChange={handleChange}></Amount>
+              <AmountButton onClick={handleIncrease}>+</AmountButton>
+            </AmountContainer>
+          )}
           <PriceContainer>
             <FinalPrice>
               {Number(parseInt(sellPrice)).toLocaleString()} VND
@@ -314,9 +324,13 @@ const CartItem = ({ cartItem, updateCart }) => {
           </Price> */}
           <Price>{Number(parseInt(totalPrice)).toLocaleString()} VND</Price>
         </ProductDetail>
-        <DeleteButton onClick={handleDelete}>
-          <DeleteOutline />
-        </DeleteButton>
+        {hidden ? (
+          ""
+        ) : (
+          <DeleteButton onClick={handleDelete}>
+            <DeleteOutline />
+          </DeleteButton>
+        )}
       </Product>
     </div>
   );

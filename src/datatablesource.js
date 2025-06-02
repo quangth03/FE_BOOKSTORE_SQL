@@ -3,26 +3,7 @@ import { formatMoney } from "./utils/table-pagination";
 
 export const userColumns = [
   { field: "id", headerName: "ID", width: 150 },
-  // {
-  //   field: "avatar",
-  //   headerName: "Ảnh đại diện",
-  //   width: 100,
-  //   renderCell: (params) => {
-  //     return (
-  //       <div className="cellWithImg">
-  //         <img
-  //           className="cellImg"
-  //           src={
-  //             params.row.avatar === "avatar"
-  //               ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-  //               : params.row.avatar
-  //           }
-  //           alt="avatar"
-  //         />
-  //       </div>
-  //     );
-  //   },
-  // },
+
   {
     field: "username",
     headerName: "Tài khoản",
@@ -195,11 +176,11 @@ export const productColumns = [
 export const orderColumns = [
   { field: "id", headerName: "ID đơn hàng", width: 250 },
   {
-    field: "user_id",
+    field: "full_name",
     headerName: "Tên người mua",
     width: 150,
-    renderCell: (params) => {
-      return params.row.user.full_name;
+    valueGetter: (params) => {
+      return params.row.user?.full_name;
     },
   },
   {
@@ -365,9 +346,10 @@ export const commentColumns = [
     },
   },
   {
-    field: "book_mane",
+    field: "title",
     headerName: "Tựa sách",
     width: 250,
+    valueGetter: (params) => params.row.book.title, // dung de filter
     renderCell: (params) => {
       return (
         <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
@@ -377,15 +359,15 @@ export const commentColumns = [
     },
   },
   {
-    field: "userame",
+    field: "username",
     headerName: "Tài khoản",
     width: 100,
-    renderCell: (params) => {
+    valueGetter: (params) => {
       return params.row.user.username;
     },
   },
   {
-    field: "name",
+    field: "full_name",
     headerName: "Họ và tên",
     width: 150,
     renderCell: (params) => {

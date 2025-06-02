@@ -110,7 +110,7 @@ const OrderItem = ({ data }) => {
           <InfoItem>
             <InfoItemLabel>Tổng số tiền thanh toán</InfoItemLabel>
             <InfoItemContent>
-              {Number(data.total).toLocaleString()} VND
+              {Number(data.total + data.ghn_fee).toLocaleString()} VND
             </InfoItemContent>
           </InfoItem>
           <InfoItem>

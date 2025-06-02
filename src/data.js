@@ -10,7 +10,7 @@ export const endpoint = "http://localhost:8080";
 // export const endpoint = "https://20a8-116-96-78-23.ngrok-free.app";
 
 export const colors = {
-  color1: "#f97316",
+  color1: "#157347",
   color2: "#153f4f",
   color3: "#f69767",
   color4: "#c46e3f",

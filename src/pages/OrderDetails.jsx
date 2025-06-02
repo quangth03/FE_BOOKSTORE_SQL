@@ -86,7 +86,7 @@ const OrderDetails = ({ orderId }) => {
 
   const [books, setBooks] = useState([]);
   const [order, setOrder] = useState({});
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
 
   const openModal = () => setIsModalOpen(true);
@@ -136,7 +136,7 @@ const OrderDetails = ({ orderId }) => {
       .then((data) => {
         setOrder(data);
         setBooks(data.books);
-        setUser(data.user);
+        // setUser(data.user);
       })
       .catch((error) => console.error(error));
   }, [id]);
@@ -154,8 +154,7 @@ const OrderDetails = ({ orderId }) => {
       <Wrapper style={{ flexDirection: "column" }}>
         <Title>
           Đơn hàng {order.id} {`(${dateString})`}
-          {" - "}
-          Mã vận đơn: {order?.ghn_code}
+          {order.ghn_code ? ` - Mã vận đơn: ${order?.ghn_code}` : ""}
         </Title>
         <Products>
           {books.map((book, index) => (
@@ -186,7 +185,7 @@ const OrderDetails = ({ orderId }) => {
             <Info>
               <InfoLabel>Trạng thái đơn hàng:</InfoLabel>
               <InfoContent>
-                {listOrderStatus.find((item) => item.id == order.status)?.name}
+                {listOrderStatus.find((item) => item.id === order.status)?.name}
               </InfoContent>
             </Info>
 
@@ -201,24 +200,29 @@ const OrderDetails = ({ orderId }) => {
                 <Info>
                   <InfoLabel>Giảm giá:</InfoLabel>
                   <InfoContent>
-                    {Number(order.discount).toLocaleString()} VND
+                    -{Number(order.discount).toLocaleString()} VND
                   </InfoContent>
                 </Info>
               </>
             ) : (
               <></>
             )}
-
+            <Info>
+              <InfoLabel>Phí vận chuyển:</InfoLabel>
+              <InfoContent>
+                {Number(order.ghn_fee).toLocaleString()} VND
+              </InfoContent>
+            </Info>
             <Info style={{ fontSize: "24px", color: "red" }}>
               <InfoLabel>Tổng thanh toán:</InfoLabel>
               <InfoContent>
-                {Number(order.total).toLocaleString()} VND
+                {Number(order.total + order.ghn_fee).toLocaleString()} VND
               </InfoContent>
             </Info>
           </QuantityWrapper>
           {!Cookies.get("isAdmin") ? (
             <div>
-              {order.status == 1 || order.status == 2 ? (
+              {order.status === 1 || order.status === 2 ? (
                 <Button onClick={openModal}>Hủy đơn hàng</Button>
               ) : (
                 <>

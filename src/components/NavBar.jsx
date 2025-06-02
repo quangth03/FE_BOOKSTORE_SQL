@@ -68,8 +68,8 @@ const MenuPopup = styled.div`
 
 const MenuItem = styled.div`
   padding: 6px 16px;
-  background-color: #ffff99;
-  border-color: #ffff99;
+  background-color: #ffc107;
+  border-color: #ffc107;
   border-style: solid;
   border-radius: 30px;
   font-size: 14px;

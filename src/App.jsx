@@ -50,6 +50,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { MyContextProvider } from "./context/wishListContext";
 import VerifyEmail from "./pages/VerifyEmail";
 import Shipping from "./pages/Shipping";
+import Chatbot from "./components/Chatbot/Chatbot";
 
 const UserAuthentication = ({ children }) => {
   if (!Cookies.get("authToken")) {
@@ -67,6 +68,8 @@ const AdminAuthentication = ({ children }) => {
   return children;
 };
 
+const isAdmin = Cookies.get("isAdmin") === "true";
+
 const App = () => {
   const Layout = ({ children }) => {
     return <div style={{ backgroundColor: "floralwhite" }}>{children}</div>;
@@ -77,6 +80,7 @@ const App = () => {
         <ScrollTop />
         <NavBar />
         <ToastContainer />
+        {!isAdmin ? <Chatbot /> : ""}
         <Routes>
           <Route
             exact

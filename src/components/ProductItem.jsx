@@ -279,7 +279,7 @@ const ProductItem = ({ item, fetchWishlist, isWishListed }) => {
       .then((response) => {
         if (response.ok) {
           toast.info("Đã xóa khỏi danh sách yêu thích", { autoClose: 2000 });
-          // fetchWishlist();
+          fetchWishlist();
           setWishlistState(false);
         } else {
           toast.error("Lỗi khi xóa sách");
