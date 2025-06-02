@@ -147,31 +147,33 @@ const UpdateProduct = () => {
 
   // Handle the update request
   const handleUpdateBook = async () => {
-    if (!validateInput()) {
-      return; // Dừng lại nếu có lỗi
-    }
+    if (!validateInput()) return;
 
-    const formData = new FormData();
-    formData.append("image", data.image); // Thêm hình ảnh vào FormData
+    let imageUrl = data.image; // Mặc định lấy ảnh cũ hoặc giá trị hiện tại
 
     try {
-      const imageResponse = await fetch(`${endpoint}/admin/upload`, {
-        method: "POST",
-        headers: {
-          authorization: Cookies.get("authToken"),
-        },
-        body: formData,
-      });
+      // Kiểm tra xem có ảnh mới là File không
+      if (data.image && data.image instanceof File) {
+        const formData = new FormData();
+        formData.append("image", data.image);
 
-      if (!imageResponse.ok) {
-        setErrorMessage("Đã có lỗi khi tải hình ảnh.");
-        return;
+        const imageResponse = await fetch(`${endpoint}/admin/upload`, {
+          method: "POST",
+          headers: {
+            authorization: Cookies.get("authToken"),
+          },
+          body: formData,
+        });
+
+        if (!imageResponse.ok) {
+          setErrorMessage("Đã có lỗi khi tải hình ảnh.");
+          return;
+        }
+
+        const imageData = await imageResponse.json();
+        imageUrl = imageData.imageUrl; // cập nhật URL ảnh mới
       }
 
-      const imageData = await imageResponse.json();
-      console.log("imageData", imageData);
-      const imageUrl = imageData.imageUrl; // Giả sử server trả về URL hình ảnh
-      // Sau khi có link hình ảnh, tiến hành thêm sách
       const bookData = {
         title: data.title,
         author: data.author,
@@ -180,10 +182,9 @@ const UpdateProduct = () => {
         discount: data.discount,
         description: data.description,
         publication_date: data.publication_date,
-        image: imageUrl, // Sử dụng link hình ảnh đã upload
+        image: imageUrl, // ảnh cũ hoặc mới
       };
 
-      // Send update request
       const bookResponse = await fetch(`${endpoint}/admin/books/id/${id}`, {
         method: "PUT",
         headers: {
@@ -192,19 +193,17 @@ const UpdateProduct = () => {
         },
         body: JSON.stringify(bookData),
       });
+
       if (bookResponse.status === 200) {
-        toast.success("Cập nhật sản phẩm thành công", {
-          autoClose: 2000,
-        });
-        setTimeout(() => {
-          navigate("/admin/books");
-        }, 2100);
+        toast.success("Cập nhật sản phẩm thành công", { autoClose: 2000 });
+        setTimeout(() => navigate("/admin/books"), 2100);
       } else {
         setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại");
       }
     } catch (error) {
       setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
     }
+
     setErrorMessage("");
   };
 
