@@ -45,7 +45,7 @@ export const userColumns = [
       params.value ? (
         <span style={{ color: "gold", fontWeight: "bold" }}>VIP</span>
       ) : (
-        ""
+        <span>Thường</span>
       ),
   },
   {
