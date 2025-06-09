@@ -412,8 +412,13 @@ const Shipping = () => {
                 }
                 , TP.
                 {
-                  provinces.find((p) => p.provinceId === form.province)
-                    ?.provinceName
+                  // provinces?.find((p) => p.provinceId === form.province)
+                  //   ?.provinceName
+
+                  Array.isArray(provinces)
+                    ? provinces.find((p) => p.provinceId === form.province)
+                        ?.provinceName
+                    : "Không xác định"
                 }
               </i>
             </h3>

@@ -370,7 +370,7 @@ export const commentColumns = [
     field: "full_name",
     headerName: "Họ và tên",
     width: 150,
-    renderCell: (params) => {
+    valueGetter: (params) => {
       return params.row.user.full_name;
     },
   },
@@ -378,7 +378,7 @@ export const commentColumns = [
     field: "value",
     headerName: "Nội dung",
     width: 350,
-    renderCell: (params) => {
+    valueGetter: (params) => {
       return (
         <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
           {params.row.value}
