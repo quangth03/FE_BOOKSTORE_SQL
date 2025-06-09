@@ -5,7 +5,8 @@ import slider_4 from "./assets/slider4.png";
 import slider_5 from "./assets/slider5.png";
 import slider_6 from "./assets/slider6.png";
 
-export const endpoint = "http://localhost:8080";
+// export const endpoint = "http://localhost:8080";
+export const endpoint = "https://be-bookstore-sql.onrender.com/";
 // export const endpoint = "http://mathsolvervn.com:4002";
 // export const endpoint = "https://20a8-116-96-78-23.ngrok-free.app";
 
