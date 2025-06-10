@@ -180,8 +180,10 @@ const Login = () => {
               const isAdmin = data["isAdmin"];
               if (isAdmin) {
                 Cookies.set("isAdmin", true);
-                window.location = "http://localhost:3000/admin/dashboard";
-              } else window.location = "http://localhost:3000";
+                // window.location = "http://localhost:3000/admin/dashboard";
+                window.location = `${endpoint}/admin/dashboard`;
+              } else window.location = `${endpoint}`;
+              // window.location = "http://localhost:3000";
               const isVip = data["isVip"];
               if (isVip) {
                 Cookies.set("isVip", true);
