@@ -181,8 +181,9 @@ const Login = () => {
               if (isAdmin) {
                 Cookies.set("isAdmin", true);
                 // window.location = "http://localhost:3000/admin/dashboard";
-                window.location = `${endpoint}/admin/dashboard`;
-              } else window.location = `${endpoint}`;
+                window.location =
+                  "https://fe-bookstore-sql.vercel.app/admin/dashboard";
+              } else window.location = "https://fe-bookstore-sql.vercel.app/";
               // window.location = "http://localhost:3000";
               const isVip = data["isVip"];
               if (isVip) {
