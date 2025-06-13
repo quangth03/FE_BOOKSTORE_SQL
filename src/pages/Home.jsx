@@ -152,7 +152,10 @@ const Home = () => {
                                 {Number(
                                   (
                                     item.price *
-                                    (1 - item.discount / 100)
+                                    (1 -
+                                      ((Cookies.get("isVip") ? 2 : 1) *
+                                        item.discount) /
+                                        100)
                                   ).toFixed(0)
                                 ).toLocaleString()}
                                 đ
@@ -164,7 +167,9 @@ const Home = () => {
                                 className="bg-red-400 p-1 border-round text-white text-sm absolute"
                                 style={{ top: "-10px", left: "-10px" }}
                               >
-                                -{item.discount}%
+                                -
+                                {(Cookies.get("isVip") ? 2 : 1) * item.discount}
+                                %
                               </span>
                             </div>
                           ) : (

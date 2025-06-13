@@ -193,6 +193,15 @@ export const orderColumns = [
     },
   },
   {
+    field: "ghn_fee",
+    headerName: "Phí vận chuyển (VNĐ)",
+    width: 150,
+
+    renderCell: (params) => {
+      return formatMoney(params.row.ghn_fee, "");
+    },
+  },
+  {
     field: "total_quantity",
     headerName: "Số lượng sản phẩm",
     width: 100,
@@ -378,7 +387,7 @@ export const commentColumns = [
     field: "value",
     headerName: "Nội dung",
     width: 350,
-    valueGetter: (params) => {
+    renderCell: (params) => {
       return (
         <div style={{ wordWrap: "break-word", whiteSpace: "normal" }}>
           {params.row.value}
