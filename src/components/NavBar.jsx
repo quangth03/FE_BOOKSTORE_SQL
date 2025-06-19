@@ -195,7 +195,12 @@ const Navbar = () => {
                 <div>
                   <span className="text-red-500 font-semibold text-sm mr-4">
                     {Number(
-                      (item.price * (1 - item.discount / 100)).toFixed(0)
+                      (
+                        item.price *
+                        (1 -
+                          ((Cookies.get("isVip") ? 2 : 1) * item.discount) /
+                            100)
+                      ).toFixed(0)
                     ).toLocaleString()}
                     đ
                   </span>
@@ -203,7 +208,7 @@ const Navbar = () => {
                     {Number(item.price).toLocaleString()}đ
                   </del>
                   <span className="bg-red-400 p-1 border-round text-white text-sm">
-                    -{item.discount}%
+                    -{(Cookies.get("isVip") ? 2 : 1) * item.discount}%
                   </span>
                 </div>
               ) : (

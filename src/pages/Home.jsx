@@ -8,6 +8,7 @@ import CustomNavLink from "../components/CustomNavLink";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import DiscountDialog from "../components/DiscountDialog";
 
 import AOS from "aos";
 import "aos/dist/aos.css"; // Import file CSS của AOS
@@ -50,6 +51,7 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [topBooks, setTopBooks] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [personalizedBooks, setPersonalizedBooks] = useState([]);
 
   // ⚙️ Khởi tạo AOS
   useEffect(() => {
@@ -57,6 +59,25 @@ const Home = () => {
       duration: 1000, // Thời gian hiệu ứng (ms)
       once: true, // Chỉ chạy 1 lần khi cuộn
     });
+  }, []);
+  useEffect(() => {
+    fetch(`${endpoint}/user/viewed-books`, {
+      headers: {
+        authorization: Cookies.get("authToken"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const sortedBooks = data.sort((a, b) => {
+          const viewedAtA =
+            a.user_viewed_book?.viewed_at || "2025-01-10T00:00:00Z";
+          const viewedAtB =
+            b.user_viewed_book?.viewed_at || "2025-01-10T00:00:00Z";
+          return new Date(viewedAtB) - new Date(viewedAtA);
+        });
+        setPersonalizedBooks(sortedBooks);
+      })
+      .catch((error) => console.error("Lỗi lấy sách dành cho bạn:", error));
   }, []);
 
   useEffect(() => {
@@ -110,6 +131,7 @@ const Home = () => {
       className="container grid mx-auto mt-2"
       style={{ backgroundColor: "floralwhite" }}
     >
+      {/* <DiscountDialog /> */}
       <div className="" style={{ width: "18.5%" }}>
         <div className="sidebar">
           <div className="category px-3" data-aos="fade-right">
@@ -152,7 +174,10 @@ const Home = () => {
                                 {Number(
                                   (
                                     item.price *
-                                    (1 - item.discount / 100)
+                                    (1 -
+                                      ((Cookies.get("isVip") ? 2 : 1) *
+                                        item.discount) /
+                                        100)
                                   ).toFixed(0)
                                 ).toLocaleString()}
                                 đ
@@ -164,7 +189,9 @@ const Home = () => {
                                 className="bg-red-400 p-1 border-round text-white text-sm absolute"
                                 style={{ top: "-10px", left: "-10px" }}
                               >
-                                -{item.discount}%
+                                -
+                                {(Cookies.get("isVip") ? 2 : 1) * item.discount}
+                                %
                               </span>
                             </div>
                           ) : (
@@ -218,6 +245,17 @@ const Home = () => {
             </CustomNavLink>
           </div>
         </section>
+
+        {personalizedBooks.length > 0 && (
+          <section data-aos="fade-up">
+            <ProductsList
+              books={personalizedBooks.slice(0, 10)}
+              title="Dành cho bạn"
+              wishlist={wishlist}
+              fetchWishlist={fetchWishlist}
+            />
+          </section>
+        )}
 
         <section>
           {categories.map((category) => (

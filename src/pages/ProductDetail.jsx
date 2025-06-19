@@ -168,19 +168,42 @@ const ProductDetail = () => {
   // console.log("sharedata", sharedData);
 
   useEffect(() => {
-    fetch(`${endpoint}/user/books/id/${id}`)
+    const token = Cookies.get("authToken");
+
+    if (!token) {
+      console.warn("Không tìm thấy authToken trong cookie.");
+      return;
+    }
+
+    // 🔹 Lấy chi tiết sách
+    fetch(`${endpoint}/user/books/id/${id}`, {
+      headers: {
+        authorization: token, // ⬅️ giống với comment
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
-      })
-      .catch((error) => console.error(error));
 
-    fetch(`${endpoint}/user/arrr-books/id/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setBooks(data);
+        // 🔹 Ghi nhận lượt xem
+        return fetch(`${endpoint}/user/viewed-books`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: token, // ⬅️ giống với comment
+          },
+          body: JSON.stringify({ bookId: id }),
+        });
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error("Lỗi khi lấy sách hoặc ghi nhận lượt xem:", error);
+      });
+
+    // 🔹 Lấy sách tương tự
+    fetch(`${endpoint}/user/arrr-books/id/${id}`)
+      .then((res) => res.json())
+      .then(setBooks)
+      .catch(console.error);
   }, [id]);
 
   const data = {

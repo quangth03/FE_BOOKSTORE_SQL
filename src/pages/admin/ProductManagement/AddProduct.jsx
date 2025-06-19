@@ -191,8 +191,31 @@ const AddProduct = () => {
       const desc = await axios.post(`${endpoint}/user/ask`, {
         message: `Tạo mô tả cho sách ${data.title} của tác giả ${data.author}`,
       });
+      if (
+        !desc.data.reply ||
+        desc.data.reply.toLowerCase().includes("lỗi kết nối") ||
+        desc.data.reply.toLowerCase().includes("xin lỗi")
+      ) {
+        toast.error(
+          "Không thể tạo mô tả. Vui lòng kiểm tra lại hoặc thử lại sau.",
+          {
+            autoClose: 3000,
+          }
+        );
+        return;
+      }
+      if (desc.data.reply.toLowerCase().includes("không có đủ thông tin")) {
+        toast.error("Xin lỗi tôi không có đủ thông tin về cuốn sách này.", {
+          autoClose: 3000,
+        });
+        return;
+      }
       setData((prev) => ({ ...prev, description: desc.data.reply }));
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Lỗi kết nối đến chatbot. Vui lòng thử lại sau.", {
+        autoClose: 3000,
+      });
+    }
   };
 
   return (

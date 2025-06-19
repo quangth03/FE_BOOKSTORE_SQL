@@ -82,13 +82,26 @@ const Profile = () => {
           <Right>
             <Avatar src={avatarIcon} />
             <Info>
-              {data.isVip && (
+              {data.totalOrderValue > 3000000 ? (
                 <InfoItem>
                   <InfoItemLabel>Trạng thái</InfoItemLabel>
                   <InfoItemContent
                     style={{ color: "gold", fontWeight: "bold" }}
                   >
                     🌟 Tài khoản VIP 🌟
+                  </InfoItemContent>
+                </InfoItem>
+              ) : (
+                <InfoItem>
+                  <InfoItemLabel>Mua thêm</InfoItemLabel>
+                  <InfoItemContent>
+                    {`${(
+                      3000000 - data.totalOrderValue
+                    ).toLocaleString()}/ ${(3000000).toLocaleString()} VND`}{" "}
+                    để trở thành{" "}
+                    <span style={{ color: "gold", fontWeight: "bold" }}>
+                      Thành viên VIP
+                    </span>
                   </InfoItemContent>
                 </InfoItem>
               )}

@@ -20,6 +20,11 @@ export const FormInput = styled.input`
   border-radius: 10px;
   font-size: 14pt;
   padding: 4px;
+  /* Riêng textarea thì tăng chiều cao */
+  textarea& {
+    height: 100px;
+    resize: vertical; /* Cho phép thay đổi chiều cao nếu muốn */
+  }
 `;
 
 export const Form = styled.form`
@@ -327,6 +332,7 @@ const UpdateProduct = () => {
           <InfoItem>
             <InfoItemLabel>Mô tả</InfoItemLabel>
             <FormInput
+              as="textarea"
               placeholder="Cuốn sách hay"
               value={data.description || ""}
               onChange={(e) =>

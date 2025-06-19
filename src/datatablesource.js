@@ -45,7 +45,7 @@ export const userColumns = [
       params.value ? (
         <span style={{ color: "gold", fontWeight: "bold" }}>VIP</span>
       ) : (
-        <span>Thường</span>
+        <span style={{ color: "blue", fontWeight: "bold" }}>Thường</span>
       ),
   },
   {
@@ -262,7 +262,7 @@ export const listOrderStatus = [
   { id: 8, name: "Thanh toán không thành công do lỗi giao dịch" },
 ];
 export const categoryColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  // { field: "id", headerName: "ID", width: 70 },
   {
     field: "image",
     headerName: "Hình ảnh",

@@ -24,10 +24,7 @@ export default function Banner() {
         </div>
 
         <div className="location flex align-items-center">
-          <Link
-            to="/"
-            className="flex gap-3 no-underline text-white font-semibold"
-          >
+          <Link className="flex gap-3 no-underline text-white font-semibold">
             <i className="pi pi-map-marker"></i>Số 1 Võ Văn Ngân, Phường Linh
             Trung, Quận Thủ Đức, TP. Thủ Đức, TP. Hồ Chí Minh
           </Link>

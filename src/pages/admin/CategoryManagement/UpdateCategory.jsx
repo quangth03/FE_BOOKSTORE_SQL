@@ -82,36 +82,40 @@ const UpdateCategory = () => {
   };
 
   const handleUpdateCategory = async () => {
-    if (!data.image || !data.name || !data.description) {
+    if (!data.name || !data.description) {
       setErrorMessage("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("image", data.image); // Thêm hình ảnh vào FormData
+    let imageUrl = data.image; // Mặc định giữ ảnh cũ
 
     try {
-      const imageResponse = await fetch(`${endpoint}/admin/upload`, {
-        method: "POST",
-        headers: {
-          authorization: Cookies.get("authToken"),
-        },
-        body: formData,
-      });
+      // Nếu có ảnh mới là file, thì upload
+      if (data.image && data.image instanceof File) {
+        const formData = new FormData();
+        formData.append("image", data.image);
 
-      if (!imageResponse.ok) {
-        setErrorMessage("Đã có lỗi khi tải hình ảnh.");
-        return;
+        const imageResponse = await fetch(`${endpoint}/admin/upload`, {
+          method: "POST",
+          headers: {
+            authorization: Cookies.get("authToken"),
+          },
+          body: formData,
+        });
+
+        if (!imageResponse.ok) {
+          setErrorMessage("Đã có lỗi khi tải hình ảnh.");
+          return;
+        }
+
+        const imageData = await imageResponse.json();
+        imageUrl = imageData.imageUrl; // Cập nhật URL mới
       }
 
-      const imageData = await imageResponse.json();
-      console.log("imageData", imageData);
-      const imageUrl = imageData.imageUrl; // Giả sử server trả về URL hình ảnh
-      // Sau khi có link hình ảnh, tiến hành thêm sách
       const categoryData = {
         name: data.name,
         description: data.description,
-        image: imageUrl, // Sử dụng link hình ảnh đã upload
+        image: imageUrl, // Dùng ảnh mới hoặc giữ ảnh cũ
       };
 
       const categoryResponse = await fetch(
@@ -125,17 +129,17 @@ const UpdateCategory = () => {
           body: JSON.stringify(categoryData),
         }
       );
+
       if (categoryResponse.status === 200) {
-        toast.success("Cập nhật thể loại thành công", {
-          autoClose: 2000,
-        });
-        setTimeout(() => {
-          navigate("/admin/categories");
-        }, 2100);
+        toast.success("Cập nhật thể loại thành công", { autoClose: 2000 });
+        setTimeout(() => navigate("/admin/categories"), 2100);
+      } else {
+        setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
       }
     } catch (error) {
       setErrorMessage("Đã có lỗi xảy ra. Vui lòng thử lại.");
     }
+
     setErrorMessage("");
   };
 
