@@ -168,22 +168,28 @@ const ProductDetail = () => {
   // console.log("sharedata", sharedData);
 
   useEffect(() => {
-    const token = Cookies.get("authToken");
+    // const token = Cookies.get("authToken");
 
-    if (!token) {
-      console.warn("Không tìm thấy authToken trong cookie.");
-      return;
-    }
+    // if (!token) {
+    //   console.warn("Không tìm thấy authToken trong cookie.");
+    //   return;
+    // }
 
     // 🔹 Lấy chi tiết sách
     fetch(`${endpoint}/user/books/id/${id}`, {
       headers: {
-        authorization: token, // ⬅️ giống với comment
+        // authorization: token, // ⬅️ giống với comment
       },
     })
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
+        const token = Cookies.get("authToken");
+
+        if (!token) {
+          console.warn("Không tìm thấy authToken trong cookie.");
+          return;
+        }
 
         // 🔹 Ghi nhận lượt xem
         return fetch(`${endpoint}/user/viewed-books`, {
