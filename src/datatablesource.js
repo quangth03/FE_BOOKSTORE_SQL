@@ -414,7 +414,7 @@ export const commentColumns = [
 ];
 
 export const discountColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  // { field: "id", headerName: "ID", width: 70 },
   {
     field: "value",
     headerName: "Giá trị",
